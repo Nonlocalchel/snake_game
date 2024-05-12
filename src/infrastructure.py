@@ -47,10 +47,16 @@ class Infrastructure:
         )
 
     def draw_game_over(self) -> None:
-        message = self.font.render("GAME OVER", True, pygame.Color(GAME_OVER_COLOR))
+        self.draw_message('GAME OVER',0,-25)
+        self.draw_message("Нажмите SPACE,",0,25)
+        self.draw_message("чтобы повторить",0,75)
+
+
+    def draw_message(self,text: str,dw: int, dh:int) -> None:
+        message = self.font.render(text, True, pygame.Color(GAME_OVER_COLOR))
         self.screen.blit(
             message,
-            message.get_rect(center=((WIDTH // 2 * SCALE), (HEIGHT // 2 * SCALE))),
+            message.get_rect(center=((WIDTH // 2 * SCALE)+dw, (HEIGHT // 2 * SCALE)+dh)),
         )
 
     def update_and_tick(self) -> None:
