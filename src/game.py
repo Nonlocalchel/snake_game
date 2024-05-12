@@ -38,7 +38,7 @@ class Game:
         if self.is_game_over:
             self.infrastructure.draw_game_over()
 
-        self.infrastructure.update_and_tick(len(self.snake))
+        self.infrastructure.update_and_tick()
 
     def update_state(self) -> None:
         """Вычисление следующего состояния всех объектов на экране"""

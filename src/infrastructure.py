@@ -53,9 +53,9 @@ class Infrastructure:
             message.get_rect(center=((WIDTH // 2 * SCALE), (HEIGHT // 2 * SCALE))),
         )
 
-    def update_and_tick(self,snakeLength) -> None:
+    def update_and_tick(self) -> None:
         pygame.display.update()
-        self.clock.tick(FPS*(snakeLength*0.75))
+        self.clock.tick(FPS)
 
     def quit(self) -> None:
         pygame.quit()

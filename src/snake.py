@@ -10,9 +10,6 @@ class Snake:
         self.deque.appendleft(head)
         self.direction = Direction.RIGHT
 
-    def __len__(self) -> int:
-        return len(self.deque)
-
     def set_direction(self, new_direction:Direction) -> None:
         if len(self.deque)==1 or new_direction.value % 2 != self.direction.value % 2:
             self.direction=new_direction
