@@ -10,6 +10,9 @@ __pycache__
 dist/
 *.egg-info/
 
+# Файлы настройки ide
+.idea/
+
 # Файлы покрытия, кэши и прочие ненужные файлы
 .coverage
 *.py,cover

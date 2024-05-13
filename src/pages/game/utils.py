@@ -1,7 +1,7 @@
 from random import randrange
 from .snake import Snake
 from .element import Element
-from .constant import *
+from src.constant import *
 
 def gen_random_element() -> Element:
     return Element(

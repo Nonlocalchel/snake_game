@@ -1,16 +1,13 @@
-from .snake import Snake
-from .infrastructure import Infrastructure
-from .constant import *
+from src.pages.game.infrastructure_game import Infrastructure
 from .utils import *
 
 
 class Game:
     """Контролирует главный цикл игры"""
 
-    def __init__(self, infrastructure: Infrastructure) -> None:
-        self.infrastructure = infrastructure
-        head = get_center_element()
-        self.snake = Snake(head)
+    def __init__(self, infrastracture: Infrastructure) -> None:
+        self.infrastructure = infrastracture
+        self.snake = Snake(get_center_element())
         self.apple = gen_apple(self.snake)
         self.tick_counter = 0
         self.score = 0
