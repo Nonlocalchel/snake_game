@@ -1,14 +1,18 @@
 import pygame
+
+from src.interface.infrastructure import Infrastructure
+from src.interface.message import Message
+
 from src.constant import *
 from src.pages.game.directions import Direction
-from src.interface.infrastructure import Infrastructure
 
 
 class InfrastructureGame(Infrastructure):
     def __init__(self) -> None:
         super().__init__()
 
-    def get_pressed_key(self) -> Direction|None:
+    @staticmethod
+    def get_pressed_key() -> Direction | None:
         key = pygame.key.get_pressed()
         if key[pygame.K_UP]:
             return Direction.DOWN
@@ -39,15 +43,6 @@ class InfrastructureGame(Infrastructure):
         )
 
     def draw_game_over(self) -> None:
-        self.draw_message('GAME OVER',0,-50)
-        self.draw_message("Нажмите SPACE,",0,20)
-        self.draw_message("чтобы повторить",0,50)
-
-
-    def draw_message(self, text: str, dw: int, dh: int) -> None:
-        message = self.font.render(text, True, pygame.Color(GAME_OVER_COLOR))
-        self.screen.blit(
-            message,
-            message.get_rect(center=((WIDTH // 2 * SCALE) + dw, (HEIGHT // 2 * SCALE) + dh)),
-        )
-
+        Message('GAME OVER', self.screen,0,-25).draw()
+        Message('Нажмите SPACE,', self.screen, 0, 20).draw()
+        Message('чтобы играть снова', self.screen, 0, 50).draw()

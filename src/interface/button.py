@@ -2,7 +2,7 @@ import pygame
 from src.constant import *
 
 
-class Message:
+class Button:
     def __init__(self, text,screen, dw=0, dh=0, font='Arial', color=GAME_OVER_COLOR):
         self.text = text
         self.color = color
