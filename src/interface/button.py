@@ -3,17 +3,22 @@ from src.constant import *
 
 
 class Button:
-    def __init__(self, text,screen, dw=0, dh=0, font='Arial', color=GAME_OVER_COLOR):
+    def __init__(self, text, screen, dw=0, dh=0, font=None, color=SIMPLE_TEXT_COLOR):
         self.text = text
         self.color = color
-        self.width = (WIDTH // 2 * SCALE) + dw
-        self.height = (HEIGHT // 2 * SCALE) + dh
-        self.screen=screen
-        self.font=pygame.font.Font(font, SCALE)
+        self.font = pygame.font.SysFont('Calibri', 32)
+        self.screen = screen
+        self.center = self.get_serf_center(dw, dh)  # ((WIDTH // 2 * SCALE) + dw, (HEIGHT // 2 * SCALE) + dh)
 
-    def draw_message(self, text: str, dw: int, dh: int) -> None:
-        message = self.font.render(text, True, pygame.Color(GAME_OVER_COLOR))
+    def get_serf_center(self, dw=0, dh=0):
+        rect = self.screen.get_rect()
+        rect.w = rect[2]
+        rect.h = rect[3]
+        return ((rect.w // 2) + dw, (rect.h // 2) + dh)
+
+    def draw(self) -> None:
+        buttonText = self.font.render(self.text, 1, self.color)
         self.screen.blit(
-            message,
-            message.get_rect(center=(self.width, self.height)),
+            buttonText,
+            buttonText.get_rect(center=self.center),
         )

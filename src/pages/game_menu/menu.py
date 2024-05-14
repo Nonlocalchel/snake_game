@@ -1,10 +1,13 @@
 from src.pages.game_menu.infrastructure_menu import InfrastructureMenu
+from src.pages.display import Display
 
-class Menu:
+
+class Menu(Display):
     """Контролирует главный цикл игры"""
+
     def __init__(self, infrastructureMenu: InfrastructureMenu) -> None:
         self.infrastructure = infrastructureMenu
-        self.is_running=True
+        self.is_running = True
 
     def process_events(self) -> None:
         """Обработка ввода от пользователя"""
@@ -12,12 +15,11 @@ class Menu:
             self.is_running = False
 
     def update_state(self) -> None:
-        self.infrastructure.update_display()
+        self.infrastructure.update_and_tick()
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_screen()
-        self.infrastructure.draw_menu()
 
     def loop(self):
         """Цикл меню"""

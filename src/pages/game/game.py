@@ -1,11 +1,12 @@
-from src.pages.game.infrastructure_game import Infrastructure
+from src.pages.display import Display
+from src.pages.game.infrastructure_game import InfrastructureGame
 from .utils import *
 
 
-class Game:
+class Game(Display):
     """Контролирует главный цикл игры"""
 
-    def __init__(self, infrastracture: Infrastructure) -> None:
+    def __init__(self, infrastracture: InfrastructureGame) -> None:
         self.infrastructure = infrastracture
         self.snake = Snake(get_center_element())
         self.apple = gen_apple(self.snake)

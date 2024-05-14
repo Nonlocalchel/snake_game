@@ -1,38 +1,43 @@
 import pygame
+
+from src.interface.infrastructure import Infrastructure
+from src.interface.button import Button
+
 from src.constant import *
 
 
-class InfrastructureMenu:
+class InfrastructureMenu(Infrastructure):
     def __init__(self) -> None:
-        pygame.init()
-        self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
-        self.font = pygame.font.Font(None, SCALE)
+        super().__init__()
 
-    def is_quit_event(self) -> bool:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                print('quit event')
-                return True
-        return False
+    def fill_screen(self) -> None:
+        self.fill_bg(image='gold_snake.jpg')
+        self.draw_menu()
 
-    def fill_screen(self):
-        self.screen.fill(SCREEN_COLOR)
+    def fill_bg(self, bg_color=SCREEN_COLOR, image=None) -> None:
+        if image:
+            bg_pic = pygame.image.load(image)
+            coef = bg_pic.get_width() / bg_pic.get_height()
+            bg_pic = pygame.transform.scale(bg_pic, (WIDTH * SCALE * coef, HEIGHT * SCALE))
+            self.screen.blit(bg_pic, (-45, 0))
+        else:
+            self.screen.fill(bg_color)
 
     def draw_menu(self) -> None:
-        self.draw_message('GAME OVER',0,-50)
-        self.draw_message("Нажмите SPACE,",0,20)
-        self.draw_message("чтобы повторить",0,50)
+        menu_surf = self.get_menu_surf(3, SCREEN_COLOR)
+        Button('Играть',menu_surf,10,-65).draw()
+        Button('Статистика', menu_surf, 10, 0).draw()
+        Button('Выход', menu_surf, 10, 65).draw()
+        self.screen.blit(menu_surf, (-RADIUS * 4, HEIGHT * (1 - 0.2 * (3)) / 2 * SCALE))
 
-    def draw_message(self, text: str, dw: int, dh: int) -> None:
-        message = self.font.render(text, True, pygame.Color(GAME_OVER_COLOR))
-        self.screen.blit(
-            message,
-            message.get_rect(center=((WIDTH // 2 * SCALE) + dw, (HEIGHT // 2 * SCALE) + dh)),
-        )
 
-    def update_display(self) -> None:
-        pygame.display.update()
+    def get_menu_surf(self, items_count, bg_color=SCREEN_COLOR):
+        menu_surf = pygame.Surface((WIDTH * 0.5 * SCALE, (HEIGHT * 0.2 * (items_count)) * SCALE),pygame.SRCALPHA)
+        menu_surf.fill((0,0,0,0))
+        menu_rect = menu_surf.get_rect(left=0,centery=HEIGHT*0.3*SCALE)
+        pygame.draw.rect(menu_surf, bg_color, menu_rect, border_radius=RADIUS*4)
+        pygame.draw.rect(menu_surf, 'white', menu_rect,1, border_radius=RADIUS * 4)
+        return menu_surf
 
     def quit(self) -> None:
         pygame.quit()
-

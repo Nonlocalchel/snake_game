@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from src.interface.infrastructure import Infrastructure
 
 
-class Game(ABC):
+class Display(ABC):
     """Контролирует главный цикл игры"""
 
     @abstractmethod
