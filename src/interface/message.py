@@ -9,7 +9,7 @@ class Message:
         self.width = (WIDTH // 2 * SCALE) + dw
         self.height = (HEIGHT // 2 * SCALE) + dh
         self.screen=screen
-        self.font=pygame.font.Font(None, SCALE)
+        self.font=pygame.font.Font(None, figure_font())
 
     def draw(self) -> None:
         message = self.font.render(self.text, True, pygame.Color(GAME_OVER_COLOR))

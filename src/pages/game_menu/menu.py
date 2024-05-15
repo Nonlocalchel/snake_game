@@ -13,13 +13,17 @@ class Menu(Display):
         """Обработка ввода от пользователя"""
         if self.infrastructure.is_quit_event():
             self.is_running = False
+        is_click = self.infrastructure.check_mouse()
+        if is_click:
+            self.infrastructure.check_position()
 
     def update_state(self) -> None:
         self.infrastructure.update_and_tick()
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
-        self.infrastructure.fill_screen()
+        self.infrastructure.fill_bg(image='gold_snake.jpg')
+        self.infrastructure.draw_menu()
 
     def loop(self):
         """Цикл меню"""

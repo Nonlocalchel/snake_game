@@ -24,10 +24,7 @@ class InfrastructureGame(Infrastructure):
             return Direction.LEFT
         return None
 
-    def fill_screen(self):
-        self.screen.fill(SCREEN_COLOR)
-
-    def draw_element(self, x, y, color):
+    def draw_element(self, x: int, y: int, color: str) -> None:
         pygame.draw.rect(
             self.screen,
             pygame.Color(color),
@@ -43,6 +40,6 @@ class InfrastructureGame(Infrastructure):
         )
 
     def draw_game_over(self) -> None:
-        Message('GAME OVER', self.screen,0,-25).draw()
-        Message('Нажмите SPACE,', self.screen, 0, 20).draw()
-        Message('чтобы играть снова', self.screen, 0, 50).draw()
+        Message('GAME OVER', self.screen, 0, -25).draw()
+        Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
+        Message('ESC-меню', self.screen, 0, 50).draw()

@@ -1,6 +1,5 @@
 import pygame
 from src.constant import *
-from abc import abstractmethod
 
 
 class Infrastructure:
@@ -18,8 +17,23 @@ class Infrastructure:
                 return True
         return False
 
-    def fill_screen(self):
-        self.screen.fill(SCREEN_COLOR)
+    def fill_bg(self, image: str = None) -> None:
+        if image:
+            bg_pic = pygame.image.load(image)
+            bg_pic = self.fix_image_size(bg_pic)
+            self.screen.blit(bg_pic, (-43, 0))
+        else:
+            self.screen.fill(SCREEN_COLOR)
+
+    @staticmethod
+    def fix_image_size(image: pygame.Surface) -> pygame.Surface:
+        height, width = image.get_height(), image.get_width()
+        if height > width:
+            coef = height / width
+            return pygame.transform.scale(image, (WIDTH * SCALE, HEIGHT * coef * SCALE))
+        else:
+            coef = width / height
+            return pygame.transform.scale(image, (WIDTH * coef * SCALE, HEIGHT * SCALE))
 
     def update_and_tick(self) -> None:
         pygame.display.update()

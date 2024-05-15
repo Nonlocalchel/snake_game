@@ -21,12 +21,12 @@ class Game(Display):
         if self.infrastructure.is_quit_event():
             self.is_running = False
         new_direction = self.infrastructure.get_pressed_key()
-        if new_direction is not None:
+        if new_direction:
             self.snake.set_direction(new_direction)
 
     def render(self) -> None:
         """Обновление экрана: перерисовка змейки, яблока, баллов и game over"""
-        self.infrastructure.fill_screen()
+        self.infrastructure.fill_bg()
         for e in self.snake.deque:
             self.infrastructure.draw_element(e.x, e.y, SNAKE_COLOR)
 
