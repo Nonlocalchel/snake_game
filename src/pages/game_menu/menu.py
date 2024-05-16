@@ -13,9 +13,7 @@ class Menu(Display):
         """Обработка ввода от пользователя"""
         if self.infrastructure.is_quit_event():
             self.is_running = False
-        is_click = self.infrastructure.check_mouse()
-        if is_click:
-            self.infrastructure.check_position()
+        self.infrastructure.check_position()
 
     def update_state(self) -> None:
         self.infrastructure.update_and_tick()

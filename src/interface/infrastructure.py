@@ -1,5 +1,6 @@
 import pygame
 from src.constant import *
+from src.utils import *
 
 
 class Infrastructure:
@@ -34,6 +35,15 @@ class Infrastructure:
         else:
             coef = width / height
             return pygame.transform.scale(image, (WIDTH * coef * SCALE, HEIGHT * SCALE))
+
+    @staticmethod
+    def get_brd_box(size, bg_color: str = SCREEN_COLOR) -> pygame.Surface:
+        menu_surf = pygame.Surface(size, pygame.SRCALPHA)
+        menu_surf.fill((0, 0, 0, 0))
+        menu_rect = menu_surf.get_rect(left=0, centery=HEIGHT * SCALE * 0.3)
+        pygame.draw.rect(menu_surf, bg_color, menu_rect, border_radius=get_scale_radius())
+        pygame.draw.rect(menu_surf, SIMPLE_TEXT_COLOR, menu_rect, True, border_radius=get_scale_radius())
+        return menu_surf
 
     def update_and_tick(self) -> None:
         pygame.display.update()
