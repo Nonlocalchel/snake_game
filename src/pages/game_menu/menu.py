@@ -1,12 +1,14 @@
-from src.pages.game_menu.infrastructure_menu import InfrastructureMenu
+from src.interface.infrastructure import Infrastructure
 from src.pages.display import Display
+
+from src.pages.actions import *
 
 
 class Menu(Display):
     """Контролирует главный цикл игры"""
 
-    def __init__(self, infrastructureMenu: InfrastructureMenu) -> None:
-        self.infrastructure = infrastructureMenu
+    def __init__(self, infrastructure: Infrastructure) -> None:
+        self.infrastructure = infrastructure
         self.is_running = True
 
     def process_events(self) -> None:
@@ -21,7 +23,7 @@ class Menu(Display):
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
-        self.infrastructure.draw_menu()
+        self.infrastructure.draw_menu({'Играть': say_hello, 'Cтатистика': say_hello, 'Выход': quit})
 
     def loop(self):
         """Цикл меню"""

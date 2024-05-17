@@ -1,6 +1,10 @@
 import pygame
-from src.constant import *
 from src.utils import *
+
+from .elements.button import Button
+from .elements.message import Message
+
+from .directions import Direction
 
 
 class Infrastructure:
@@ -9,15 +13,52 @@ class Infrastructure:
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, SCALE)
+        self.elements = {'buttons': {}, 'inputs': {}}
 
-    @staticmethod
-    def is_quit_event() -> bool:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                print('quit event')
-                return True
-        return False
+    # render methods
+    # for menu
+    def draw_menu(self, btn_params: dict) -> None:
+        menu_surf = self.get_brd_box((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)), SCREEN_COLOR)
+        rel_position = (-get_scale_radius(), scale(HEIGHT, 0.4) // 2)
+        self.draw_buttons(menu_surf,
+                          btn_params,
+                          rel_position)
+        self.screen.blit(
+            menu_surf,
+            rel_position
+        )
 
+    def draw_buttons(self, surface: pygame.Surface, params: dict, serf_offset: tuple) -> None:
+        padding = figure_padding(surface.get_rect().height, params)
+        counter = -1
+        for i in params:
+            button = Button(i, surface, (10, counter * padding), serf_offset=serf_offset)
+            self.elements['buttons'][i] = button
+            button.onclick(params[i])
+            counter += 1
+
+    # for game
+    def draw_element(self, x: int, y: int, color: str) -> None:
+        pygame.draw.rect(
+            self.screen,
+            pygame.Color(color),
+            (x * SCALE, y * SCALE, ELEMENT_SIZE, ELEMENT_SIZE),
+            0,
+            RADIUS,
+        )
+
+    def draw_score(self, score: int) -> None:
+        self.screen.blit(
+            self.font.render(f"Score: {score}", True, pygame.Color(SCORE_COLOR)),
+            (5, 5),
+        )
+
+    def draw_game_over(self) -> None:
+        Message('GAME OVER', self.screen, 0, -25).draw()
+        Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
+        Message('ESC-меню', self.screen, 0, 50).draw()
+
+    # for bg
     def fill_bg(self, image: str = None) -> None:
         if image:
             bg_pic = pygame.image.load(image)
@@ -26,15 +67,16 @@ class Infrastructure:
         else:
             self.screen.fill(SCREEN_COLOR)
 
+    # help methods
     @staticmethod
     def fix_image_size(image: pygame.Surface) -> pygame.Surface:
         height, width = image.get_height(), image.get_width()
         if height > width:
-            coef = height / width
-            return pygame.transform.scale(image, (WIDTH * SCALE, HEIGHT * coef * SCALE))
+            cof = height / width
+            return pygame.transform.scale(image, (WIDTH * SCALE, HEIGHT * cof * SCALE))
         else:
-            coef = width / height
-            return pygame.transform.scale(image, (WIDTH * coef * SCALE, HEIGHT * SCALE))
+            cof = width / height
+            return pygame.transform.scale(image, (WIDTH * cof * SCALE, HEIGHT * SCALE))
 
     @staticmethod
     def get_brd_box(size, bg_color: str = SCREEN_COLOR) -> pygame.Surface:
@@ -45,10 +87,46 @@ class Infrastructure:
         pygame.draw.rect(menu_surf, SIMPLE_TEXT_COLOR, menu_rect, True, border_radius=get_scale_radius())
         return menu_surf
 
+    # update methods
     def update_and_tick(self) -> None:
         pygame.display.update()
         self.clock.tick(FPS)
 
+    # process_events methods
+    # check onclick event
+    def check_position(self) -> None:
+        position = pygame.mouse.get_pos()
+        buttons = self.elements['buttons']
+
+        for i in buttons:
+            button = buttons[i]
+            if button.is_click(position):
+                button.click()
+
+    # check keybord events(snake)
+    @staticmethod
+    def get_pressed_key() -> Direction | None:
+        key = pygame.key.get_pressed()
+        if key[pygame.K_UP]:
+            return Direction.DOWN
+        if key[pygame.K_RIGHT]:
+            return Direction.RIGHT
+        if key[pygame.K_DOWN]:
+            return Direction.UP
+        if key[pygame.K_LEFT]:
+            return Direction.LEFT
+        return None
+
+    # check quit event
+    @staticmethod
+    def is_quit_event() -> bool:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                print('quit event')
+                return True
+        return False
+
+    # quit game
     @staticmethod
     def quit() -> None:
         pygame.quit()

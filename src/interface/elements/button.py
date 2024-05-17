@@ -15,6 +15,7 @@ class Button:
         self.center = get_center(offset, serf.get_rect()[2:])
         self.offset = offset
         self.serf_offset = serf_offset
+        self.action = None
         self.draw()
 
     def draw(self) -> None:
@@ -25,13 +26,20 @@ class Button:
             self.rect
         )
 
-    def match(self, position):
+    def onclick(self, action):
+        self.action = action
+
+    def is_hover(self, position):
         offset_x, offset_y = self.serf_offset
         rel_position = (position[0] - offset_x, position[1] - offset_y)
         return self.rect.collidepoint(rel_position)
 
-    @staticmethod
-    def onclick(func):
-        if pygame.mouse.get_pressed()[0] == 1:
-            func()
-            pygame.time.wait(120)
+    def is_click(self,position):
+        if self.is_hover(position):
+            if pygame.mouse.get_pressed()[0] == 1:
+                return True
+        return False
+
+    def click(self,delay=120):
+        self.action()
+        pygame.time.wait(delay)

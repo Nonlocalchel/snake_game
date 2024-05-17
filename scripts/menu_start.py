@@ -1,6 +1,6 @@
 from src.pages.game_menu.menu import Menu
-from src.pages.game_menu.infrastructure_menu import InfrastructureMenu
+from src.interface.infrastructure import Infrastructure
 
 if __name__ == "__main__":
-    menu = Menu(InfrastructureMenu())
+    menu = Menu(Infrastructure())
     menu.loop()

@@ -1,6 +1,6 @@
 from collections import deque
 from .element import Element
-from .directions import Direction
+from src.interface.directions import Direction
 
 
 class Snake:
