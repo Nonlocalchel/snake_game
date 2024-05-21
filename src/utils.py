@@ -7,8 +7,8 @@ def figure_padding(height, collection):
     return int((height - 45) / items_count)
 
 
-def scale(value, coef):
-    return int(value * coef * SCALE)
+def scale(value, cof):
+    return int(value * cof * SCALE)
 
 
 def figure_font():

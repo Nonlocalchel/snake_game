@@ -4,42 +4,37 @@ from src.utils import *
 
 
 class Button:
-    def __init__(self, text: str, serf: pygame.Surface,
-                 offset: tuple = (0, 0), serf_offset: tuple = (0, 0),
-                 color: str = SIMPLE_TEXT_COLOR) -> None:
-        self.font = pygame.font.SysFont('Calibri', figure_font())
-        self.text = text
-        self.color = color
-        self.serf = serf
-        self.rect = None
-        self.center = get_center(offset, serf.get_rect()[2:])
-        self.offset = offset
+    def __init__(self, text: str,
+                 font: pygame.font.Font, serf_offset: tuple = (0, 0), color: str = SIMPLE_TEXT_COLOR) -> None:
+        self.text = font.render(text, 1, color)
         self.serf_offset = serf_offset
-        self.action = None
-        self.draw()
+        self.onclick = None
+        self.__access = True
+        self.__btn_view = None
 
-    def draw(self) -> None:
-        text = self.font.render(self.text, 1, self.color)
-        self.rect = text.get_rect(center=self.center)
-        self.serf.blit(
-            text,
-            self.rect
+    def set_btn_view(self, center):
+        button = self.text
+        self.__btn_view = button.get_rect(center=center)
+
+    def draw(self, surf: pygame.surface.Surface) -> None:
+        button = self.__btn_view
+        surf.blit(
+            self.text,
+            button
         )
 
-    def onclick(self, action):
-        self.action = action
-
-    def is_hover(self, position):
+    def is_hover(self, position: tuple) -> bool:
         offset_x, offset_y = self.serf_offset
         rel_position = (position[0] - offset_x, position[1] - offset_y)
-        return self.rect.collidepoint(rel_position)
+        return self.__btn_view.collidepoint(rel_position)
 
-    def is_click(self,position):
+    def is_click(self, position: tuple) -> bool:
         if self.is_hover(position):
             if pygame.mouse.get_pressed()[0] == 1:
                 return True
         return False
 
-    def click(self,delay=120):
-        self.action()
-        pygame.time.wait(delay)
+    def click(self) -> None:
+        if self.__access:
+            self.onclick()
+        self.__access = False

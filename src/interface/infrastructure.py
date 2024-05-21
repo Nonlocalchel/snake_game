@@ -12,29 +12,39 @@ class Infrastructure:
         pygame.init()
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(None, SCALE)
-        self.elements = {'buttons': {}, 'inputs': {}}
+        self.font = pygame.font.SysFont('Calibri', figure_font())
 
     # render methods
+    # for bg
+    def fill_bg(self, image: str = None) -> None:
+        if image:
+            bg_pic = pygame.image.load(image)
+            bg_pic = self.fix_image_size(bg_pic)
+            self.screen.blit(bg_pic, (-43, 0))
+        else:
+            self.screen.fill(SCREEN_COLOR)
+
     # for menu
-    def draw_menu(self, btn_params: dict) -> None:
+    def draw_menu(self, buttons: dict) -> None:
         menu_surf = self.get_brd_box((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)), SCREEN_COLOR)
         rel_position = (-get_scale_radius(), scale(HEIGHT, 0.4) // 2)
         self.draw_buttons(menu_surf,
-                          btn_params,
+                          buttons,
                           rel_position)
         self.screen.blit(
             menu_surf,
             rel_position
         )
 
-    def draw_buttons(self, surface: pygame.Surface, params: dict, serf_offset: tuple) -> None:
-        padding = figure_padding(surface.get_rect().height, params)
+    @staticmethod
+    def draw_buttons(surface: pygame.Surface, buttons: dict, serf_offset: tuple) -> None:
+        padding = figure_padding(surface.get_rect().height, buttons)
         counter = -1
-        for i in params:
-            button = Button(i, surface, (10, counter * padding), serf_offset=serf_offset)
-            self.elements['buttons'][i] = button
-            button.onclick(params[i])
+        for button in buttons.values():
+            center = get_center((10, counter * padding), surface.get_rect()[2:])
+            button.set_btn_view(center)
+            button.serf_offset = serf_offset
+            button.draw(surface)
             counter += 1
 
     # for game
@@ -58,14 +68,14 @@ class Infrastructure:
         Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
         Message('ESC-меню', self.screen, 0, 50).draw()
 
-    # for bg
-    def fill_bg(self, image: str = None) -> None:
-        if image:
-            bg_pic = pygame.image.load(image)
-            bg_pic = self.fix_image_size(bg_pic)
-            self.screen.blit(bg_pic, (-43, 0))
-        else:
-            self.screen.fill(SCREEN_COLOR)
+    def get_buttons(self, btn_params: dict):
+        buttons = {}
+        for i in btn_params:
+            button = Button(i, self.font)
+            button.onclick = btn_params[i]
+            buttons[i] = button
+
+        return buttons
 
     # help methods
     @staticmethod
@@ -94,16 +104,17 @@ class Infrastructure:
 
     # process_events methods
     # check onclick event
-    def check_position(self) -> None:
+    @staticmethod
+    def check_position(elements) -> None:
         position = pygame.mouse.get_pos()
-        buttons = self.elements['buttons']
+        buttons = elements['buttons']
 
         for i in buttons:
             button = buttons[i]
             if button.is_click(position):
                 button.click()
 
-    # check keybord events(snake)
+    # check keyboard events(snake)
     @staticmethod
     def get_pressed_key() -> Direction | None:
         key = pygame.key.get_pressed()
