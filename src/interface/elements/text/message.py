@@ -1,6 +1,5 @@
 import pygame
-from src.constant import *
-from src.utils import *
+from src.interface.elements.utils import *
 
 
 class Message:

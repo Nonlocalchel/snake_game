@@ -1,8 +1,10 @@
 import pygame
-from src.utils import *
+from src.interface.elements.utils import *
 
-from .elements.button import Button
-from .elements.message import Message
+from .elements.text.button import Button
+from .elements.text.message import Message
+from .elements.container import Container
+
 
 from .directions import Direction
 
@@ -26,26 +28,13 @@ class Infrastructure:
 
     # for menu
     def draw_menu(self, buttons: dict) -> None:
-        menu_surf = self.get_brd_box((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)), SCREEN_COLOR)
-        rel_position = (-get_scale_radius(), scale(HEIGHT, 0.4) // 2)
-        self.draw_buttons(menu_surf,
-                          buttons,
-                          rel_position)
+        menu_surf = Container((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)))
+        menu_surf.coords = (-menu_surf.radius, scale(HEIGHT, 0.4) // 2)
+        menu_surf.draw_elements(buttons, offset=(10, 0))
         self.screen.blit(
-            menu_surf,
-            rel_position
+            menu_surf.surface,
+            menu_surf.coords
         )
-
-    @staticmethod
-    def draw_buttons(surface: pygame.Surface, buttons: dict, serf_offset: tuple) -> None:
-        padding = figure_padding(surface.get_rect().height, buttons)
-        counter = -1
-        for button in buttons.values():
-            center = get_center((10, counter * padding), surface.get_rect()[2:])
-            button.set_btn_view(center)
-            button.serf_offset = serf_offset
-            button.draw(surface)
-            counter += 1
 
     # for game
     def draw_element(self, x: int, y: int, color: str) -> None:
@@ -88,15 +77,6 @@ class Infrastructure:
             cof = width / height
             return pygame.transform.scale(image, (WIDTH * cof * SCALE, HEIGHT * SCALE))
 
-    @staticmethod
-    def get_brd_box(size, bg_color: str = SCREEN_COLOR) -> pygame.Surface:
-        menu_surf = pygame.Surface(size, pygame.SRCALPHA)
-        menu_surf.fill((0, 0, 0, 0))
-        menu_rect = menu_surf.get_rect(left=0, centery=HEIGHT * SCALE * 0.3)
-        pygame.draw.rect(menu_surf, bg_color, menu_rect, border_radius=get_scale_radius())
-        pygame.draw.rect(menu_surf, SIMPLE_TEXT_COLOR, menu_rect, True, border_radius=get_scale_radius())
-        return menu_surf
-
     # update methods
     def update_and_tick(self) -> None:
         pygame.display.update()
@@ -109,8 +89,7 @@ class Infrastructure:
         position = pygame.mouse.get_pos()
         buttons = elements['buttons']
 
-        for i in buttons:
-            button = buttons[i]
+        for button in buttons.values():
             if button.is_click(position):
                 button.click()
 

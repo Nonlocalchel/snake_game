@@ -25,6 +25,7 @@ class Menu(Display):
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
+
         buttons = self.elements['buttons']
         if not buttons:
             buttons = self.elements['buttons'] = self.infrastructure.get_buttons(

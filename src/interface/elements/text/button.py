@@ -1,6 +1,6 @@
 import pygame
 
-from src.utils import *
+from src.interface.elements.utils import *
 
 
 class Button:
@@ -12,9 +12,9 @@ class Button:
         self.__access = True
         self.__btn_view = None
 
-    def set_btn_view(self, center):
+    def set_view(self, coord: tuple) -> None:
         button = self.text
-        self.__btn_view = button.get_rect(center=center)
+        self.__btn_view = button.get_rect(centerx=coord[0], centery=coord[1])
 
     def draw(self, surf: pygame.surface.Surface) -> None:
         button = self.__btn_view
