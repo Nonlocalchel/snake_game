@@ -62,4 +62,5 @@ class Game(Display):
             self.process_events()
             self.update_state()
             self.render()
-        self.infrastructure.quit()
+        else:
+            self.infrastructure.quit()

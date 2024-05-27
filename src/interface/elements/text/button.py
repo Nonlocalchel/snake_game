@@ -6,7 +6,7 @@ from src.interface.elements.utils import *
 class Button:
     def __init__(self, text: str,
                  font: pygame.font.Font, serf_offset: tuple = (0, 0), color: str = SIMPLE_TEXT_COLOR) -> None:
-        self.text = font.render(text, 1, color)
+        self.text = font.render(text, 1, color) #view
         self.serf_offset = serf_offset
         self.onclick = None
         self.__access = True

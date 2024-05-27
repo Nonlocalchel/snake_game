@@ -6,7 +6,7 @@ from .elements.text.message import Message
 from .elements.container import Container
 
 
-from .directions import Direction
+from src.pages.game.directions import Direction
 
 
 class Infrastructure:
@@ -85,13 +85,13 @@ class Infrastructure:
     # process_events methods
     # check onclick event
     @staticmethod
-    def check_position(elements) -> None:
+    def check_mouse(elements: dict) -> None | Button:
         position = pygame.mouse.get_pos()
-        buttons = elements['buttons']
 
-        for button in buttons.values():
-            if button.is_click(position):
-                button.click()
+        for element in elements.values():
+            if element.is_click(position):
+                return element
+        return None
 
     # check keyboard events(snake)
     @staticmethod

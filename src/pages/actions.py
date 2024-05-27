@@ -1,20 +1,30 @@
-import pygame
-# from src.pages.game.game import Game
-# from src.pages.game.infrastructure_game import InfrastructureGame
-#
-# from src.pages.game_menu.menu import Menu
-# from src.pages.game_menu.infrastructure_menu import InfrastructureMenu
-# def start_game():
-#     game = Game(InfrastructureGame())
-#     game.loop()
-
-# def go_to_menu():
-#     menu = Menu(InfrastructureMenu())
-#     menu.loop()
-
-def say_hello():
-    print('hello world')
-def quit_app():
-    pygame.quit()
+from enum import Enum
 
 
+class Action(Enum):
+    PLAY = 'show_conf'
+    GO_TO_PLAY = 'go-to_game'
+    GO_TO_RESULT = 'go-to_result'
+    GO_TO_MENU = 'go-to_menu'
+    QUIT = 'quit'
+
+    @staticmethod
+    def get_values(actions):
+        return {name: actions[name].value for name in actions}
+
+    @classmethod
+    def menu_actions(cls):
+        menu_actions = {
+            'Играть': cls.GO_TO_PLAY,
+            'Настройки': cls.GO_TO_RESULT,
+            'Выйти': cls.QUIT
+        }
+        return cls.get_values(menu_actions)
+
+    @classmethod
+    def start_actions(cls):
+        start_actions = {
+            'Старт': cls.PLAY,
+            'Введите имя': 'input'
+        }
+        return cls.get_values(start_actions)
