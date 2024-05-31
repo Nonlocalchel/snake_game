@@ -1,7 +1,7 @@
 from .button import Button
 from .input import Input
 
-from .utils import figure_size, figure_padding, figure_pos
+from .utils import figure_size, figure_positions
 
 
 class GameMenu:
@@ -38,16 +38,13 @@ class GameMenu:
 
     def __create_elements(self, elem_params: dict, offset: tuple) -> dict:
         elements = {}
-        counter = 1
-        padding = figure_padding(self.size, elem_params)
+        positions = figure_positions(self.size, elem_params, offset)
 
-        for i in elem_params:
-            position = figure_pos(self.size, counter * padding, offset)
-            counter += 1
-            if elem_params[i] == 'input':
-                elements[i] = Input(i, position)
+        for name, position in zip(elem_params, positions):
+            if elem_params[name] == 'input':
+                elements[name] = Input(name, position)
                 continue
 
-            elements[i] = Button(i, elem_params[i], position)
+            elements[name] = Button(name, elem_params[name], position)
 
         return elements

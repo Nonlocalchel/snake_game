@@ -3,6 +3,8 @@ from src.pages.display import Display
 
 from src.pages.actions import Action
 
+from .utils import figure_real_pos
+
 from .gameMenu import GameMenu
 from .button import Button
 from .input import Input
@@ -39,16 +41,22 @@ class Menu(Display):
         elements = self.menu.elements
         for element in elements:
             if not type(element) is Button:
-                break
+                continue
 
-            element.state = self.infrastructure.check_mouse(element.text, element.figure_rel_pos(menu))
-            if element.state.is_click:
-                self.action = element.click()
+            position = figure_real_pos(menu.pos, element.pos)
 
-            if element.state.is_hover:
+            state = self.infrastructure.check_mouse(element.text, position)
+            element.state = state
+
+            if element.is_hover:
                 self.infrastructure.make_hover_sound()
-                element.state = None
-                break
+
+                new_state = self.infrastructure.is_click(element.text, position)
+                element.state = new_state or state
+
+                if element.is_click:
+                    self.action = element.click()
+
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
