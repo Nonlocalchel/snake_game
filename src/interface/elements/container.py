@@ -38,7 +38,3 @@ class Container:
         pygame.draw.rect(surface, self.bg_color, rect, border_radius=self.radius)
         pygame.draw.rect(surface, SIMPLE_TEXT_COLOR, rect, True, border_radius=self.radius)
 
-    def draw_elements(self, elements: dict) -> None:
-        for element in elements:
-            element.draw(self.)
-

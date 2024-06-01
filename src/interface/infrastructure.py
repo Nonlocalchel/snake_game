@@ -12,7 +12,6 @@ class Infrastructure:
         pygame.init()
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.SysFont('Calibri', figure_font())
 
     # render methods
     # for bg
@@ -24,18 +23,26 @@ class Infrastructure:
         else:
             self.screen.fill(SCREEN_COLOR)
 
+    def draw_shadow(self):
+        pass
+
     # for menu
     def draw_menu(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
         if shadow:
             self.draw_shadow()
+
         menu_surf = Container(
             (scale(WIDTH, menu_params['size'][0]), scale(HEIGHT, menu_params['size'][1]))
         )
+
         menu_surf.coords = (scale(WIDTH, menu_params['pos'][0]),
                             scale(HEIGHT, menu_params['pos'][1])
                             )
-        text_views = [TextView(elem, self.font, elem_params[elem]).get_view for elem in elem_params]
-        menu_surf.draw_elements(text_views)
+
+        text_views = [TextView(elem, self.font, elem_params[elem]) for elem in elem_params]
+        for text_view in text_views:
+            text_view.draw(menu_surf)
+
         self.screen.blit(
             menu_surf.surface,
             menu_surf.coords
@@ -65,14 +72,19 @@ class Infrastructure:
         )
 
     def draw_game_over(self) -> None:
-        Message('GAME OVER', self.screen, 0, -25).draw()
-        Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
-        Message('ESC-меню', self.screen, 0, 50).draw()
+        pass
+        # Message('GAME OVER', self.screen, 0, -25).draw()
+        # Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
+        # Message('ESC-меню', self.screen, 0, 50).draw()
 
     def make_hover_sound(self):
         pass
 
     # help methods
+    @staticmethod
+    def is_match(element: TextView, pos: tuple) -> bool:
+        return element.get_view.collidepoint(pos)
+
     @staticmethod
     def fix_image_size(image: pygame.Surface) -> pygame.Surface:
         height, width = image.get_height(), image.get_width()
@@ -90,7 +102,6 @@ class Infrastructure:
 
     # process_events methods
     # check mouse event
-    # hover
     @staticmethod
     def check_mouse(text, elem_pos) -> None | bool:
         mouse_pos = pygame.mouse.get_pos()
@@ -101,7 +112,6 @@ class Infrastructure:
             return True
         return None
 
-    # click
     @staticmethod
     def is_click():
         if pygame.mouse.get_pressed()[0] == 1:
