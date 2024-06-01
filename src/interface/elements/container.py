@@ -1,6 +1,6 @@
 import pygame
 
-from .utils import *
+from src.interface.utils import *
 
 
 class Container:
@@ -37,4 +37,3 @@ class Container:
         rect = surface.get_rect(left=0, centery=self.height / 2)
         pygame.draw.rect(surface, self.bg_color, rect, border_radius=self.radius)
         pygame.draw.rect(surface, SIMPLE_TEXT_COLOR, rect, True, border_radius=self.radius)
-

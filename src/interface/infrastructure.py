@@ -1,5 +1,5 @@
 import pygame
-from src.interface.elements.utils import *
+from src.interface.utils import *
 
 from .elements.container import Container
 from .elements.text_view import TextView
@@ -31,15 +31,17 @@ class Infrastructure:
         if shadow:
             self.draw_shadow()
 
-        menu_surf = Container(
+        menu_view = Container(
             (scale(WIDTH, menu_params['size'][0]), scale(HEIGHT, menu_params['size'][1]))
         )
 
-        menu_surf.coords = (scale(WIDTH, menu_params['pos'][0]),
-                            scale(HEIGHT, menu_params['pos'][1])
-                            )
+        menu_view.coords = (
+            scale(WIDTH, menu_params['pos'][0]),
+            scale(HEIGHT, menu_params['pos'][1])
+        )
 
         text_views = [TextView(elem, elem_params[elem]) for elem in elem_params]
+        menu_surf = menu_view.surface
         for text_view in text_views:
             text_view.draw(menu_surf)
 
@@ -47,13 +49,6 @@ class Infrastructure:
             menu_surf.surface,
             menu_surf.coords
         )
-        # menu_surf = Container((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)))
-        # menu_surf.coords = (-menu_surf.radius, scale(HEIGHT, 0.4) // 2)
-        # menu_surf.draw_elements(buttons, offset=(10, 0))
-        # self.screen.blit(
-        #     menu_surf.surface,
-        #     menu_surf.coords
-        # )
 
     # for game
     def draw_element(self, x: int, y: int, color: str) -> None:
@@ -66,17 +61,22 @@ class Infrastructure:
         )
 
     def draw_score(self, score: int) -> None:
+        score = TextView(f"Score: {score}", None)
         pass
-        # self.screen.blit(
-        #     self.font.render(f"Score: {score}", True, pygame.Color(SCORE_COLOR)),
-        #     (5, 5),
-        # )
+        self.screen.blit(
+            score.text,
+            (5, 5),
+        )
 
     def draw_game_over(self) -> None:
-        pass
-        # Message('GAME OVER', self.screen, 0, -25).draw()
-        # Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
-        # Message('ESC-меню', self.screen, 0, 50).draw()
+        messages = []
+
+        messages += [TextView('GAME OVER', (0, -25))]
+        messages += [TextView('SPACE-играть еще раз', (0, 20))]
+        messages += [TextView('ESC-меню', (0, 50))]
+
+        for message in messages:
+            message.draw(self.screen)
 
     def make_hover_sound(self):
         pass

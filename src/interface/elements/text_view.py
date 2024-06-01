@@ -1,11 +1,11 @@
 import pygame
 
 from src.constant import *
-from .utils import figure_font
+from src.interface.utils import figure_font
 
 
 class TextView:
-    def __init__(self, text: str, pos: tuple, color: str = SIMPLE_TEXT_COLOR) -> None:
+    def __init__(self, text: str, pos: tuple | None = (0, 0), color: str = SIMPLE_TEXT_COLOR) -> None:
         self.text = self.set_text(text, color)
         self.__view = self.set_view(pos)
 
@@ -19,7 +19,10 @@ class TextView:
     def get_view(self) -> pygame.Rect:
         return self.__view
 
-    def set_view(self, coord: tuple) -> pygame.Rect:
+    def set_view(self, coord: tuple) -> pygame.Rect | None:
+        if not coord:
+            return
+
         text = self.text
         text_view = text.get_rect(centerx=coord[0], centery=coord[1])
         return text_view
@@ -27,8 +30,8 @@ class TextView:
     def is_match(self, pos: tuple) -> bool:
         return self.__view.collidepoint(pos)
 
-    def draw(self, surf: pygame.Surface) -> None:
+    def draw(self, surf: pygame.Surface, center: bool = False) -> None:
         surf.blit(
             self.text,
-            self.__view,
+            center or self.__view,
         )
