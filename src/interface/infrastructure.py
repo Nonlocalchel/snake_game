@@ -39,7 +39,7 @@ class Infrastructure:
                             scale(HEIGHT, menu_params['pos'][1])
                             )
 
-        text_views = [TextView(elem, self.font, elem_params[elem]) for elem in elem_params]
+        text_views = [TextView(elem, elem_params[elem]) for elem in elem_params]
         for text_view in text_views:
             text_view.draw(menu_surf)
 
@@ -66,10 +66,11 @@ class Infrastructure:
         )
 
     def draw_score(self, score: int) -> None:
-        self.screen.blit(
-            self.font.render(f"Score: {score}", True, pygame.Color(SCORE_COLOR)),
-            (5, 5),
-        )
+        pass
+        # self.screen.blit(
+        #     self.font.render(f"Score: {score}", True, pygame.Color(SCORE_COLOR)),
+        #     (5, 5),
+        # )
 
     def draw_game_over(self) -> None:
         pass
@@ -81,10 +82,6 @@ class Infrastructure:
         pass
 
     # help methods
-    @staticmethod
-    def is_match(element: TextView, pos: tuple) -> bool:
-        return element.get_view.collidepoint(pos)
-
     @staticmethod
     def fix_image_size(image: pygame.Surface) -> pygame.Surface:
         height, width = image.get_height(), image.get_width()
