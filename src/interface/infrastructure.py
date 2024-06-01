@@ -17,7 +17,7 @@ class Infrastructure:
     # for bg
     def fill_bg(self, image: str = None) -> None:
         if image:
-            bg_pic = pygame.image.load(image)
+            bg_pic = pygame.image.load('D:\\develop\\Проекты\\snake_game\\data\\media\\img\\' + image)
             bg_pic = self.fix_image_size(bg_pic)
             self.screen.blit(bg_pic, (-43, 0))
         else:
@@ -46,8 +46,8 @@ class Infrastructure:
             text_view.draw(menu_surf)
 
         self.screen.blit(
-            menu_surf.surface,
-            menu_surf.coords
+            menu_surf,
+            menu_view.coords
         )
 
     # for game
@@ -78,10 +78,17 @@ class Infrastructure:
         for message in messages:
             message.draw(self.screen)
 
-    def make_hover_sound(self):
+    @staticmethod
+    def make_hover_sound():
         pass
+        # pygame.mixer.music.load('hover.mp3')
+        # pygame.mixer.music.play(0)
 
     # help methods
+    @staticmethod
+    def get_media_dir():
+
+
     @staticmethod
     def fix_image_size(image: pygame.Surface) -> pygame.Surface:
         height, width = image.get_height(), image.get_width()
@@ -91,6 +98,8 @@ class Infrastructure:
         else:
             cof = width / height
             return pygame.transform.scale(image, (WIDTH * cof * SCALE, HEIGHT * SCALE))
+
+    def
 
     # update methods
     def update_and_tick(self) -> None:

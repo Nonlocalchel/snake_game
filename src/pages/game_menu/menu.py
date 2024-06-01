@@ -15,7 +15,7 @@ class Menu(Display):
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
         self.is_running = True
-        self.menu = GameMenu(Action.menu_actions(), (-0.05, 0.2))
+        self.menu = GameMenu(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_menu = GameMenu(Action.start_actions(), (0.5, 0.5))
         self.action = None
         self.page = 'menu'
@@ -25,22 +25,21 @@ class Menu(Display):
         if self.infrastructure.is_quit_event():
             self.is_running = False
 
-        key = self.infrastructure.get_pressed_key()
-
         menu = self.menu
-        if menu.get_lock:
-            menu = self.start_menu
-            name_input = menu.elements['input']
-
-            if key:
-                if key == 'escape':
-                    self.menu.unlock()
-                    self.start_menu.lock()
-                else:
-                    name_input.change(key)
-
+        # if menu.get_lock:
+        #     menu = self.start_menu
+        #     name_input = menu.elements['input']
+        #
+        #     key = self.infrastructure.get_pressed_key()
+        #     if key:
+        #         if key == 'escape':
+        #             self.menu.unlock()
+        #             self.start_menu.lock()
+        #         else:
+        #             name_input.change(key)
+        #
         elements = self.menu.elements
-        for element in elements:
+        for element in elements.values():
             if not type(element) is Button:
                 continue
 
@@ -65,7 +64,7 @@ class Menu(Display):
         menu_params = get_menu_params(self.menu)
         self.infrastructure.draw_menu(menu_params['frame'], menu_params['elements'])
 
-        if self.menu.lock:
+        if self.menu.get_lock:
             start_menu_params = get_menu_params(self.start_menu)
             self.infrastructure.draw_menu(start_menu_params['frame'], start_menu_params['elements'], shadow=True)
 
@@ -76,11 +75,14 @@ class Menu(Display):
         self.menu.unlock()
         self.start_menu.lock()
 
+        if self.action is None:
+            return
+
         if self.action == Action.GO_TO_PLAY:
             self.menu.lock()
             self.start_menu.unlock()
 
-        if 'go-to' in self.action:
+        if self.action.startswith('go-to'):
             self.page = self.action.split('_')[1]
             self.is_running = False
 

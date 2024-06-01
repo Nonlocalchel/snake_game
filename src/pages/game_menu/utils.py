@@ -17,7 +17,7 @@ def figure_padding(size: tuple, count: int) -> int | float:
 def figure_pos(size, y: int | float, offset: tuple) -> tuple:
     width = size[0]
     dx, dy = offset
-    return round_to_two((width // 2) + dx), round_to_two(y + dy)
+    return round_to_two((width / 2) + dx), round_to_two(y + dy)
 
 
 def figure_real_pos(outer_pos: tuple, inner_pos: tuple) -> tuple:
@@ -42,6 +42,6 @@ def get_menu_params(menu: any) -> dict:
             'pos': menu.pos,
             'size': menu.size
         },
-        'elements': {element.text: element.pos for element in menu.elements}
+        'elements': {element.text: element.pos for element in menu.elements.values()}
     }
     return params

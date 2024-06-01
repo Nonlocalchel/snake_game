@@ -7,7 +7,7 @@ class Button:
 
     @property
     def is_hover(self):
-        return self.state == 'click'
+        return self.state == 'hover'
 
     @property
     def is_click(self):

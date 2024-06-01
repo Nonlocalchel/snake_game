@@ -1,7 +1,7 @@
 import pygame
 
 from src.constant import *
-from src.interface.utils import figure_font
+from src.interface.utils import figure_font, scale
 
 
 class TextView:
@@ -24,7 +24,7 @@ class TextView:
             return
 
         text = self.text
-        text_view = text.get_rect(centerx=coord[0], centery=coord[1])
+        text_view = text.get_rect(centerx=scale(WIDTH, coord[0]), centery=scale(HEIGHT, coord[1]))
         return text_view
 
     def is_match(self, pos: tuple) -> bool:

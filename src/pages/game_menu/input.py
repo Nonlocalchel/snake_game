@@ -1,7 +1,7 @@
 class Input:
     def __init__(self, text: str, position: tuple) -> None:
         self._text = ''
-        self.position = position
+        self.pos = position
         self.__default_text = text
 
     @property
