@@ -38,24 +38,7 @@ class Container:
         pygame.draw.rect(surface, self.bg_color, rect, border_radius=self.radius)
         pygame.draw.rect(surface, SIMPLE_TEXT_COLOR, rect, True, border_radius=self.radius)
 
-    def draw_elements(self, elements: dict, offset: tuple = (0, 0)) -> None:
-        padding = self.figure_padding(elements)
-        counter = 1
+    def draw_elements(self, elements: dict) -> None:
+        for element in elements:
+            element.draw(self.)
 
-        for element in elements.values():
-            elem_coords = self.get_elements_coords(counter * padding, offset)
-            self.draw_element(element, elem_coords)
-            counter += 1
-
-    def draw_element(self, element: any, elem_coords: tuple) -> None:
-        element.set_view(elem_coords)
-        if hasattr(element, 'is_hover'):
-            element.serf_offset = self.coords
-        element.draw(self.surface)
-
-    def figure_padding(self, elements: dict) -> int:
-        return self.height // (len(elements) + 1)
-
-    def get_elements_coords(self, y: int, offset: tuple = (0, 0)) -> tuple:
-        dw, dh = offset
-        return (self.width // 2) + dw, y + dh

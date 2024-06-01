@@ -3,19 +3,15 @@ class Button:
         self.text = name
         self.action = action
         self.state = None
-        self.__position = position
-
-    @property
-    def pos(self):
-        return self.__position
+        self.pos = position
 
     @property
     def is_hover(self):
-        return self.state in ['hover', 'click']
+        return self.state == 'click'
 
     @property
     def is_click(self):
-        return self.state == 'click'
+        return self.state in ['hover', 'click']
 
     def click(self):
         self.state = None

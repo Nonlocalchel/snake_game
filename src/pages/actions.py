@@ -6,6 +6,7 @@ class Action(Enum):
     GO_TO_PLAY = 'go-to_game'
     GO_TO_RESULT = 'go-to_result'
     GO_TO_MENU = 'go-to_menu'
+    INPUT = 'input'
     QUIT = 'quit'
 
     @staticmethod
@@ -25,6 +26,6 @@ class Action(Enum):
     def start_actions(cls):
         start_actions = {
             'Старт': cls.PLAY,
-            'Введите имя': 'input'
+            'Введите имя': cls.INPUT
         }
         return cls.get_values(start_actions)

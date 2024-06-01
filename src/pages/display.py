@@ -16,7 +16,7 @@ class Display(ABC):
 
     @abstractmethod
     def render(self) -> None:
-        """Обновление экрана: перерисовка змейки, яблока, баллов и game over"""
+        """Обновление экрана: перерисовка """
         pass
 
     @abstractmethod

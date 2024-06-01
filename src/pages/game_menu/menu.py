@@ -3,11 +3,10 @@ from src.pages.display import Display
 
 from src.pages.actions import Action
 
-from .utils import figure_real_pos
+from .utils import figure_real_pos, get_menu_params
 
 from .gameMenu import GameMenu
 from .button import Button
-from .input import Input
 
 
 class Menu(Display):
@@ -26,17 +25,19 @@ class Menu(Display):
         if self.infrastructure.is_quit_event():
             self.is_running = False
 
-        key = self.infrastructure.check_pressed_key()
+        key = self.infrastructure.get_pressed_key()
 
         menu = self.menu
         if menu.get_lock:
             menu = self.start_menu
             name_input = menu.elements['input']
-            name_input.change(key)
 
-            if key == 'escape':
-                self.menu.unlock()
-                self.start_menu.lock()
+            if key:
+                if key == 'escape':
+                    self.menu.unlock()
+                    self.start_menu.lock()
+                else:
+                    name_input.change(key)
 
         elements = self.menu.elements
         for element in elements:
@@ -46,28 +47,27 @@ class Menu(Display):
             position = figure_real_pos(menu.pos, element.pos)
 
             state = self.infrastructure.check_mouse(element.text, position)
-            element.state = state
+            element.state = 'hover' if state else None
 
             if element.is_hover:
                 self.infrastructure.make_hover_sound()
 
-                new_state = self.infrastructure.is_click(element.text, position)
-                element.state = new_state or state
+                new_state = self.infrastructure.is_click()
+                element.state = 'click' if new_state else state
 
                 if element.is_click:
                     self.action = element.click()
-
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
-        menu_params = self.menu.params
+        menu_params = get_menu_params(self.menu)
         self.infrastructure.draw_menu(menu_params['frame'], menu_params['elements'])
 
         if self.menu.lock:
-            start_menu_params = self.start_menu.params
-            self.infrastructure.draw_menu(start_menu_params['frame'], start_menu_params['elements'])
+            start_menu_params = get_menu_params(self.start_menu)
+            self.infrastructure.draw_menu(start_menu_params['frame'], start_menu_params['elements'], shadow=True)
 
         self.infrastructure.update_and_tick()
 

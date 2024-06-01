@@ -1,10 +1,8 @@
 import pygame
 from src.interface.elements.utils import *
 
-from .elements.text.button import Button
-from .elements.text.message import Message
 from .elements.container import Container
-
+from .elements.text_view import TextView
 
 from src.pages.game.directions import Direction
 
@@ -27,14 +25,28 @@ class Infrastructure:
             self.screen.fill(SCREEN_COLOR)
 
     # for menu
-    def draw_menu(self, buttons: dict) -> None:
-        menu_surf = Container((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)))
-        menu_surf.coords = (-menu_surf.radius, scale(HEIGHT, 0.4) // 2)
-        menu_surf.draw_elements(buttons, offset=(10, 0))
+    def draw_menu(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
+        if shadow:
+            self.draw_shadow()
+        menu_surf = Container(
+            (scale(WIDTH, menu_params['size'][0]), scale(HEIGHT, menu_params['size'][1]))
+        )
+        menu_surf.coords = (scale(WIDTH, menu_params['pos'][0]),
+                            scale(HEIGHT, menu_params['pos'][1])
+                            )
+        text_views = [TextView(elem, self.font, elem_params[elem]).get_view for elem in elem_params]
+        menu_surf.draw_elements(text_views)
         self.screen.blit(
             menu_surf.surface,
             menu_surf.coords
         )
+        # menu_surf = Container((scale(WIDTH, 0.5), scale(HEIGHT, 0.6)))
+        # menu_surf.coords = (-menu_surf.radius, scale(HEIGHT, 0.4) // 2)
+        # menu_surf.draw_elements(buttons, offset=(10, 0))
+        # self.screen.blit(
+        #     menu_surf.surface,
+        #     menu_surf.coords
+        # )
 
     # for game
     def draw_element(self, x: int, y: int, color: str) -> None:
@@ -57,14 +69,8 @@ class Infrastructure:
         Message('SPACE-играть еще раз', self.screen, 0, 20).draw()
         Message('ESC-меню', self.screen, 0, 50).draw()
 
-    def get_buttons(self, btn_params: dict):
-        buttons = {}
-        for i in btn_params:
-            button = Button(i, self.font)
-            button.onclick = btn_params[i]
-            buttons[i] = button
-
-        return buttons
+    def make_hover_sound(self):
+        pass
 
     # help methods
     @staticmethod
@@ -83,19 +89,34 @@ class Infrastructure:
         self.clock.tick(FPS)
 
     # process_events methods
-    # check onclick event
+    # check mouse event
+    # hover
     @staticmethod
-    def check_mouse(elements: dict) -> None | Button:
-        position = pygame.mouse.get_pos()
+    def check_mouse(text, elem_pos) -> None | bool:
+        mouse_pos = pygame.mouse.get_pos()
 
-        for element in elements.values():
-            if element.is_click(position):
-                return element
+        view = TextView(text, elem_pos)
+
+        if view.is_match(mouse_pos):
+            return True
         return None
 
-    # check keyboard events(snake)
+    # click
     @staticmethod
-    def get_pressed_key() -> Direction | None:
+    def is_click():
+        if pygame.mouse.get_pressed()[0] == 1:
+            return True
+        return False
+
+    # check keyboard events
+    # menu
+    @staticmethod
+    def get_pressed_key():
+        pass
+
+    # game
+    @staticmethod
+    def get_pressed_arrow() -> Direction | None:
         key = pygame.key.get_pressed()
         if key[pygame.K_UP]:
             return Direction.DOWN

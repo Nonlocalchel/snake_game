@@ -20,7 +20,7 @@ class Game(Display):
         """Обработка ввода от пользователя"""
         if self.infrastructure.is_quit_event():
             self.is_running = False
-        new_direction = self.infrastructure.get_pressed_key()
+        new_direction = self.infrastructure.get_pressed_arrow()
         if new_direction:
             self.snake.set_direction(new_direction)
 

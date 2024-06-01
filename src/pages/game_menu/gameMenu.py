@@ -8,23 +8,8 @@ class GameMenu:
     def __init__(self, elem_params: dict, position: tuple, size: tuple = None, offset: tuple = (0, 0)) -> None:
         self.size = size or figure_size(elem_params)
         self.elements = self.__create_elements(elem_params, offset)
-        self.__position = position
+        self.pos = position
         self.__access = True
-
-    @property
-    def pos(self):
-        return self.__position
-
-    @property
-    def params(self):
-        params = {
-                    'frame': {
-                        'position': self.pos,
-                        'size': self.size
-                    },
-                    'elements': {element.text: element.pos for element in self.elements}
-                }
-        return params
 
     @property
     def get_lock(self) -> bool:
@@ -42,7 +27,7 @@ class GameMenu:
 
         for name, position in zip(elem_params, positions):
             if elem_params[name] == 'input':
-                elements[name] = Input(name, position)
+                elements[name] = Input('Введите имя', position)
                 continue
 
             elements[name] = Button(name, elem_params[name], position)
