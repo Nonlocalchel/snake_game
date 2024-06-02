@@ -16,8 +16,7 @@ class Menu(Display):
         self.infrastructure = infrastructure
         self.is_running = True
         self.menu = GameMenu(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
-        self.start_menu = GameMenu(Action.start_actions(), (0.5, 0.5))
-        print(self.start_menu.__dict__)
+        self.start_menu = GameMenu(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
         self.action = None
         self.page = 'menu'
 
@@ -39,7 +38,7 @@ class Menu(Display):
                 else:
                     name_input.change(key)
 
-        elements = self.menu.elements
+        elements = menu.elements
         for element in elements.values():
             if not type(element) is Button:
                 continue

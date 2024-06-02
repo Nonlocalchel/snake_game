@@ -25,7 +25,7 @@ class Action(Enum):
     @classmethod
     def start_actions(cls):
         start_actions = {
-            'Старт': cls.PLAY,
-            'Введите имя': cls.INPUT
+            'Введите имя': cls.INPUT,
+            'Старт': cls.PLAY
         }
         return cls.get_values(start_actions)

@@ -24,8 +24,17 @@ class Infrastructure:
         else:
             self.screen.fill(SCREEN_COLOR)
 
-    def draw_shadow(self):
-        pass
+    def draw_shadow(self) -> None:
+        size = (
+            scale(WIDTH, 1),
+            scale(HEIGHT, 1)
+        )
+        shadow = pygame.Surface(size, pygame.SRCALPHA)
+        shadow.fill((0, 0, 0, 150))
+        self.screen.blit(
+            shadow,
+            (0, 0)
+        )
 
     # for menu
     def draw_menu(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
@@ -83,7 +92,6 @@ class Infrastructure:
         path = concatenation_path(SOUND_PATH, 'button_state/hover.mp3')
         self.play_sound(path)
 
-
     # help methods
     @staticmethod
     def fix_image_size(image: pygame.Surface) -> pygame.Surface:
@@ -96,12 +104,12 @@ class Infrastructure:
             return pygame.transform.scale(image, (WIDTH * cof * SCALE, HEIGHT * SCALE))
 
     @staticmethod
-    def load_image(name):
+    def load_image(name: str) -> pygame.Surface:
         path = concatenation_path(IMG_PATH, name)
         return pygame.image.load(path)
 
     @staticmethod
-    def play_sound(path):
+    def play_sound(path: str) -> None:
         pygame.mixer.music.load(path)
         pygame.mixer.music.play(0)
 
@@ -132,7 +140,21 @@ class Infrastructure:
     # menu
     @staticmethod
     def get_pressed_key():
-        pass
+        keys = pygame.key.get_pressed()
+        if any(keys):
+            counter = 0
+            for key in keys:
+                if key:
+                    """
+                    надо проверять диапозон counter  в зависимости от условий прибавлять определенную дельту
+                    также нужно не забывать, о том то может быть зажата не одна клавиша и индексы хажатых коавиж собирать
+                    не забывать про SHIFT при нем буквы будут большие
+                    """
+                    print(pygame.key.name(counter+93), counter)
+
+                counter += 1
+            #print(pygame.key.start_text_input())
+
 
     # game
     @staticmethod
