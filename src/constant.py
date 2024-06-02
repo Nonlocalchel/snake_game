@@ -1,3 +1,5 @@
+from .utils import *
+
 # SIZE
 WIDTH = 10
 HEIGHT = 10
@@ -14,3 +16,8 @@ SCORE_COLOR = "white"
 SCREEN_COLOR = "black"
 GAME_OVER_COLOR = "red"
 SIMPLE_TEXT_COLOR = 'white'
+# PATH
+ROOT_PATH = get_proj_path()
+MEDIA_PATH = get_media_path(ROOT_PATH)
+IMG_PATH = get_path(MEDIA_PATH, 'img')
+SOUND_PATH = get_path(MEDIA_PATH, 'sounds')

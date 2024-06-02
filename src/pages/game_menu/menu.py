@@ -44,15 +44,18 @@ class Menu(Display):
                 continue
 
             position = figure_real_pos(menu.pos, element.pos)
-
             state = self.infrastructure.check_mouse(element.text, position)
-            element.state = 'hover' if state else None
+            if state:
+                if not element.mouseon:
+                    self.infrastructure.make_hover_sound()
+
+                element.mouse_on()
+            else:
+                element.mouse_over()
 
             if element.is_hover:
-                self.infrastructure.make_hover_sound()
-
                 new_state = self.infrastructure.is_click()
-                element.state = 'click' if new_state else state
+                element.state = 'click' if new_state else None
 
                 if element.is_click:
                     self.action = element.click()
