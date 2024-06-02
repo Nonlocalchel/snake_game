@@ -16,7 +16,7 @@ class Action(Enum):
     @classmethod
     def menu_actions(cls):
         menu_actions = {
-            'Играть': cls.GO_TO_PLAY,
+            'Играть': cls.PLAY,
             'Настройки': cls.GO_TO_RESULT,
             'Выйти': cls.QUIT
         }

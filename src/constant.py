@@ -19,5 +19,5 @@ SIMPLE_TEXT_COLOR = 'white'
 # PATH
 ROOT_PATH = get_proj_path()
 MEDIA_PATH = get_media_path(ROOT_PATH)
-IMG_PATH = get_path(MEDIA_PATH, 'img')
-SOUND_PATH = get_path(MEDIA_PATH, 'sounds')
+IMG_PATH = concatenation_path(MEDIA_PATH, 'img')
+SOUND_PATH = concatenation_path(MEDIA_PATH, 'sounds')

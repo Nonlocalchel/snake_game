@@ -11,14 +11,14 @@ class Infrastructure:
     def __init__(self) -> None:
         pygame.init()
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
+        pygame.display.set_caption('Ssssnake')
         self.clock = pygame.time.Clock()
 
     # render methods
     # for bg
-    def fill_bg(self, image: str = None) -> None:
+    def fill_bg(self, image: str) -> None:
         if image:
-            path = get_path(IMG_PATH, image)
-            bg_pic = pygame.image.load(path)
+            bg_pic = self.load_image(image)
             bg_pic = self.fix_image_size(bg_pic)
             self.screen.blit(bg_pic, (-43, 0))
         else:
@@ -79,11 +79,10 @@ class Infrastructure:
         for message in messages:
             message.draw(self.screen)
 
-    @staticmethod
-    def make_hover_sound():
-        path = get_path(SOUND_PATH, 'button_state/hover.mp3')
-        pygame.mixer.music.load(path)
-        pygame.mixer.music.play(0)
+    def play_hover_sound(self) -> None:
+        path = concatenation_path(SOUND_PATH, 'button_state/hover.mp3')
+        self.play_sound(path)
+
 
     # help methods
     @staticmethod
@@ -95,6 +94,16 @@ class Infrastructure:
         else:
             cof = width / height
             return pygame.transform.scale(image, (WIDTH * cof * SCALE, HEIGHT * SCALE))
+
+    @staticmethod
+    def load_image(name):
+        path = concatenation_path(IMG_PATH, name)
+        return pygame.image.load(path)
+
+    @staticmethod
+    def play_sound(path):
+        pygame.mixer.music.load(path)
+        pygame.mixer.music.play(0)
 
     # update methods
     def update_and_tick(self) -> None:
@@ -111,7 +120,7 @@ class Infrastructure:
 
         if view.is_match(mouse_pos):
             return True
-        return None
+        return False
 
     @staticmethod
     def is_click():

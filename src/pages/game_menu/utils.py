@@ -23,7 +23,7 @@ def figure_pos(size, y: int | float, offset: tuple) -> tuple:
 def figure_real_pos(outer_pos: tuple, inner_pos: tuple) -> tuple:
     outer_x, outer_y = outer_pos
     inner_x, inner_y = inner_pos
-    return outer_x + inner_x, outer_y + inner_y
+    return round_to_two(outer_x + inner_x), round_to_two(outer_y + inner_y)
 
 
 def figure_positions(size: tuple, elem_params: dict, offset: tuple) -> tuple:

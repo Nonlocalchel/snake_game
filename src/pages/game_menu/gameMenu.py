@@ -27,7 +27,7 @@ class GameMenu:
 
         for name, position in zip(elem_params, positions):
             if elem_params[name] == 'input':
-                elements[name] = Input('Введите имя', position)
+                elements['input'] = Input('Введите имя', position)
                 continue
 
             elements[name] = Button(name, elem_params[name], position)

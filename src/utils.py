@@ -23,7 +23,7 @@ def get_media_path(proj_path: str) -> str:
     return os.path.join(media_path, 'media')
 
 
-def get_path(path: str, element: str) -> str | bytes | None:
+def concatenation_path(path: str, element: str) -> str | bytes | None:
     new_path = os.path.join(path, element)
     if os.path.exists(path):
         return new_path

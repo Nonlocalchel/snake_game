@@ -17,6 +17,7 @@ class Menu(Display):
         self.is_running = True
         self.menu = GameMenu(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_menu = GameMenu(Action.start_actions(), (0.5, 0.5))
+        print(self.start_menu.__dict__)
         self.action = None
         self.page = 'menu'
 
@@ -26,36 +27,37 @@ class Menu(Display):
             self.is_running = False
 
         menu = self.menu
-        # if menu.get_lock:
-        #     menu = self.start_menu
-        #     name_input = menu.elements['input']
-        #
-        #     key = self.infrastructure.get_pressed_key()
-        #     if key:
-        #         if key == 'escape':
-        #             self.menu.unlock()
-        #             self.start_menu.lock()
-        #         else:
-        #             name_input.change(key)
-        #
+        if menu.get_lock:
+            menu = self.start_menu
+            name_input = menu.elements['input']
+
+            key = self.infrastructure.get_pressed_key()
+            if key:
+                if key == 'escape':
+                    self.menu.unlock()
+                    self.start_menu.lock()
+                else:
+                    name_input.change(key)
+
         elements = self.menu.elements
         for element in elements.values():
             if not type(element) is Button:
                 continue
 
             position = figure_real_pos(menu.pos, element.pos)
-            state = self.infrastructure.check_mouse(element.text, position)
-            if state:
-                if not element.mouseon:
-                    self.infrastructure.make_hover_sound()
+            mouse_on = self.infrastructure.check_mouse(element.text, position)
+            if mouse_on:
+                if not element.is_hover:
+                    self.infrastructure.play_hover_sound()
 
-                element.mouse_on()
+                    element.state = 'hover'
             else:
-                element.mouse_over()
+                element.state = None
 
             if element.is_hover:
-                new_state = self.infrastructure.is_click()
-                element.state = 'click' if new_state else None
+                mouse_down = self.infrastructure.is_click()
+                if mouse_down:
+                    element.state = 'click'
 
                 if element.is_click:
                     self.action = element.click()
@@ -81,7 +83,7 @@ class Menu(Display):
         if self.action is None:
             return
 
-        if self.action == Action.GO_TO_PLAY:
+        if self.action == Action.PLAY.value:
             self.menu.lock()
             self.start_menu.unlock()
 
