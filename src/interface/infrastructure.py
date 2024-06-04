@@ -13,10 +13,11 @@ class Infrastructure:
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
         pygame.display.set_caption('Ssssnake')
         self.clock = pygame.time.Clock()
+        pygame.locals = filter_key(vars(pygame.constants))
 
     # render methods
     # for bg
-    def fill_bg(self, image: str) -> None:
+    def fill_bg(self, image: str = '') -> None:
         if image:
             bg_pic = self.load_image(image)
             bg_pic = self.fix_image_size(bg_pic)
@@ -50,7 +51,7 @@ class Infrastructure:
             scale(HEIGHT, menu_params['pos'][1])
         )
 
-        text_views = [TextView(elem, elem_params[elem]) for elem in elem_params]
+        text_views = [TextView(elem, scale_coord(*elem_params[elem])) for elem in elem_params]
         menu_surf = menu_view.surface
         for text_view in text_views:
             text_view.draw(menu_surf)
@@ -72,7 +73,6 @@ class Infrastructure:
 
     def draw_score(self, score: int) -> None:
         score = TextView(f"Score: {score}", None)
-        pass
         self.screen.blit(
             score.text,
             (5, 5),
@@ -81,9 +81,9 @@ class Infrastructure:
     def draw_game_over(self) -> None:
         messages = []
 
-        messages += [TextView('GAME OVER', (0, -25))]
-        messages += [TextView('SPACE-играть еще раз', (0, 20))]
-        messages += [TextView('ESC-меню', (0, 50))]
+        messages += [TextView('GAME OVER', figure_center(0, -25), color=GAME_OVER_COLOR)]
+        messages += [TextView('SPACE-играть еще раз', figure_center(0, 20), color=GAME_OVER_COLOR)]
+        messages += [TextView('ESC-меню', figure_center(0, 60), color=GAME_OVER_COLOR)]
 
         for message in messages:
             message.draw(self.screen)
@@ -113,6 +113,10 @@ class Infrastructure:
         pygame.mixer.music.load(path)
         pygame.mixer.music.play(0)
 
+    @staticmethod
+    def delay_input(time=120):
+        pygame.time.wait(time)
+
     # update methods
     def update_and_tick(self) -> None:
         pygame.display.update()
@@ -124,7 +128,7 @@ class Infrastructure:
     def check_mouse(text, elem_pos) -> None | bool:
         mouse_pos = pygame.mouse.get_pos()
 
-        view = TextView(text, elem_pos)
+        view = TextView(text, scale_coord(*elem_pos))
 
         if view.is_match(mouse_pos):
             return True
@@ -140,21 +144,30 @@ class Infrastructure:
     # menu
     @staticmethod
     def get_pressed_key():
+        """
+        надо проверять диапозон counter  в зависимости от условий прибавлять определенную дельту
+        также нужно не забывать, о том то может быть зажата не одна клавиша и индексы хажатых коавиж собирать
+        не забывать про SHIFT при нем буквы будут большие
+        """
         keys = pygame.key.get_pressed()
-        if any(keys):
-            counter = 0
-            for key in keys:
-                if key:
-                    """
-                    надо проверять диапозон counter  в зависимости от условий прибавлять определенную дельту
-                    также нужно не забывать, о том то может быть зажата не одна клавиша и индексы хажатых коавиж собирать
-                    не забывать про SHIFT при нем буквы будут большие
-                    """
-                    print(pygame.key.name(counter+93), counter)
+        if not any(keys):
+            pressed_cash.clear()
 
-                counter += 1
-            #print(pygame.key.start_text_input())
+        pressed_keys = []
 
+        for key in pygame.locals.values():
+            if keys[key]:
+                pressed_key = pygame.key.name(key)
+
+                pressed_key = pressed_key[1] if is_tab_number(pressed_key) else pressed_key
+
+                if pressed_key not in pressed_cash:
+                    pressed_keys += [pressed_key]
+
+                    pressed_cash.extend(pressed_keys)
+
+        if pressed_keys:
+            print(correct_input(pressed_keys))
 
     # game
     @staticmethod

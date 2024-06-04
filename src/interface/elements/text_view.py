@@ -1,7 +1,7 @@
 import pygame
 
 from src.constant import *
-from src.interface.utils import figure_font, scale
+from src.interface.utils import figure_font
 
 
 class TextView:
@@ -24,14 +24,18 @@ class TextView:
             return
 
         text = self.text
-        text_view = text.get_rect(centerx=scale(WIDTH, coord[0]), centery=scale(HEIGHT, coord[1]))
+        text_view = text.get_rect(centerx=coord[0], centery=coord[1])
         return text_view
 
     def is_match(self, pos: tuple) -> bool:
         return self.__view.collidepoint(pos)
 
-    def draw(self, surf: pygame.Surface, center: bool = False) -> None:
+    def draw(self, surf: pygame.Surface, coord: tuple | None = None) -> None:
+        position = coord if coord is not None else self.__view
+
         surf.blit(
             self.text,
-            center or self.__view,
+            position,
         )
+
+        
