@@ -18,7 +18,8 @@ class Menu(Display):
         self.menu = GameMenu(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_menu = GameMenu(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
         self.action = None
-        self.page = 'menu'
+        self.name = 'menu'
+        self.player_name = 'unknown_user'
 
     def process_events(self) -> None:
         """Обработка ввода от пользователя"""
@@ -33,10 +34,13 @@ class Menu(Display):
             key = self.infrastructure.get_pressed_key()
             if key:
                 if key == 'escape':
-                    self.menu.unlock()
-                    self.start_menu.lock()
+                    self.action = None
+                    name_input.clear()
                 else:
                     name_input.change(key)
+
+                if name_input.text:
+                    self.player_name = name_input.text
 
         elements = menu.elements
         for element in elements.values():
@@ -87,7 +91,9 @@ class Menu(Display):
             self.start_menu.unlock()
 
         if self.action.startswith('go-to'):
-            self.page = self.action.split('_')[1]
+            self.name = self.action.split('_')[1]
+
+        if self.action == Action.QUIT:
             self.is_running = False
 
     def loop(self):
@@ -95,6 +101,9 @@ class Menu(Display):
         while self.is_running:
             self.process_events()
             self.update_state()
+            if self.name != 'menu':
+                break
+
             self.render()
         else:
             self.infrastructure.quit()

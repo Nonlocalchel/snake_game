@@ -26,6 +26,6 @@ class Action(Enum):
     def start_actions(cls):
         start_actions = {
             'Введите имя': cls.INPUT,
-            'Старт': cls.PLAY
+            'Старт': cls.GO_TO_PLAY
         }
         return cls.get_values(start_actions)

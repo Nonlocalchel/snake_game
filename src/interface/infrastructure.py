@@ -71,8 +71,8 @@ class Infrastructure:
             RADIUS,
         )
 
-    def draw_score(self, score: int) -> None:
-        score = TextView(f"Score: {score}", None)
+    def draw_score(self, player_name: str, score: int) -> None:
+        score = TextView(f"{player_name}: {score}", None)
         self.screen.blit(
             score.text,
             (5, 5),
@@ -113,10 +113,6 @@ class Infrastructure:
         pygame.mixer.music.load(path)
         pygame.mixer.music.play(0)
 
-    @staticmethod
-    def delay_input(time=120):
-        pygame.time.wait(time)
-
     # update methods
     def update_and_tick(self) -> None:
         pygame.display.update()
@@ -143,14 +139,10 @@ class Infrastructure:
     # check keyboard events
     # menu
     @staticmethod
-    def get_pressed_key():
-        """
-        надо проверять диапозон counter  в зависимости от условий прибавлять определенную дельту
-        также нужно не забывать, о том то может быть зажата не одна клавиша и индексы хажатых коавиж собирать
-        не забывать про SHIFT при нем буквы будут большие
-        """
+    def get_pressed_key() -> str | None:
         keys = pygame.key.get_pressed()
-        if not any(keys):
+
+        if not any(keys) or (keys[pygame.K_LSHIFT] and keys.count(True) == 1):
             pressed_cash.clear()
 
         pressed_keys = []
@@ -159,15 +151,16 @@ class Infrastructure:
             if keys[key]:
                 pressed_key = pygame.key.name(key)
 
-                pressed_key = pressed_key[1] if is_tab_number(pressed_key) else pressed_key
-
                 if pressed_key not in pressed_cash:
                     pressed_keys += [pressed_key]
 
-                    pressed_cash.extend(pressed_keys)
+        pressed_cash.extend(pressed_keys)
 
         if pressed_keys:
-            print(correct_input(pressed_keys))
+            to_up = keys[pygame.K_LSHIFT]  # shift_in(pressed_cash)
+
+            if not shift_in(pressed_keys):
+                return correct_input(pressed_keys, to_up=to_up)
 
     # game
     @staticmethod

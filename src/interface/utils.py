@@ -24,31 +24,31 @@ def figure_center(dx: int, dy: int) -> tuple:
     center_x, center_y = scale_coord(0.5, 0.5)
     return center_x + dx, center_y + dy
 
-pressed_cash = []
 
 def filter_key(const_dict: dict) -> dict:
     filter_storage = filter(lambda x: x[0].startswith('K_'), const_dict.items())
     return dict(filter_storage)
 
+
+pressed_cash = []
+
+
 def is_tab_number(key: str) -> bool:
     return key.startswith('[') and key.endswith(']')
 
-def correct_input(pressed_keys: list) -> str | list:
 
-    if 'escape' in pressed_keys:
-        symbol = 'esc'
-    elif 'backspace' in pressed_keys:
-        symbol = 'backspace'
-    elif 'left shift' in pressed_cash:
-        # shift_index = pressed_keys.index('left shift')
-        # del pressed_keys[shift_index]
+def shift_in(place):
+    return 'left shift' in place
 
-        symbol = pressed_keys[0].upper()
-    else:
-        print('pressed_keys', pressed_keys)
-        symbol = pressed_keys[0]
+
+def correct_input(pressed_keys: list, to_up=False) -> str:
+    symbol = pressed_keys[0]
+
+    if to_up:
+        symbol = pressed_keys[-1].upper()
+
+    if symbol and is_tab_number(symbol):
+        symbol = symbol[1]
 
     return symbol
-
-
 
