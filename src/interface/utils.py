@@ -1,10 +1,10 @@
-from src.constant import *
+from src.settings import *
 from math import ceil
 
 symbols = []
 
 
-def scale(value: int, cof: int | float) -> int:
+def scale(value: int, cof: int | float = 1) -> int:
     return int(value * cof * SCALE)
 
 
@@ -16,13 +16,22 @@ def get_scale_radius(scale_cof: int = 4) -> int:
     return RADIUS * scale_cof
 
 
-def scale_coord(x, y):
+def figure_abs_params(x, y):
     return scale(WIDTH, x), scale(HEIGHT, y)
 
 
 def figure_center(dx: int, dy: int) -> tuple:
-    center_x, center_y = scale_coord(0.5, 0.5)
+    center_x, center_y = figure_abs_params(0.5, 0.5)
     return center_x + dx, center_y + dy
+
+
+def figure_image_size(image_h: int, image_w: int) -> tuple:
+    if image_h > image_w:
+        cof = image_h / image_w
+        return scale(WIDTH), scale(HEIGHT, cof)
+    else:
+        cof = image_w / image_h
+        return scale(WIDTH, cof), scale(HEIGHT)
 
 
 def filter_key(const_dict: dict) -> dict:

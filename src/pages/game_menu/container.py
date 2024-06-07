@@ -4,10 +4,10 @@ from .input import Input
 from .utils import figure_size, figure_positions
 
 
-class GameMenu:
+class Container:
     def __init__(self, elem_params: dict, position: tuple, size: tuple = None, offset: tuple = (0, 0)) -> None:
         self.size = size or figure_size(elem_params)
-        self.elements = self.__create_elements(elem_params, offset)
+        self.elements = self.add_elements(elem_params, offset)
         self.pos = position
         self.__access = True
 
@@ -21,7 +21,7 @@ class GameMenu:
     def unlock(self) -> None:
         self.__access = True
 
-    def __create_elements(self, elem_params: dict, offset: tuple) -> dict:
+    def add_elements(self, elem_params: dict, offset: tuple) -> dict:
         elements = {}
         positions = figure_positions(self.size, elem_params, offset)
 

@@ -1,7 +1,7 @@
 import pygame
 from src.interface.utils import *
 
-from .elements.container import Container
+from .elements.containerview import ContainerView
 from .elements.text_view import TextView
 
 from src.pages.game.directions import Direction
@@ -38,27 +38,24 @@ class Infrastructure:
         )
 
     # for menu
-    def draw_menu(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
+    def draw_container(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
         if shadow:
             self.draw_shadow()
 
-        menu_view = Container(
-            (scale(WIDTH, menu_params['size'][0]), scale(HEIGHT, menu_params['size'][1]))
+        cont_view = ContainerView(
+            figure_abs_params(*menu_params['size'])
         )
 
-        menu_view.coords = (
-            scale(WIDTH, menu_params['pos'][0]),
-            scale(HEIGHT, menu_params['pos'][1])
-        )
+        cont_view.coord = figure_abs_params(*menu_params['pos'])
 
-        text_views = [TextView(elem, scale_coord(*elem_params[elem])) for elem in elem_params]
-        menu_surf = menu_view.surface
+        text_views = [TextView(elem, figure_abs_params(*elem_params[elem])) for elem in elem_params]
+        cont_surf = cont_view.surface
         for text_view in text_views:
-            text_view.draw(menu_surf)
+            text_view.draw(cont_surf)
 
         self.screen.blit(
-            menu_surf,
-            menu_view.coords
+            cont_surf,
+            cont_view.coord
         )
 
     # for game
@@ -72,7 +69,7 @@ class Infrastructure:
         )
 
     def draw_score(self, player_name: str, score: int) -> None:
-        score = TextView(f"{player_name}: {score}", None)
+        score = TextView(f"{player_name}: {score}")
         self.screen.blit(
             score.text,
             (5, 5),
@@ -95,13 +92,9 @@ class Infrastructure:
     # help methods
     @staticmethod
     def fix_image_size(image: pygame.Surface) -> pygame.Surface:
-        height, width = image.get_height(), image.get_width()
-        if height > width:
-            cof = height / width
-            return pygame.transform.scale(image, (WIDTH * SCALE, HEIGHT * cof * SCALE))
-        else:
-            cof = width / height
-            return pygame.transform.scale(image, (WIDTH * cof * SCALE, HEIGHT * SCALE))
+        width, height = image.get_size()
+        size = figure_image_size(height, width)
+        return pygame.transform.scale(image, size)
 
     @staticmethod
     def load_image(name: str) -> pygame.Surface:
@@ -124,7 +117,7 @@ class Infrastructure:
     def check_mouse(text, elem_pos) -> None | bool:
         mouse_pos = pygame.mouse.get_pos()
 
-        view = TextView(text, scale_coord(*elem_pos))
+        view = TextView(text, figure_abs_params(*elem_pos))
 
         if view.is_match(mouse_pos):
             return True

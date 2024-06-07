@@ -5,7 +5,7 @@ from src.pages.actions import Action
 
 from .utils import figure_real_pos, get_menu_params
 
-from .gameMenu import GameMenu
+from .container import Container
 from .button import Button
 
 
@@ -15,8 +15,8 @@ class Menu(Display):
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
         self.is_running = True
-        self.menu = GameMenu(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
-        self.start_menu = GameMenu(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
+        self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
+        self.start_menu = Container(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
         self.action = None
         self.name = 'menu'
         self.player_name = 'unknown_user'
@@ -70,11 +70,14 @@ class Menu(Display):
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
         menu_params = get_menu_params(self.menu)
-        self.infrastructure.draw_menu(menu_params['frame'], menu_params['elements'])
+        self.infrastructure.draw_container(menu_params['frame'],
+                                           menu_params['elements'])
 
         if self.menu.get_lock:
             start_menu_params = get_menu_params(self.start_menu)
-            self.infrastructure.draw_menu(start_menu_params['frame'], start_menu_params['elements'], shadow=True)
+            self.infrastructure.draw_container(start_menu_params['frame'],
+                                               start_menu_params['elements'],
+                                               shadow=True)
 
         self.infrastructure.update_and_tick()
 

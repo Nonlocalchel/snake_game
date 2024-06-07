@@ -3,12 +3,12 @@ import pygame
 from src.interface.utils import *
 
 
-class Container:
+class ContainerView:
     radius = get_scale_radius()
 
     def __init__(self, size: tuple, coords: tuple = (0, 0), bg_color: str = SCREEN_COLOR) -> None:
         self.size = size
-        self.coords = coords
+        self.coord = coords
         self.bg_color = bg_color
         self.surface = pygame.Surface(size, pygame.SRCALPHA)
         self.make_brd_box()

@@ -16,6 +16,7 @@ SCORE_COLOR = "white"
 SCREEN_COLOR = "black"
 GAME_OVER_COLOR = "red"
 SIMPLE_TEXT_COLOR = 'white'
+HOVER_TEXT_COLOR = 'E5A70D'
 # PATH
 ROOT_PATH = get_proj_path()
 MEDIA_PATH = get_media_path(ROOT_PATH)

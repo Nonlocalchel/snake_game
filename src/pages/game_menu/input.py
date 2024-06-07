@@ -12,8 +12,12 @@ class Input:
     def is_valid_length(self) -> bool:
         return len(self._text) <= 12
 
+    @staticmethod
+    def is_symbol(char: str) -> bool:
+        return len(char) == 1
+
     @property
-    def text(self):
+    def text(self) -> str:
         return self._text or self.__default_text
 
     def change(self, char: str) -> None:
@@ -26,10 +30,15 @@ class Input:
             self.__remove_char()
             return
 
-        self._text += char if self.is_valid_length else ''
+        if char == 'delete':
+            self.clear()
+            return
 
-    def clear(self):
+        if self.is_symbol(char):
+            self._text += char if self.is_valid_length else ''
+
+    def clear(self) -> None:
         self._text = ''
 
-    def __remove_char(self):
+    def __remove_char(self) -> None:
         self._text = self._text[:-1]
