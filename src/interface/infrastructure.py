@@ -94,6 +94,10 @@ class Infrastructure:
                 message.geom
             )
 
+    def play_popup_bubble_sound(self) -> None:
+        path = concatenation_path(SOUND_PATH, 'pop_up_notification.mp3')
+        self.play_sound(path)
+
     def play_hover_sound(self) -> None:
         path = concatenation_path(SOUND_PATH, 'button_state/hover.mp3')
         self.play_sound(path)

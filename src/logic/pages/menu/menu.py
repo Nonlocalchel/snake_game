@@ -7,6 +7,7 @@ from .utils import *
 
 from src.logic.app_elements.elements.container import Container
 from src.logic.app_elements.elements.button import Button
+from src.logic.player import Player
 
 
 class Menu(Display):
@@ -15,32 +16,34 @@ class Menu(Display):
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
         self.handler = Handler(infrastructure)
-        self.is_running = True
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_config = Container(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
+        self.player = Player('default_user', 0, None)
+        self.is_running = True
         self.action = None
         self.name = 'menu'
-        self.player_name = 'unknown_user'
 
     def process_events(self) -> None:
         """Обработка ввода от пользователя"""
         if self.infrastructure.is_quit_event():
             self.is_running = False
 
+        handler = self.handler
+
         key = self.infrastructure.get_pressed_key()
         if not self.action:
-            self.handler.handle_menu_action(key)
+            handler.handle_menu_action(key)
 
         container = self.menu
         if container.get_lock:
             container = self.start_config
-
             name_input = container.elements['input']
             if key:
-                self.handler.handle_input(name_input, key)
-                self.handler.handle_conf_action(key)
+                handler.handle_input(name_input, key)
+                handler.handle_conf_action(key)
 
-            self.player_name = name_input.text if not name_input.is_empty else 'unknown'
+            if not name_input.is_empty:
+                self.player.name = name_input.text
 
         elements = container.elements
         for element in elements.values():
@@ -48,22 +51,16 @@ class Menu(Display):
                 continue
 
             position = container.get_real_element_pos(element)
-            mouse_on = self.infrastructure.check_mouse(element.text, position)
-            if mouse_on:
-                self.handler.handle_mouse_on(element)
+            hover = self.infrastructure.check_mouse(element.text, position)
+            if hover:
+                handler.handle_hover(element)
             else:
                 element.state = None
 
             if element.is_hover:
-                mouse_down = self.infrastructure.is_click()
-                if mouse_down:
-                    self.handler.handle_mouse_down(element)
+                handler.handle_click(element)
 
-                mouse_up = element.is_click and not mouse_down
-                if mouse_up:
-                    self.handler.handle_mouse_up(element)
-
-        self.action = self.handler.handle_action
+        self.action = handler.action
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""

@@ -9,8 +9,8 @@ if __name__ == "__main__":
     while True:
         page_class = pages[page_name]
         page = page_class(Infrastructure())
-        if hasattr(page, 'player_name'):
-            page.player_name = player
+        if hasattr(page, 'player') and player:
+            page.player = player
 
         page.loop()
 
@@ -18,6 +18,6 @@ if __name__ == "__main__":
             quit()
 
         page_name = page.name
-        if hasattr(page, 'player_name'):
-            player = page.player_name
+        if hasattr(page, 'player'):
+            player = page.player
 

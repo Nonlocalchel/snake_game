@@ -6,13 +6,17 @@ class Button:
         self.pos = position
 
     @property
-    def is_hover(self):
+    def is_hover(self) -> bool:
         return self.state in ['hover', 'click']
 
     @property
-    def is_click(self):
+    def is_click(self) -> bool:
         return self.state == 'click'
 
-    def click(self):
+    @property
+    def action(self) -> str:
+        return self.__action
+
+    def click(self) -> str:
         self.state = 'hover'
         return self.__action

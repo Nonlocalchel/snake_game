@@ -15,7 +15,7 @@ class Game(Display):
         self.snake_speed_delay = INITIAL_SPEED_DELAY
         self.is_running = True
         self.is_game_over = False
-        self.player_name = None
+        self.player = None
 
     def process_events(self) -> None:
         """Обработка ввода от пользователя"""
@@ -32,7 +32,7 @@ class Game(Display):
             self.infrastructure.draw_element(e.x, e.y, SNAKE_COLOR)
 
         self.infrastructure.draw_element(self.apple.x, self.apple.y, APPLE_COLOR)
-        self.infrastructure.draw_score(self.player_name, self.score)
+        self.infrastructure.draw_score(self.player.name, self.score)
 
         if self.is_game_over:
             self.infrastructure.draw_game_over()
