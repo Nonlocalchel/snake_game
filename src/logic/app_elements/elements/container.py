@@ -21,10 +21,10 @@ class Container:
     def unlock(self) -> None:
         self.__access = True
 
-    def get_real_element_pos(self,element):
+    def get_real_element_pos(self, element: any) -> tuple[float, float]:
         return figure_real_pos(self.pos, element.pos)
 
-    def create_elements(self, elem_params: dict, offset: tuple) -> dict:
+    def create_elements(self, elem_params: dict[str, any], offset: tuple) -> dict:
         elements = {}
         positions = figure_positions(self.size, elem_params, offset)
 

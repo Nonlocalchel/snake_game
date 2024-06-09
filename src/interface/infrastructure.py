@@ -40,7 +40,7 @@ class Infrastructure:
         )
 
     # for menu
-    def draw_container(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
+    def draw_container(self, menu_params: dict, elem_params: dict) -> None:
         cont_view = ContainerView(
             figure_abs_params(*menu_params['size'])
         )
@@ -95,7 +95,7 @@ class Infrastructure:
             )
 
     def play_hover_sound(self) -> None:
-        path = concatenation_path(SOUND_PATH, 'button_state/hover_3.mp3')
+        path = concatenation_path(SOUND_PATH, 'button_state/hover.mp3')
         self.play_sound(path)
 
     # help methods
@@ -127,6 +127,7 @@ class Infrastructure:
         mouse_pos = pygame.mouse.get_pos()
 
         elem = TextView(elem, figure_abs_params(*elem_pos))
+        elem.scale_view()
 
         if elem.geom.collidepoint(mouse_pos):
             return True

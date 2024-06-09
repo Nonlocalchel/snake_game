@@ -1,7 +1,7 @@
 import pygame
 
 from src.settings import *
-from src.interface.utils import figure_font, get_scale_radius
+from src.interface.utils import figure_font, get_scale_radius, increase_size, figure_inner_pos
 
 
 class TextView:
@@ -52,3 +52,16 @@ class TextView:
     def set_unfocused_view(self):
         self.color = UNFOCUSED_TEXT_COLOR
         self.__view = self.get_text_surf()
+
+    def scale_view(self):
+        rect = self.geom
+        size = rect.size
+        new_size = increase_size(size)
+        pos = figure_inner_pos(size, new_size)
+        new_surf = pygame.Surface(new_size, pygame.SRCALPHA)
+        new_surf.fill((0, 0, 0, 0))
+        new_surf.blit(
+            self.__view,
+            pos
+        )
+        self.__view = new_surf

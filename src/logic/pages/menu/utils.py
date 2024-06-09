@@ -1,11 +1,13 @@
+from typing import Callable
+
 from src.logic.app_elements.elements.container import Container
 from src.logic.app_elements.elements.input import Input
 from src.logic.app_elements.elements.button import Button
 
-from src.logic.actions import Action
+from src.logic.pages.actions import Action
 
 
-def get_menu_params(menu: Container) -> dict:
+def get_menu_params(menu: Container) -> dict[str, dict[str, any]]:
     elements_list = menu.elements.values()
     params = {
         'frame': {
@@ -54,7 +56,7 @@ def select_menu_action(key: str) -> Action | None:
         return None
 
 
-def handle_mouse_on(element: Button, action: ()) -> None:
+def handle_mouse_on(element: Button, action: Callable[[], None]) -> None:
     if not element.is_hover:
         action()
         element.state = 'hover'
@@ -64,7 +66,7 @@ def handle_mouse_down(element: Button) -> None:
     element.state = 'click'
 
 
-def handle_mouse_up(element: Button, action: ()) -> None:
+def handle_mouse_up(element: Button, action: Callable[[], None]) -> None:
     if action:
         action()
     else:

@@ -11,7 +11,7 @@ def gen_random_element() -> Element:
     )
 
 
-def gen_apple(snake: Snake):
+def gen_apple(snake: Snake) -> Element | None:
     candidate = None
     while candidate is None:
         candidate = gen_random_element()
