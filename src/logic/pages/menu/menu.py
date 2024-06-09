@@ -26,15 +26,16 @@ class Menu(Display):
 
         key = self.infrastructure.get_pressed_key()
         if not self.action:
-            self.action = select_menu_action(key)
+            self.action = handler_menu_action(key, self.infrastructure.play_hover_sound)
 
         container = self.menu
         if container.get_lock:
             container = self.start_config
+
             name_input = container.elements['input']
             if key:
                 handle_input(name_input, key)
-                self.action = select_conf_action(key)
+                self.action = handler_conf_action(key)
 
             self.player_name = name_input.text if not name_input.is_empty else 'unknown'
 
@@ -88,9 +89,9 @@ class Menu(Display):
             self.start_config.unlock()
 
 
-        # action_value = self.action.value
-        if self.action.value.startswith('go-to'):
-            self.name = self.action.value.split('_')[1]
+        action_value = self.action.value
+        if action_value.startswith('go-to'):
+            self.name = action_value.split('_')[1]
 
         if self.action == Action.QUIT:
             self.is_running = False

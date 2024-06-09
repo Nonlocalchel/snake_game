@@ -38,7 +38,7 @@ def handle_input(text_input: Input, key: str) -> None:
     text_input.unfocus() if text_input.is_empty else text_input.focus()
 
 
-def select_conf_action(key: str) -> Action | None:
+def handler_conf_action(key: str) -> Action | None:
     if key == 'escape':
         return None
     elif key == 'return':
@@ -47,7 +47,10 @@ def select_conf_action(key: str) -> Action | None:
         return Action.SHOW_CONF
 
 
-def select_menu_action(key: str) -> Action | None:
+def handler_menu_action(key: str, action: Callable[[], None]) -> Action | None:
+    if key:
+        action()
+
     if key == 'return':
         return Action.SHOW_CONF
     elif key == 'escape':
@@ -66,7 +69,7 @@ def handle_mouse_down(element: Button) -> None:
     element.state = 'click'
 
 
-def handle_mouse_up(element: Button, action: Callable[[], None]) -> None:
+def handle_mouse_up(element: Button, action: Callable[[], None] | None = None) -> None:
     if action:
         action()
     else:

@@ -1,4 +1,4 @@
-from src.logic.pages.page import pages
+from src.logic.page import pages
 from src.interface.infrastructure import Infrastructure
 
 if __name__ == "__main__":

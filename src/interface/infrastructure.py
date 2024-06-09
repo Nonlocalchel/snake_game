@@ -47,7 +47,7 @@ class Infrastructure:
 
         cont_view._coord = figure_abs_params(*menu_params['pos'])
 
-        cont_surf = cont_view.surface
+        cont_surf = cont_view.view
         for elem_name, elem_data in elem_params.items():
             elem_coord = figure_abs_params(
                 *elem_data['position']

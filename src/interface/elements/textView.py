@@ -54,8 +54,7 @@ class TextView:
         self.__view = self.get_text_surf()
 
     def scale_view(self):
-        rect = self.geom
-        size = rect.size
+        size = self.geom.size
         new_size = increase_size(size)
         pos = figure_inner_pos(size, new_size)
         new_surf = pygame.Surface(new_size, pygame.SRCALPHA)
