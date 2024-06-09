@@ -1,13 +1,13 @@
 from .button import Button
 from .input import Input
 
-from .utils import figure_size, figure_positions
+from src.logic.app_elements.utils import figure_size, figure_positions, figure_real_pos
 
 
 class Container:
     def __init__(self, elem_params: dict, position: tuple, size: tuple = None, offset: tuple = (0, 0)) -> None:
         self.size = size or figure_size(elem_params)
-        self.elements = self.add_elements(elem_params, offset)
+        self.elements = self.create_elements(elem_params, offset)
         self.pos = position
         self.__access = True
 
@@ -21,7 +21,10 @@ class Container:
     def unlock(self) -> None:
         self.__access = True
 
-    def add_elements(self, elem_params: dict, offset: tuple) -> dict:
+    def get_real_element_pos(self,element):
+        return figure_real_pos(self.pos, element.pos)
+
+    def create_elements(self, elem_params: dict, offset: tuple) -> dict:
         elements = {}
         positions = figure_positions(self.size, elem_params, offset)
 

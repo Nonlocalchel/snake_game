@@ -1,4 +1,4 @@
-from src.pages.game.game import Game
+from src.logic.pages.game.game import Game
 from src.interface.infrastructure import Infrastructure
 
 if __name__ == "__main__":

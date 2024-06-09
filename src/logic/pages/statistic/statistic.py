@@ -1,7 +1,7 @@
 from src.interface.infrastructure import Infrastructure
-from src.pages.display import Display
+from src.logic.display import Display
 
-from src.pages.actions import Action
+from src.logic.actions import Action
 
 
 class Statistic(Display):

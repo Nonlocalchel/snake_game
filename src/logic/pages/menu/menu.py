@@ -1,12 +1,12 @@
 from src.interface.infrastructure import Infrastructure
-from src.pages.display import Display
+from src.logic.display import Display
 
-from src.pages.actions import Action
+from src.logic.actions import Action
 
-from .utils import figure_real_pos, get_menu_params
+from .utils import *
 
-from .container import Container
-from .button import Button
+from src.logic.app_elements.elements.container import Container
+from src.logic.app_elements.elements.button import Button
 
 
 class Menu(Display):
@@ -16,7 +16,7 @@ class Menu(Display):
         self.infrastructure = infrastructure
         self.is_running = True
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
-        self.start_menu = Container(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
+        self.start_config = Container(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
         self.action = None
         self.name = 'menu'
         self.player_name = 'unknown_user'
@@ -26,75 +26,73 @@ class Menu(Display):
         if self.infrastructure.is_quit_event():
             self.is_running = False
 
-        menu = self.menu
-        if menu.get_lock:
-            menu = self.start_menu
-            name_input = menu.elements['input']
+        key = self.infrastructure.get_pressed_key()
+        if not self.action:
+            self.action = select_menu_action(key)
 
-            key = self.infrastructure.get_pressed_key()
+        container = self.menu
+        if container.get_lock:
+            container = self.start_config
+            name_input = container.elements['input']
             if key:
-                if key == 'escape':
-                    self.action = None
-                    name_input.clear()
-                else:
-                    name_input.change(key)
+                handle_input(name_input, key)
+                self.action = select_conf_action(key)
 
-                if name_input.text:
-                    self.player_name = name_input.text
+            self.player_name = name_input.text if not name_input.is_empty else 'unknown'
 
-        elements = menu.elements
+        elements = container.elements
         for element in elements.values():
             if not type(element) is Button:
                 continue
 
-            position = figure_real_pos(menu.pos, element.pos)
+            position = container.get_real_element_pos(element)
             mouse_on = self.infrastructure.check_mouse(element.text, position)
             if mouse_on:
-                if not element.is_hover:
-                    self.infrastructure.play_hover_sound()
-
-                    element.state = 'hover'
+                handle_mouse_on(element, self.infrastructure.play_hover_sound)
             else:
                 element.state = None
 
             if element.is_hover:
                 mouse_down = self.infrastructure.is_click()
                 if mouse_down:
-                    element.state = 'click'
+                    handle_mouse_down(element)
 
-                if element.is_click:
+                mouse_up = element.is_click and not mouse_down
+                if mouse_up:
+                    handle_mouse_up(element, None)
+
                     self.action = element.click()
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
-        menu_params = get_menu_params(self.menu)
-        self.infrastructure.draw_container(menu_params['frame'],
-                                           menu_params['elements'])
+        draw_container(self.menu,
+                       self.infrastructure)
 
         if self.menu.get_lock:
-            start_menu_params = get_menu_params(self.start_menu)
-            self.infrastructure.draw_container(start_menu_params['frame'],
-                                               start_menu_params['elements'],
-                                               shadow=True)
+            self.infrastructure.draw_shadow()
+            draw_container(self.start_config,
+                           self.infrastructure)
 
         self.infrastructure.update_and_tick()
 
     def update_state(self) -> None:
         """Вычисление следующего состояния всех объектов на экране"""
         self.menu.unlock()
-        self.start_menu.lock()
+        self.start_config.lock()
 
         if self.action is None:
             return
 
-        if self.action == Action.PLAY.value:
+        if self.action == Action.SHOW_CONF:
             self.menu.lock()
-            self.start_menu.unlock()
+            self.start_config.unlock()
 
-        if self.action.startswith('go-to'):
-            self.name = self.action.split('_')[1]
+
+        # action_value = self.action.value
+        if self.action.value.startswith('go-to'):
+            self.name = self.action.value.split('_')[1]
 
         if self.action == Action.QUIT:
             self.is_running = False

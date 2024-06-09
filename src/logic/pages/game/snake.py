@@ -1,6 +1,6 @@
 from collections import deque
 from .element import Element
-from src.pages.game.directions import Direction
+from src.logic.pages.game.directions import Direction
 
 
 class Snake:

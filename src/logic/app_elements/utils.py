@@ -34,16 +34,3 @@ def figure_positions(size: tuple, elem_params: dict, offset: tuple) -> tuple:
     for counter in range(1, elem_count + 1):
         position = figure_pos(size, counter * padding, offset)
         yield position
-
-
-def get_menu_params(menu: any) -> dict:
-    elements_list = menu.elements.values()
-    params = {
-        'frame': {
-            'pos': menu.pos,
-            'size': menu.size
-        },
-        'elements': {element.text: element.pos for element in elements_list},
-    }
-
-    return params

@@ -1,4 +1,4 @@
-from .utils import *
+from .services.pathFinder import get_proj_path, get_media_path, concatenation_path
 
 # SIZE
 WIDTH = 10
@@ -16,7 +16,8 @@ SCORE_COLOR = "white"
 SCREEN_COLOR = "black"
 GAME_OVER_COLOR = "red"
 SIMPLE_TEXT_COLOR = 'white'
-HOVER_TEXT_COLOR = 'E5A70D'
+UNFOCUSED_TEXT_COLOR = 'grey'
+HOVER_TEXT_COLOR = (229, 167, 13)
 # PATH
 ROOT_PATH = get_proj_path()
 MEDIA_PATH = get_media_path(ROOT_PATH)

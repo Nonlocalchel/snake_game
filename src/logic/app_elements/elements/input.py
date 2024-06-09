@@ -3,6 +3,7 @@ class Input:
         self._text = ''
         self.pos = position
         self.__default_text = text
+        self.state = 'unfocus'
 
     @property
     def is_empty(self) -> bool:
@@ -19,6 +20,12 @@ class Input:
     @property
     def text(self) -> str:
         return self._text or self.__default_text
+
+    def focus(self):
+        self.state = 'focus'
+
+    def unfocus(self):
+        self.state = 'unfocus'
 
     def change(self, char: str) -> None:
         remove = char == 'backspace'

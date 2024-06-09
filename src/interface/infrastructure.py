@@ -1,19 +1,21 @@
 import pygame
 from src.interface.utils import *
 
-from .elements.containerview import ContainerView
-from .elements.text_view import TextView
+from .elements.containerView import ContainerView
+from .elements.textView import TextView
 
-from src.pages.game.directions import Direction
+from src.logic.pages.game.directions import Direction
+from ..services.pathFinder import concatenation_path
 
 
 class Infrastructure:
+    pygame.locals = filter_key(vars(pygame.constants))
+
     def __init__(self) -> None:
         pygame.init()
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
         pygame.display.set_caption('Ssssnake')
         self.clock = pygame.time.Clock()
-        pygame.locals = filter_key(vars(pygame.constants))
 
     # render methods
     # for bg
@@ -39,19 +41,23 @@ class Infrastructure:
 
     # for menu
     def draw_container(self, menu_params: dict, elem_params: dict, shadow: bool = False) -> None:
-        if shadow:
-            self.draw_shadow()
-
         cont_view = ContainerView(
             figure_abs_params(*menu_params['size'])
         )
 
-        cont_view.coord = figure_abs_params(*menu_params['pos'])
+        cont_view._coord = figure_abs_params(*menu_params['pos'])
 
-        text_views = [TextView(elem, figure_abs_params(*elem_params[elem])) for elem in elem_params]
         cont_surf = cont_view.surface
-        for text_view in text_views:
-            text_view.draw(cont_surf)
+        for elem_name, elem_data in elem_params.items():
+            elem_coord = figure_abs_params(
+                *elem_data['position']
+            )
+            text_view = TextView(elem_name, elem_coord)
+            text_view.view = elem_data['state']
+            cont_surf.blit(
+                text_view.view,
+                text_view.geom
+            )
 
         self.screen.blit(
             cont_surf,
@@ -71,7 +77,7 @@ class Infrastructure:
     def draw_score(self, player_name: str, score: int) -> None:
         score = TextView(f"{player_name}: {score}")
         self.screen.blit(
-            score.text,
+            score.view,
             (5, 5),
         )
 
@@ -83,10 +89,13 @@ class Infrastructure:
         messages += [TextView('ESC-меню', figure_center(0, 60), color=GAME_OVER_COLOR)]
 
         for message in messages:
-            message.draw(self.screen)
+            self.screen.blit(
+                message.view,
+                message.geom
+            )
 
     def play_hover_sound(self) -> None:
-        path = concatenation_path(SOUND_PATH, 'button_state/hover.mp3')
+        path = concatenation_path(SOUND_PATH, 'button_state/hover_3.mp3')
         self.play_sound(path)
 
     # help methods
@@ -114,12 +123,12 @@ class Infrastructure:
     # process_events methods
     # check mouse event
     @staticmethod
-    def check_mouse(text, elem_pos) -> None | bool:
+    def check_mouse(elem, elem_pos) -> None | bool:
         mouse_pos = pygame.mouse.get_pos()
 
-        view = TextView(text, figure_abs_params(*elem_pos))
+        elem = TextView(elem, figure_abs_params(*elem_pos))
 
-        if view.is_match(mouse_pos):
+        if elem.geom.collidepoint(mouse_pos):
             return True
         return False
 

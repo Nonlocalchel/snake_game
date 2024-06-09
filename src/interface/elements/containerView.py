@@ -6,32 +6,22 @@ from src.interface.utils import *
 class ContainerView:
     radius = get_scale_radius()
 
-    def __init__(self, size: tuple, coords: tuple = (0, 0), bg_color: str = SCREEN_COLOR) -> None:
+    def __init__(self, size: tuple, coord: tuple = (0, 0), bg_color: str = SCREEN_COLOR) -> None:
         self.size = size
-        self.coord = coords
+        self._coord = coord
         self.bg_color = bg_color
         self.surface = pygame.Surface(size, pygame.SRCALPHA)
         self.make_brd_box()
 
     @property
-    def height(self):
+    def height(self) -> int | float:
         return self.size[1]
 
-    @height.setter
-    def height(self, value):
-        self.size = [self.size[0], value]
-        self.make_brd_box()
-
     @property
-    def width(self):
-        return self.size[0]
+    def coord(self):
+        return self._coord
 
-    @width.setter
-    def width(self, value):
-        self.size = [value, self.size[1]]
-        self.make_brd_box()
-
-    def make_brd_box(self):
+    def make_brd_box(self) -> None:
         surface = self.surface
         surface.fill((0, 0, 0, 0))
         rect = surface.get_rect(left=0, centery=self.height / 2)

@@ -1,6 +1,6 @@
-from .pages.game_menu.menu import Menu
-from .pages.game.game import Game
-from .pages.statistic.statistic import Statistic
+from src.logic.pages.menu.menu import Menu
+from src.logic.pages.game.game import Game
+from src.logic.pages.statistic.statistic import Statistic
 
 pages = {
     'menu': Menu,

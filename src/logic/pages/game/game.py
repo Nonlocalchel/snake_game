@@ -1,4 +1,4 @@
-from src.pages.display import Display
+from src.logic.display import Display
 from src.interface.infrastructure import Infrastructure
 from .utils import *
 

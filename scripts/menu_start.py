@@ -1,4 +1,4 @@
-from src.pages.game_menu.menu import Menu
+from src.logic.pages.menu.menu import Menu
 from src.interface.infrastructure import Infrastructure
 
 if __name__ == "__main__":
