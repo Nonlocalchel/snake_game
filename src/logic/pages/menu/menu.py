@@ -1,4 +1,6 @@
 from src.interface.infrastructure import Infrastructure
+from .handler import Handler
+
 from src.logic.pages.display import Display
 
 from .utils import *
@@ -12,6 +14,7 @@ class Menu(Display):
 
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
+        self.handler = Handler(infrastructure)
         self.is_running = True
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_config = Container(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
@@ -26,7 +29,7 @@ class Menu(Display):
 
         key = self.infrastructure.get_pressed_key()
         if not self.action:
-            self.action = handler_menu_action(key, self.infrastructure.play_hover_sound)
+            self.handler.handle_menu_action(key)
 
         container = self.menu
         if container.get_lock:
@@ -34,8 +37,8 @@ class Menu(Display):
 
             name_input = container.elements['input']
             if key:
-                handle_input(name_input, key)
-                self.action = handler_conf_action(key)
+                self.handler.handle_input(name_input, key)
+                self.handler.handle_conf_action(key)
 
             self.player_name = name_input.text if not name_input.is_empty else 'unknown'
 
@@ -47,20 +50,20 @@ class Menu(Display):
             position = container.get_real_element_pos(element)
             mouse_on = self.infrastructure.check_mouse(element.text, position)
             if mouse_on:
-                handle_mouse_on(element, self.infrastructure.play_hover_sound)
+                self.handler.handle_mouse_on(element)
             else:
                 element.state = None
 
             if element.is_hover:
                 mouse_down = self.infrastructure.is_click()
                 if mouse_down:
-                    handle_mouse_down(element)
+                    self.handler.handle_mouse_down(element)
 
                 mouse_up = element.is_click and not mouse_down
                 if mouse_up:
-                    handle_mouse_up(element, None)
+                    self.handler.handle_mouse_up(element)
 
-                    self.action = element.click()
+        self.action = self.handler.handle_action
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
@@ -87,7 +90,6 @@ class Menu(Display):
         if self.action == Action.SHOW_CONF:
             self.menu.lock()
             self.start_config.unlock()
-
 
         action_value = self.action.value
         if action_value.startswith('go-to'):
