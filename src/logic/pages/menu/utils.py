@@ -1,13 +1,10 @@
-from typing import Callable
+from src.logic.app_elements.elements.container import Container, Button, Input
+from ..actions import Action
 
-from src.logic.app_elements.elements.container import Container
-from src.logic.app_elements.elements.input import Input
-from src.logic.app_elements.elements.button import Button
-
-from src.logic.pages.actions import Action
+app_element = Input | Button
 
 
-def get_menu_params(menu: Container) -> dict[str, dict[str, any]]:
+def get_menu_params(menu: Container) -> dict[str, dict[str, app_element]]:
     elements_list = menu.elements.values()
     params = {
         'frame': {
@@ -28,3 +25,11 @@ def draw_container(container: Container, tool: any) -> None:
     tool.draw_container(container_params['frame'],
                         container_params['elements'])
 
+
+def is_clickable(element: any) -> bool:
+    return hasattr(element, 'is_hover')
+
+
+def get_clickable_elements(elements: dict[str, Action | str]) -> filter:
+    filtered_iter = filter(is_clickable, elements.values())
+    return filtered_iter

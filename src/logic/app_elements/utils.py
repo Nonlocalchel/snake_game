@@ -23,7 +23,7 @@ def figure_pos(size, y: digit, offset: tuple) -> tuple[float, float]:
     return round_to_two((width / 2) + dx), round_to_two(y + dy)
 
 
-def figure_real_pos(outer_pos: tuple, inner_pos: tuple[digit, digit]) -> tuple[float, float]:
+def figure_real_pos(outer_pos: tuple[digit, digit], inner_pos: tuple[digit, digit]) -> tuple[float, float]:
     outer_x, outer_y = outer_pos
     inner_x, inner_y = inner_pos
     return round_to_two(outer_x + inner_x), round_to_two(outer_y + inner_y)

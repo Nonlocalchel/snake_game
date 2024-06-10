@@ -20,9 +20,9 @@ class Action(Enum):
         return menu_actions
 
     @classmethod
-    def start_actions(cls):
-        start_actions = {
+    def conf_actions(cls):
+        conf_actions = {
             'Введите имя': cls.INPUT.value,
             'Старт': cls.GO_TO_PLAY
         }
-        return start_actions
+        return conf_actions

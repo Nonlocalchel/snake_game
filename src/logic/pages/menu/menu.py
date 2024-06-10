@@ -1,12 +1,12 @@
 from src.interface.infrastructure import Infrastructure
-from .handler import Handler
 
 from src.logic.pages.display import Display
 
-from .utils import *
+from ..actions import Action
+from .handler import Handler
+from .utils import get_clickable_elements, draw_container
 
 from src.logic.app_elements.elements.container import Container
-from src.logic.app_elements.elements.button import Button
 from src.logic.player import Player
 
 
@@ -17,7 +17,7 @@ class Menu(Display):
         self.infrastructure = infrastructure
         self.handler = Handler(infrastructure)
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
-        self.start_config = Container(Action.start_actions(), (0.25, 0.25), (0.5, 0.4))
+        self.start_config = Container(Action.conf_actions(), (0.25, 0.25), (0.5, 0.4))
         self.player = Player('default_user', 0, None)
         self.is_running = True
         self.action = None
@@ -31,8 +31,8 @@ class Menu(Display):
         handler = self.handler
 
         key = self.infrastructure.get_pressed_key()
-        if not self.action:
-            handler.handle_menu_action(key)
+        if self.action is None:
+            handler.handle_menu_input(key)
 
         container = self.menu
         if container.get_lock:
@@ -40,23 +40,14 @@ class Menu(Display):
             name_input = container.elements['input']
             if key:
                 handler.handle_input(name_input, key)
-                handler.handle_conf_action(key)
+                handler.handle_conf_input(key)
 
             if not name_input.is_empty:
                 self.player.name = name_input.text
 
-        elements = container.elements
-        for element in elements.values():
-            if not type(element) is Button:
-                continue
-
-            position = container.get_real_element_pos(element)
-            hover = self.infrastructure.check_mouse(element.text, position)
-            if hover:
-                handler.handle_hover(element)
-            else:
-                element.state = None
-
+        elements = get_clickable_elements(container.elements)
+        for element in elements:
+            handler.handle_hover(element, container)
             if element.is_hover:
                 handler.handle_click(element)
 

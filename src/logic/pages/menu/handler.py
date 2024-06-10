@@ -2,9 +2,7 @@ from src.interface.infrastructure import Infrastructure
 
 from ..actions import Action
 
-from src.logic.app_elements.elements.input import Input
-from src.logic.app_elements.elements.button import Button
-from src.logic.app_elements.elements.container import Container
+from src.logic.app_elements.elements.container import Container, Button, Input
 
 
 class Handler:
@@ -17,13 +15,13 @@ class Handler:
         return self.__action
 
     @action.setter
-    def action(self, new_action):
+    def action(self, new_action: Action | None) -> None:
         self.__action = new_action
 
         if new_action:
             self.handle_action(new_action)
 
-    def handle_action(self, action):
+    def handle_action(self, action: Action | None) -> None:
         if action in [Action.SHOW_CONF, Action.SHOW_MENU]:
             self.infrastructure.play_popup_bubble_sound()
 
@@ -31,11 +29,10 @@ class Handler:
             self.action = None
 
         if action == Action.QUIT:
-            self.infrastructure.play_hover_sound()
+            self.infrastructure.play_popup_bubble_sound()
 
-    def handle_menu_action(self, key: str) -> None:
+    def handle_menu_input(self, key: str) -> None:
         action = None
-
         if key == 'return':
             action = Action.SHOW_CONF
 
@@ -44,7 +41,7 @@ class Handler:
 
         self.action = action
 
-    def handle_conf_action(self, key: str) -> None:
+    def handle_conf_input(self, key: str) -> None:
         action = Action.SHOW_CONF
         if key == 'escape':
             action = Action.SHOW_MENU
@@ -57,14 +54,15 @@ class Handler:
 
         self.action = action
 
-    def handle_hover(self, element: Button) -> None:
-        if element.is_hover:
-            return
+    def handle_hover(self, element: Button, container: Container) -> None:
+        position = container.get_real_element_pos(element)
+        hover = self.infrastructure.check_mouse(element.text, position)
+        if hover:
+            self.mouse_on(element)
+        else:
+            element.state = None
 
-        self.infrastructure.play_hover_sound()
-        element.state = 'hover'
-
-    def handle_click(self, element: Button):
+    def handle_click(self, element: Button) -> None:
         mouse_down = self.infrastructure.is_click()
         if mouse_down:
             self.handle_mouse_down(element)
@@ -74,6 +72,13 @@ class Handler:
             self.handle_mouse_up(element)
 
             self.action = element.click()
+
+    def mouse_on(self, element: Button) -> None:
+        if element.is_hover:
+            return
+
+        self.infrastructure.play_hover_sound()
+        element.state = 'hover'
 
     @staticmethod
     def handle_mouse_down(element: Button) -> None:

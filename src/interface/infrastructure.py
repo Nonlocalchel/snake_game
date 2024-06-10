@@ -6,16 +6,17 @@ from .elements.textView import TextView
 
 from src.logic.pages.game.directions import Direction
 from ..services.pathFinder import concatenation_path
+from ..services.dumpLoader.jsonMaster import JsonMaster
 
 
 class Infrastructure:
-    pygame.locals = filter_key(vars(pygame.constants))
 
     def __init__(self) -> None:
         pygame.init()
         self.screen = pygame.display.set_mode([WIDTH * SCALE, HEIGHT * SCALE])
         pygame.display.set_caption('Ssssnake')
         self.clock = pygame.time.Clock()
+
 
     # render methods
     # for bg
@@ -40,7 +41,7 @@ class Infrastructure:
         )
 
     # for menu
-    def draw_container(self, menu_params: dict, elem_params: dict) -> None:
+    def draw_container(self, menu_params: dict[str, dict], elem_params: dict[str, dict]) -> None:
         cont_view = ContainerView(
             figure_abs_params(*menu_params['size'])
         )
@@ -52,8 +53,10 @@ class Infrastructure:
             elem_coord = figure_abs_params(
                 *elem_data['position']
             )
+
             text_view = TextView(elem_name, elem_coord)
             text_view.view = elem_data['state']
+            text_view.scale_view()
             cont_surf.blit(
                 text_view.view,
                 text_view.geom
@@ -127,10 +130,10 @@ class Infrastructure:
     # process_events methods
     # check mouse event
     @staticmethod
-    def check_mouse(elem, elem_pos) -> None | bool:
+    def check_mouse(elem_text: str, elem_pos: tuple[float, float]) -> bool:
         mouse_pos = pygame.mouse.get_pos()
 
-        elem = TextView(elem, figure_abs_params(*elem_pos))
+        elem = TextView(elem_text, figure_abs_params(*elem_pos))
         elem.scale_view()
 
         if elem.geom.collidepoint(mouse_pos):
@@ -138,7 +141,7 @@ class Infrastructure:
         return False
 
     @staticmethod
-    def is_click():
+    def is_click() -> bool:
         if pygame.mouse.get_pressed()[0] == 1:
             return True
         return False
@@ -149,25 +152,29 @@ class Infrastructure:
     def get_pressed_key() -> str | None:
         keys = pygame.key.get_pressed()
 
-        if not any(keys) or (keys[pygame.K_LSHIFT] and keys.count(True) == 1):
+        to_up = keys[pygame.K_LSHIFT]
+        if to_up and keys.count(True) == 1:
             pressed_cash.clear()
 
         pressed_keys = []
 
-        for key in pygame.locals.values():
+        keys_constant = JsonMaster.read_file('../src/interface/keys_constant')
+        for key in keys_constant.values():
+            selected_key = pygame.key.name(key)
             if keys[key]:
-                pressed_key = pygame.key.name(key)
+                pressed_keys += [selected_key] if not pressed_cash.count(selected_key) else []
+                continue
 
-                if pressed_key not in pressed_cash:
-                    pressed_keys += [pressed_key]
+            if selected_key in pressed_cash:
+                pressed_cash.remove(selected_key)
 
         pressed_cash.extend(pressed_keys)
 
-        if pressed_keys:
-            to_up = keys[pygame.K_LSHIFT]  # shift_in(pressed_cash)
+        if not pressed_keys:
+            return
 
-            if not shift_in(pressed_keys):
-                return correct_input(pressed_keys, to_up=to_up)
+        if not shift_in(pressed_keys):
+            return correct_input(pressed_keys, to_up=to_up)
 
     # game
     @staticmethod

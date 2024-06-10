@@ -61,10 +61,10 @@ def shift_in(place):
     return 'left shift' in place
 
 
-def correct_input(pressed_keys: list, to_up=False) -> str:
+def correct_input(pressed_keys: list[str], to_up=False) -> str:
     symbol = pressed_keys[0]
 
-    if to_up:
+    if to_up and len(symbol) == 1:
         symbol = pressed_keys[-1].upper()
 
     if symbol and is_tab_number(symbol):
