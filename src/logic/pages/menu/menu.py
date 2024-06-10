@@ -3,11 +3,13 @@ from src.interface.infrastructure import Infrastructure
 from src.logic.pages.display import Display
 
 from ..actions import Action
-from .handler import Handler
+from src.logic.pages.elements_handlers.mouseHandler import MouseHandler
+from .actionHandler import ActionHandler
 from .utils import get_clickable_elements, draw_container
 
 from src.logic.app_elements.elements.container import Container
 from src.logic.player import Player
+from ..elements_handlers.inputHandler import InputHandler
 
 
 class Menu(Display):
@@ -15,7 +17,9 @@ class Menu(Display):
 
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
-        self.handler = Handler(infrastructure)
+        self.action_handler = ActionHandler(infrastructure)
+        self.mouse_handler = MouseHandler(infrastructure)
+        self.input_handler = InputHandler(infrastructure)
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_config = Container(Action.conf_actions(), (0.25, 0.25), (0.5, 0.4))
         self.player = Player('default_user', 0, None)
@@ -28,30 +32,35 @@ class Menu(Display):
         if self.infrastructure.is_quit_event():
             self.is_running = False
 
-        handler = self.handler
+        action_handler = self.action_handler
+        mouse_handler = self.mouse_handler
+        input_handler = self.input_handler
 
         key = self.infrastructure.get_pressed_key()
         if self.action is None:
-            handler.handle_menu_input(key)
+            action_handler.handle_menu_input(key)
 
         container = self.menu
         if container.get_lock:
             container = self.start_config
             name_input = container.elements['input']
             if key:
-                handler.handle_input(name_input, key)
-                handler.handle_conf_input(key)
+                input_handler.input(name_input, key)
+                action_handler.handle_conf_input(key)
 
             if not name_input.is_empty:
                 self.player.name = name_input.text
 
         elements = get_clickable_elements(container.elements)
         for element in elements:
-            handler.handle_hover(element, container)
+            mouse_handler.hover(element, container)
             if element.is_hover:
-                handler.handle_click(element)
+                mouse_handler.click(element)
 
-        self.action = handler.action
+            if element.is_click:
+                action_handler.action = element.click()
+
+        self.action = action_handler.action
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
