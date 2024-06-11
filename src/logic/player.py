@@ -1,10 +1,8 @@
-import time
-
 from dataclasses import dataclass
 
 
 @dataclass
 class Player:
-    name: str
-    score: int
-    date: time.struct_time | None
+    name: str = 'default_user'
+    score: int = 0
+    time: any = None

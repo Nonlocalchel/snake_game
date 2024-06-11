@@ -16,11 +16,13 @@ class Game(Display):
         self.is_running = True
         self.is_game_over = False
         self.player = None
+        self.name = 'game'
 
     def process_events(self) -> None:
         """Обработка ввода от пользователя"""
         if self.infrastructure.is_quit_event():
             self.is_running = False
+
         new_direction = self.infrastructure.get_pressed_arrow()
         if new_direction:
             self.snake.set_direction(new_direction)
@@ -62,6 +64,9 @@ class Game(Display):
         while self.is_running:
             self.process_events()
             self.update_state()
+            if self.name != 'game':
+                break
+
             self.render()
         else:
             self.infrastructure.quit()

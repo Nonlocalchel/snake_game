@@ -9,7 +9,7 @@ from src.logic.pages.elements_handlers.mouseHandler import MouseHandler
 from .actionHandler import ActionHandler
 
 from src.logic.app_elements.elements.container import Container
-from src.logic.player import Player
+from src.logic.playerHandle import PlayerHandle
 
 
 class Menu(Display):
@@ -21,7 +21,7 @@ class Menu(Display):
         self.mouse_handler = MouseHandler(infrastructure)
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_config = Container(Action.conf_actions(), (0.25, 0.25), (0.5, 0.4))
-        self.player = Player('default_user', 0, None)
+        self.player = PlayerHandle()
         self.is_running = True
         self.action = None
         self.name = 'menu'
@@ -44,14 +44,15 @@ class Menu(Display):
             name_input = container.elements['input']
             action_handler.handle_conf_input(name_input, key)
 
-        elements = get_clickable_elements(container.elements)
-        for element in elements:
+        for element in get_clickable_elements(container.elements):
             mouse_handler.hover(element, container)
             if element.is_hover:
                 mouse_handler.click(element)
 
             if element.is_click:
                 action_handler.action = element.click()
+
+        self.action = action_handler.action
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
@@ -72,7 +73,6 @@ class Menu(Display):
         self.menu.unlock()
         self.start_config.lock()
 
-        self.action = self.action_handler.action
         if self.action is None:
             return
 
