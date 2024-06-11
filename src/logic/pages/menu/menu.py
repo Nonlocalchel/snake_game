@@ -5,7 +5,7 @@ from ..actions import Action
 
 from src.interface.infrastructure import Infrastructure
 
-from src.logic.pages.elements_handlers.mouseHandler import MouseHandler
+from src.logic.elements_handlers.mouseHandler import MouseHandler
 from .actionHandler import ActionHandler
 
 from src.logic.app_elements.elements.container import Container

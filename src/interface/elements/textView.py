@@ -3,25 +3,24 @@ import pygame
 from .baseView import BaseView
 
 from src.settings import *
-from src.interface.utils import figure_font, increase_size, figure_inner_pos
+from src.interface.utils import figure_font, increase_size, figure_inner_pos, get_scale_radius
 
 
 class TextView(BaseView):
-    size: int = figure_font()
+    font_size: int = figure_font()
+    radius: int | float = get_scale_radius(1)
 
-    def __init__(self, text: str, coord: tuple | None = None, color: str = SIMPLE_TEXT_COLOR) -> None:
+    def __init__(self, text: str, coord: tuple[int, int] | None = None, scale: bool = True,
+                 color: str = SIMPLE_TEXT_COLOR) -> None:
         super().__init__(coord)
         self.color = color
         self._text = text
         self.__view = self.get_text_surf()
-
-    @property
-    def geom(self) -> pygame.Rect:
-        x, y = self._coord
-        return self.view.get_rect(centerx=x, centery=y)
+        if scale:
+            self.scale_view()
 
     def get_text_surf(self) -> pygame.Surface:
-        font = pygame.font.SysFont('Calibri', self.size)
+        font = pygame.font.SysFont('Calibri', self.font_size)
         text_surf = font.render(self._text, 1, self.color)
         return text_surf
 
@@ -45,10 +44,19 @@ class TextView(BaseView):
 
     def set_hover_view(self) -> None:
         self.color = HOVER_TEXT_COLOR
+
         self.__view = self.get_text_surf()
+        self.scale_view()
+
+        self.draw_border(self.__view, self.color)
 
     def set_active_view(self) -> None:
-        self.set_hover_view()
+        self.color = SIMPLE_TEXT_COLOR
+
+        self.__view = self.get_text_surf()
+        self.scale_view()
+
+        self.view.fill('green')
 
     def set_unfocused_view(self):
         self.color = UNFOCUSED_TEXT_COLOR

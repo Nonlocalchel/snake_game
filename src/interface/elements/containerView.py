@@ -7,7 +7,7 @@ from .baseView import BaseView
 
 class ContainerView(BaseView):
 
-    def __init__(self, size: tuple[int, int], coord: tuple = (0, 0), bg_color: str = SCREEN_COLOR) -> None:
+    def __init__(self, size: tuple[int, int], coord: tuple[int, int] = (0, 0), bg_color: str = SCREEN_COLOR) -> None:
         super().__init__(coord)
         self._size = size
         self.bg_color = bg_color
@@ -21,6 +21,6 @@ class ContainerView(BaseView):
     def make_brd_box(self) -> None:
         surface = self.view
         surface.fill((0, 0, 0, 0))
-        rect = surface.get_rect(left=0, centery=self.height / 2)
+        rect = self.rect_to_draw
         pygame.draw.rect(surface, self.bg_color, rect, border_radius=self.radius)
-        pygame.draw.rect(surface, SIMPLE_TEXT_COLOR, rect, True, border_radius=self.radius)
+        self.draw_border(surface)

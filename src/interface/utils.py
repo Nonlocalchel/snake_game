@@ -34,20 +34,24 @@ def figure_image_size(image_h: int, image_w: int) -> tuple[digit, digit]:
         return scale(WIDTH, cof), scale(HEIGHT)
 
 
-def filter_key(const_dict: dict) -> dict:
-    filter_storage = filter(lambda x: x[0].startswith('K_'), const_dict.items())
-    return dict(filter_storage)
-
-
-def increase_size(size: tuple[int, int]) -> tuple[digit, digit]:
+def increase_size(size: tuple[int, int], height_cof: float = 1.21, width_cof: float = 1.11) -> tuple[digit, digit]:
     width, height = size
-    return width + 20, height + 20
+    return width * width_cof, height * height_cof
+
+
+def fix_height(height):
+    return height - 1 if height % 2 == 1 else height
 
 
 def figure_inner_pos(inner_size: tuple[int, int], outer_size: tuple[int, int]) -> tuple[int, int]:
     new_width, new_height = outer_size
     width, height = inner_size
-    return (new_width-width)//2, (new_height-height)//2
+    return (new_width - width) // 2, (new_height - height) // 2
+
+
+def filter_key(const_dict: dict) -> dict:
+    filter_storage = filter(lambda x: x[0].startswith('K_'), const_dict.items())
+    return dict(filter_storage)
 
 
 pressed_cash = []

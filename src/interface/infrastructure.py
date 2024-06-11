@@ -54,8 +54,7 @@ class Infrastructure:
                 *elem_data['position']
             )
 
-            text_view = TextView(elem_name, elem_coord)
-            text_view.scale_view()
+            text_view = TextView(elem_name, elem_coord, scale=True)
             text_view.view = elem_data['state']
             cont_surf.blit(
                 text_view.view,
@@ -133,8 +132,8 @@ class Infrastructure:
     def check_mouse(elem_text: str, elem_pos: tuple[float, float]) -> bool:
         mouse_pos = pygame.mouse.get_pos()
 
-        elem = TextView(elem_text, figure_abs_params(*elem_pos))
-        elem.scale_view()
+        elem_coord = figure_abs_params(*elem_pos)
+        elem = TextView(elem_text, elem_coord, scale=True)
 
         if elem.geom.collidepoint(mouse_pos):
             return True
