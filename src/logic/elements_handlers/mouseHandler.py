@@ -37,4 +37,4 @@ class MouseHandler:
 
     @staticmethod
     def mouse_up(element: Button) -> None:
-        element.state = None
+        element.state = 'hover'

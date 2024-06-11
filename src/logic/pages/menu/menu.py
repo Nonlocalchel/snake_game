@@ -50,7 +50,13 @@ class Menu(Display):
                 mouse_handler.click(element)
 
             if element.is_click:
-                action_handler.action = element.click()
+                action_handler.handle_element = element
+
+            if action_handler.handle_element:
+
+                if element.is_hover and not element.is_click:
+                    action_handler.action = element.click()
+                    action_handler.handle_element = None
 
         self.action = action_handler.action
 

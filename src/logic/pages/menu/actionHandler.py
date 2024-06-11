@@ -8,6 +8,7 @@ from src.logic.app_elements.elements.input import Input
 class ActionHandler:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
+        self.handle_element = None
         self.__action = None
 
     @property
