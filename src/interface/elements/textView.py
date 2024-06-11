@@ -1,17 +1,18 @@
 import pygame
 
+from .baseView import BaseView
+
 from src.settings import *
-from src.interface.utils import figure_font, get_scale_radius, increase_size, figure_inner_pos
+from src.interface.utils import figure_font, increase_size, figure_inner_pos
 
 
-class TextView:
+class TextView(BaseView):
     size: int = figure_font()
-    radius = get_scale_radius()
 
     def __init__(self, text: str, coord: tuple | None = None, color: str = SIMPLE_TEXT_COLOR) -> None:
+        super().__init__(coord)
         self.color = color
         self._text = text
-        self._coord = coord
         self.__view = self.get_text_surf()
 
     @property

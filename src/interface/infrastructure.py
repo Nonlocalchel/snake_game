@@ -55,8 +55,8 @@ class Infrastructure:
             )
 
             text_view = TextView(elem_name, elem_coord)
-            text_view.view = elem_data['state']
             text_view.scale_view()
+            text_view.view = elem_data['state']
             cont_surf.blit(
                 text_view.view,
                 text_view.geom

@@ -2,24 +2,17 @@ import pygame
 
 from src.interface.utils import *
 
+from .baseView import BaseView
 
-class ContainerView:
-    radius = get_scale_radius()
+
+class ContainerView(BaseView):
 
     def __init__(self, size: tuple[int, int], coord: tuple = (0, 0), bg_color: str = SCREEN_COLOR) -> None:
-        self.size = size
-        self._coord = coord
+        super().__init__(coord)
+        self._size = size
         self.bg_color = bg_color
         self.__view = pygame.Surface(size, pygame.SRCALPHA)
         self.make_brd_box()
-
-    @property
-    def height(self) -> int | float:
-        return self.size[1]
-
-    @property
-    def coord(self):
-        return self._coord
 
     @property
     def view(self):
