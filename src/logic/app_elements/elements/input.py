@@ -11,7 +11,7 @@ class Input:
 
     @property
     def is_valid_length(self) -> bool:
-        return len(self._text) <= 12
+        return len(self._text) <= 10
 
     @staticmethod
     def is_symbol(char: str) -> bool:

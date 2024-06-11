@@ -30,17 +30,17 @@ class TextView:
 
     @view.setter
     def view(self, state: str) -> None:
-        text_surf = self.get_text_surf()
+        if not state:
+            return
 
-        if state:
-            if state == 'hover':
-                self.set_hover_view()
+        if state == 'hover':
+            self.set_hover_view()
 
-            if state == 'click':
-                self.set_active_view()
+        if state == 'click':
+            self.set_active_view()
 
-            if state == 'unfocus':
-                self.set_unfocused_view()
+        if state == 'unfocus':
+            self.set_unfocused_view()
 
     def set_hover_view(self) -> None:
         self.color = HOVER_TEXT_COLOR
