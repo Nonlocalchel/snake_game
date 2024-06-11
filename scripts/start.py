@@ -20,4 +20,3 @@ if __name__ == "__main__":
         page_name = page.name
         if hasattr(page, 'player'):
             player = page.player
-

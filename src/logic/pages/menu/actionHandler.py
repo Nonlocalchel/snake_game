@@ -2,6 +2,7 @@ from src.interface.infrastructure import Infrastructure
 
 from ..actions import Action
 
+from src.logic.app_elements.elements.input import Input
 
 class ActionHandler:
     def __init__(self, infrastructure: Infrastructure) -> None:
@@ -39,10 +40,13 @@ class ActionHandler:
 
         self.action = action
 
-    def handle_conf_input(self, key: str) -> None:
+    def handle_conf_input(self, text_input: Input, key: str) -> None:
+        text_input.change(key)
+
         action = Action.SHOW_CONF
         if key == 'escape':
             action = Action.SHOW_MENU
+            text_input.clear()
 
         if key == 'return':
             action = Action.GO_TO_PLAY

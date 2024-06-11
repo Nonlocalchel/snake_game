@@ -11,15 +11,31 @@ class Input:
 
     @property
     def is_valid_length(self) -> bool:
-        return len(self._text) <= 10
+        return len(self._text) < 5
 
     @staticmethod
     def is_symbol(char: str) -> bool:
-        return len(char) == 1
+        return type(char) is str and len(char) == 1
 
     @property
     def text(self) -> str:
         return self._text or self.__default_text
+
+    @text.setter
+    def text(self, value):
+        if self.is_empty:
+            value = value[-1]
+
+        if self.is_valid_length or len(self._text) > len(value):
+            self._text = value
+
+        self.switch_focus()
+
+    def switch_focus(self):
+        self.focus()
+
+        if self.is_empty:
+            self.unfocus()
 
     def focus(self):
         self.state = 'focus'
@@ -42,10 +58,13 @@ class Input:
             return
 
         if self.is_symbol(char):
-            self._text += char if self.is_valid_length else ''
+            self.text += char
 
     def clear(self) -> None:
-        self._text = ''
+        if self.is_empty:
+            return
+
+        self.text = ''
 
     def __remove_char(self) -> None:
-        self._text = self._text[:-1]
+        self.text = self.text[:-1]

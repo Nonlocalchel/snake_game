@@ -1,15 +1,15 @@
-from src.interface.infrastructure import Infrastructure
-
 from src.logic.pages.display import Display
 
+from .utils import get_clickable_elements, draw_container
 from ..actions import Action
+
+from src.interface.infrastructure import Infrastructure
+
 from src.logic.pages.elements_handlers.mouseHandler import MouseHandler
 from .actionHandler import ActionHandler
-from .utils import get_clickable_elements, draw_container
 
 from src.logic.app_elements.elements.container import Container
 from src.logic.player import Player
-from ..elements_handlers.inputHandler import InputHandler
 
 
 class Menu(Display):
@@ -19,7 +19,6 @@ class Menu(Display):
         self.infrastructure = infrastructure
         self.action_handler = ActionHandler(infrastructure)
         self.mouse_handler = MouseHandler(infrastructure)
-        self.input_handler = InputHandler(infrastructure)
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_config = Container(Action.conf_actions(), (0.25, 0.25), (0.5, 0.4))
         self.player = Player('default_user', 0, None)
@@ -34,7 +33,6 @@ class Menu(Display):
 
         action_handler = self.action_handler
         mouse_handler = self.mouse_handler
-        input_handler = self.input_handler
 
         key = self.infrastructure.get_pressed_key()
         if self.action is None:
@@ -44,12 +42,7 @@ class Menu(Display):
         if container.get_lock:
             container = self.start_config
             name_input = container.elements['input']
-            if key:
-                input_handler.input(name_input, key)
-                action_handler.handle_conf_input(key)
-
-            if not name_input.is_empty:
-                self.player.name = name_input.text
+            action_handler.handle_conf_input(name_input, key)
 
         elements = get_clickable_elements(container.elements)
         for element in elements:
@@ -59,8 +52,6 @@ class Menu(Display):
 
             if element.is_click:
                 action_handler.action = element.click()
-
-        self.action = action_handler.action
 
     def render(self) -> None:
         """Обновление экрана: перерисовка меню"""
@@ -81,16 +72,22 @@ class Menu(Display):
         self.menu.unlock()
         self.start_config.lock()
 
+        self.action = self.action_handler.action
         if self.action is None:
             return
+
+        action_value = self.action.value
+        if action_value.startswith('go-to'):
+            self.name = action_value.split('_')[1]
 
         if self.action == Action.SHOW_CONF:
             self.menu.lock()
             self.start_config.unlock()
 
-        action_value = self.action.value
-        if action_value.startswith('go-to'):
-            self.name = action_value.split('_')[1]
+        if self.action == Action.GO_TO_PLAY:
+            name_input = self.start_config.elements['input']
+            if not name_input.is_empty:
+                self.player.name = name_input.text
 
         if self.action == Action.QUIT:
             self.is_running = False
