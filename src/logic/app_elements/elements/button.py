@@ -7,10 +7,10 @@ class Button:
 
     @property
     def is_hover(self) -> bool:
-        return self.state in ['hover', 'click']
+        return self.state is not None
 
     @property
-    def is_click(self) -> bool:
+    def is_action(self) -> bool:
         return self.state == 'click'
 
     @property
@@ -18,5 +18,4 @@ class Button:
         return self.__action
 
     def click(self) -> str:
-        self.state = 'hover'
         return self.__action

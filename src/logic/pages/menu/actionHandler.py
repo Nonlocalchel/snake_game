@@ -52,16 +52,3 @@ class ActionHandler:
             return
 
         self.action = action
-
-    def check_tracker(self, element):
-        if self.tracker is None:
-            return
-
-        if not self.tracker.is_trackable_element(element):
-            return
-
-        return self.tracker.check_action()
-
-    def handle_trackable_action(self, method):
-        self.action = method()
-        self.tracker = None

@@ -47,16 +47,12 @@ class Menu(Display):
             name_input.change(key)
 
         for element in get_clickable_elements(container.elements):
-            mouse_handler.hover(element, container)
+            mouse_handler.handle_pos(element, container)
             if element.is_hover:
-                mouse_handler.click(element)
+                mouse_handler.handle_click(element)
 
-            if element.is_click:
-                action_handler.tracker = Tracker(element,
-                                                 lambda x: x.is_hover and not x.is_click)
-
-            if action_handler.check_tracker(element):
-                action_handler.handle_trackable_action(element.click)
+            if element.is_action:
+                action_handler.action = element.click()
 
         self.action = action_handler.action
 

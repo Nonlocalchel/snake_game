@@ -7,34 +7,42 @@ class MouseHandler:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
 
-    def hover(self, element: Button, container: Container) -> None:
+    def handle_pos(self, element: Button, container: Container) -> None:
         position = container.get_real_element_pos(element)
         hover = self.infrastructure.check_mouse(element.text, position)
         if hover:
-            self.mouse_on(element)
+            self.mouse_over(element)
         else:
             element.state = None
 
-    def click(self, element: Button) -> None:
-        mouse_down = self.infrastructure.is_click()
-        if mouse_down:
-            self.mouse_down(element)
-
-        mouse_up = element.is_click and not mouse_down
-        if mouse_up:
-            self.mouse_up(element)
-
-    def mouse_on(self, element: Button) -> None:
+    def mouse_over(self, element: Button) -> None:
         if element.is_hover:
             return
 
         self.infrastructure.play_hover_sound()
         element.state = 'hover'
 
+    def handle_click(self, element: Button) -> None:
+        if element.state == 'click':
+            self.mouse_up(element)
+
+        is_click = self.infrastructure.is_click()
+        if is_click:
+            self.mouse_down(element)
+
+        mouse_up = element.state == 'mouse_down' and not is_click
+        if mouse_up:
+            self.mouse_up(element)
+
     @staticmethod
     def mouse_down(element: Button) -> None:
-        element.state = 'click'
+        element.state = 'mouse_down'
 
     @staticmethod
     def mouse_up(element: Button) -> None:
-        element.state = 'hover'
+        if element.state == 'mouse_down':
+            element.state = 'click'
+            return
+
+        element.state = 'mouse_up'
+

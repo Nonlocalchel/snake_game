@@ -13,7 +13,9 @@ def get_menu_params(menu: Container) -> dict[str, dict[str, app_element]]:
         },
         'elements': {element.text: {
             'position': element.pos,
-            'state': element.state
+            'state':    element.state if type(element) is not Button else
+                        'action' if element.is_action else
+                        'hover' if element.is_hover else None
         } for element in elements_list},
     }
 
