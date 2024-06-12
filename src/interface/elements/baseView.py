@@ -43,6 +43,7 @@ class BaseView:
 
         return surf.get_rect(left=0, centery=(height / 2))
 
-    def draw_border(self, surf: pygame.Surface, color: str = SIMPLE_TEXT_COLOR) -> None:
+    def fill_view_with_rect(self, color: str = SIMPLE_TEXT_COLOR, is_border: bool = False) -> None:
         rect = self.rect_to_draw
-        pygame.draw.rect(surf, color, rect, True, border_radius=self.radius)
+        surf = self.view
+        pygame.draw.rect(surf, color, rect, is_border, border_radius=self.radius)

@@ -3,7 +3,7 @@ from src.interface.infrastructure import Infrastructure
 from ..actions import Action
 
 
-class ActionHandler:
+class ActionHandle:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
         self.tracker = None

@@ -5,9 +5,8 @@ from ..actions import Action
 
 from src.interface.infrastructure import Infrastructure
 
-from src.logic.elements_handlers.mouseHandler import MouseHandler
-from .actionHandler import ActionHandler
-from .tracker import Tracker
+from src.logic.elements_handlers.mouseHandle import MouseHandle
+from .actionHandle import ActionHandle
 
 from src.logic.app_elements.elements.container import Container
 from src.logic.playerHandle import PlayerHandle
@@ -18,8 +17,8 @@ class Menu(Display):
 
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
-        self.action_handler = ActionHandler(infrastructure)
-        self.mouse_handler = MouseHandler(infrastructure)
+        self.action_handler = ActionHandle(infrastructure)
+        self.mouse_handler = MouseHandle(infrastructure)
         self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
         self.start_config = Container(Action.conf_actions(), (0.25, 0.25), (0.5, 0.4))
         self.player = PlayerHandle()
@@ -51,7 +50,7 @@ class Menu(Display):
             if element.is_hover:
                 mouse_handler.handle_click(element)
 
-            if element.is_action:
+            if element.state == 'click':
                 action_handler.action = element.action
 
         self.action = action_handler.action

@@ -8,7 +8,7 @@ from src.interface.utils import figure_font, increase_size, figure_inner_pos, ge
 
 class TextView(BaseView):
     font_size: int = figure_font()
-    radius: int | float = get_scale_radius(1)
+    radius: int = get_scale_radius(1.4)
 
     def __init__(self, text: str, coord: tuple[int, int] | None = None,
                  color: str = SIMPLE_TEXT_COLOR) -> None:
@@ -47,7 +47,7 @@ class TextView(BaseView):
         self.__view = self.get_text_surf()
         self.scale_view()
 
-        self.draw_border(self.__view, self.color)
+        self.fill_view_with_rect(self.color, is_border=True)
 
     def set_active_view(self) -> None:
         self.color = SIMPLE_TEXT_COLOR
@@ -55,14 +55,21 @@ class TextView(BaseView):
         self.__view = self.get_text_surf()
         self.scale_view()
 
-        self.view.fill('green')
+        self.fill_view_with_rect(HOVER_TEXT_COLOR)
+
+        text_view = self.get_text_surf()
+        pos = figure_inner_pos(text_view.get_rect().size, self.size)
+        self.view.blit(
+            text_view,
+            pos
+        )
 
     def set_unfocused_view(self):
         self.color = UNFOCUSED_TEXT_COLOR
         self.__view = self.get_text_surf()
 
     def scale_view(self):
-        size = self.geom.size
+        size = self.size
         width_cof, height_cof = self.scale
         new_size = increase_size(size, width_cof=width_cof, height_cof=height_cof)
         pos = figure_inner_pos(size, new_size)

@@ -12,8 +12,8 @@ def figure_font() -> int:
     return ceil(SCALE / 1.2)
 
 
-def get_scale_radius(scale_cof: int = 4) -> int:
-    return RADIUS * scale_cof
+def get_scale_radius(scale_cof: digit = 4) -> int:
+    return round(RADIUS * scale_cof)
 
 
 def figure_abs_params(x: digit, y: digit) -> tuple[digit, digit]:

@@ -11,7 +11,7 @@ class Button:
 
     @property
     def is_action(self) -> bool:
-        return self.state == 'click'
+        return self.state in ['click', 'mouse_down']
 
     @property
     def action(self) -> str:

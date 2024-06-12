@@ -6,26 +6,26 @@ from .player import Player
 
 class PlayerHandle:
     def __init__(self, *args):
-        self.__player = Player(*args)
+        self._player = Player(*args)
 
     @property
     def name(self):
-        return self.__player.name
+        return self._player.name
 
     @name.setter
     def name(self, value):
-        self.__player.name = value
+        self._player.name = value
 
     def get_as_tuple(self):
-        return astuple(self.__player)
+        return astuple(self._player)
 
     def record_death_time(self):
         seconds = time.time()
-        self.__player.time = time.localtime(seconds)
+        self._player.time = time.localtime(seconds)
 
     def set_default_state(self):
-        self.__player.time = None
-        self.__player.score = 0
+        self._player.time = None
+        self._player.score = 0
 
     def set_score(self, value):
-        self.__player.score = value
+        self._player.score = value

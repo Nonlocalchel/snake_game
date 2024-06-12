@@ -21,6 +21,5 @@ class ContainerView(BaseView):
     def make_brd_box(self) -> None:
         surface = self.view
         surface.fill((0, 0, 0, 0))
-        rect = self.rect_to_draw
-        pygame.draw.rect(surface, self.bg_color, rect, border_radius=self.radius)
-        self.draw_border(surface)
+        self.fill_view_with_rect(self.bg_color)
+        self.fill_view_with_rect(is_border=True)

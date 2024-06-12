@@ -3,7 +3,7 @@ from src.interface.infrastructure import Infrastructure
 from src.logic.app_elements.elements.container import Container, Button
 
 
-class MouseHandler:
+class MouseHandle:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
 
