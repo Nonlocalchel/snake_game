@@ -2,13 +2,11 @@ from src.interface.infrastructure import Infrastructure
 
 from ..actions import Action
 
-from src.logic.app_elements.elements.input import Input
-
 
 class ActionHandler:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
-        self.handle_element = None
+        self.tracker = None
         self.__action = None
 
     @property
@@ -20,9 +18,9 @@ class ActionHandler:
         self.__action = new_action
 
         if new_action:
-            self.pre_handle_action(new_action)
+            self.handle_action(new_action)
 
-    def pre_handle_action(self, action: Action | None) -> None:
+    def handle_action(self, action: Action | None) -> None:
         if action in [Action.SHOW_CONF, Action.SHOW_MENU]:
             self.infrastructure.play_popup_bubble_sound()
 
@@ -32,7 +30,7 @@ class ActionHandler:
         if action == Action.QUIT:
             self.infrastructure.play_popup_bubble_sound()
 
-    def handle_menu_input(self, key: str) -> None:
+    def set_menu_action(self, key: str) -> None:
         action = None
         if key == 'return':
             action = Action.SHOW_CONF
@@ -42,13 +40,10 @@ class ActionHandler:
 
         self.action = action
 
-    def handle_conf_input(self, text_input: Input, key: str) -> None:
-        text_input.change(key)
-
+    def set_conf_action(self, key: str) -> None:
         action = Action.SHOW_CONF
         if key == 'escape':
             action = Action.SHOW_MENU
-            text_input.clear()
 
         if key == 'return':
             action = Action.GO_TO_PLAY
@@ -57,3 +52,16 @@ class ActionHandler:
             return
 
         self.action = action
+
+    def check_tracker(self, element):
+        if self.tracker is None:
+            return
+
+        if not self.tracker.is_trackable_element(element):
+            return
+
+        return self.tracker.check_action()
+
+    def handle_trackable_action(self, method):
+        self.action = method()
+        self.tracker = None

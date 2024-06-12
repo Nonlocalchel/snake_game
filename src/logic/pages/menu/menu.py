@@ -7,6 +7,7 @@ from src.interface.infrastructure import Infrastructure
 
 from src.logic.elements_handlers.mouseHandler import MouseHandler
 from .actionHandler import ActionHandler
+from .tracker import Tracker
 
 from src.logic.app_elements.elements.container import Container
 from src.logic.playerHandle import PlayerHandle
@@ -36,13 +37,14 @@ class Menu(Display):
 
         key = self.infrastructure.get_pressed_key()
         if self.action is None:
-            action_handler.handle_menu_input(key)
+            action_handler.set_menu_action(key)
 
         container = self.menu
         if container.get_lock:
             container = self.start_config
+            action_handler.set_conf_action(key)
             name_input = container.elements['input']
-            action_handler.handle_conf_input(name_input, key)
+            name_input.change(key)
 
         for element in get_clickable_elements(container.elements):
             mouse_handler.hover(element, container)
@@ -50,13 +52,11 @@ class Menu(Display):
                 mouse_handler.click(element)
 
             if element.is_click:
-                action_handler.handle_element = element
+                action_handler.tracker = Tracker(element,
+                                                 lambda x: x.is_hover and not x.is_click)
 
-            if action_handler.handle_element:
-
-                if element.is_hover and not element.is_click:
-                    action_handler.action = element.click()
-                    action_handler.handle_element = None
+            if action_handler.check_tracker(element):
+                action_handler.handle_trackable_action(element.click)
 
         self.action = action_handler.action
 
@@ -80,6 +80,7 @@ class Menu(Display):
         self.start_config.lock()
 
         if self.action is None:
+            self.start_config.elements['input'].clear()
             return
 
         action_value = self.action.value
