@@ -10,14 +10,13 @@ class TextView(BaseView):
     font_size: int = figure_font()
     radius: int | float = get_scale_radius(1)
 
-    def __init__(self, text: str, coord: tuple[int, int] | None = None, scale: bool = True,
+    def __init__(self, text: str, coord: tuple[int, int] | None = None,
                  color: str = SIMPLE_TEXT_COLOR) -> None:
         super().__init__(coord)
         self.color = color
         self._text = text
         self.__view = self.get_text_surf()
-        if scale:
-            self.scale_view()
+        self.scale = (1.11,  1.21)
 
     def get_text_surf(self) -> pygame.Surface:
         font = pygame.font.SysFont('Calibri', self.font_size)
@@ -30,7 +29,7 @@ class TextView(BaseView):
 
     @view.setter
     def view(self, state: str) -> None:
-        if not state:
+        if state is None:
             return
 
         if state == 'hover':
@@ -64,7 +63,8 @@ class TextView(BaseView):
 
     def scale_view(self):
         size = self.geom.size
-        new_size = increase_size(size)
+        width_cof, height_cof = self.scale
+        new_size = increase_size(size, width_cof=width_cof, height_cof=height_cof)
         pos = figure_inner_pos(size, new_size)
         new_surf = pygame.Surface(new_size, pygame.SRCALPHA)
         new_surf.fill((0, 0, 0, 0))
@@ -72,4 +72,5 @@ class TextView(BaseView):
             self.__view,
             pos
         )
+
         self.__view = new_surf

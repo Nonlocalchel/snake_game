@@ -16,6 +16,3 @@ class Button:
     @property
     def action(self) -> str:
         return self.__action
-
-    def click(self) -> str:
-        return self.__action

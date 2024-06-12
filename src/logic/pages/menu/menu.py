@@ -52,7 +52,7 @@ class Menu(Display):
                 mouse_handler.handle_click(element)
 
             if element.is_action:
-                action_handler.action = element.click()
+                action_handler.action = element.action
 
         self.action = action_handler.action
 

@@ -34,7 +34,7 @@ def figure_image_size(image_h: int, image_w: int) -> tuple[digit, digit]:
         return scale(WIDTH, cof), scale(HEIGHT)
 
 
-def increase_size(size: tuple[int, int], height_cof: float = 1.21, width_cof: float = 1.11) -> tuple[digit, digit]:
+def increase_size(size: tuple[int, int], width_cof: float, height_cof: float) -> tuple[digit, digit]:
     width, height = size
     return width * width_cof, height * height_cof
 
