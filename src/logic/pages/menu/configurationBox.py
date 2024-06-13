@@ -4,7 +4,7 @@ from src.logic.app_elements.elements import button, textInput
 
 from src.logic.app_elements.elements.interactionBox import InteractionContainer
 
-from ..actions import Action
+from src.logic.pages.actions import Action
 
 
 class ConfigurationBox(InteractionContainer):

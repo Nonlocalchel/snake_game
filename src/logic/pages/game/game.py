@@ -17,6 +17,7 @@ class Game(Display):
         self.is_game_over = False
         self.player = None
         self.name = 'game'
+        self.action = None
 
     def process_events(self) -> None:
         """Обработка ввода от пользователя"""

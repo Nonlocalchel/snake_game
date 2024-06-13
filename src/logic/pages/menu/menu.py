@@ -4,7 +4,7 @@ from .utils import get_clickable_elements, get_box_params
 from src.logic.elements_handlers.mouseHandle import MouseHandle
 
 from src.logic.pages.actionHandle import ActionHandle
-from ..actions import Action
+from src.logic.pages.actions import Action
 
 from src.logic.playerHandle import PlayerHandle
 
