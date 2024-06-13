@@ -1,6 +1,6 @@
 from src.logic.pages.display import Display
 
-from .utils import get_clickable_elements, draw_container
+from .utils import get_clickable_elements, get_menu_params
 from ..actions import Action
 
 from src.interface.infrastructure import Infrastructure
@@ -58,13 +58,15 @@ class Menu(Display):
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
-        draw_container(self.menu,
-                       self.infrastructure)
+        self.infrastructure.draw_container(
+            *get_menu_params(self.menu)
+        )
 
         if self.menu.get_lock:
             self.infrastructure.draw_shadow()
-            draw_container(self.start_config,
-                           self.infrastructure)
+            self.infrastructure.draw_container(
+                *get_menu_params(self.start_config)
+            )
 
         self.infrastructure.update_and_tick()
 
