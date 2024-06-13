@@ -1,34 +1,51 @@
-from src.logic.app_elements.elements.container import Container, Button, Input
+from src.logic.app_elements.elements.base.container import Container
+
+from src.logic.app_elements.elements import textInput, button
 
 from src.logic.pages.actions import Action
 
-app_element = Input | Button
+app_element = textInput.Input | button.Button
 
 
-def get_menu_params(menu: Container) -> tuple[dict, dict]:  # dict[str, dict[str, app_element]]
-    elements_list = menu.elements.values()
-    params = {
-        'frame': {
-            'pos': menu.pos,
-            'size': menu.size,
-        },
-        'elements': {element.text: {
-            'position': element.pos,
-            'state': element.state if type(element) is not Button else
-            'action' if element.is_action else
-            'hover' if element.is_hover else None
-        } for element in elements_list},
+def get_element_state_for_draw(element: app_element) -> str:
+    state = None
+    if type(element) is button.Button:
+        if element.is_hover:
+            state = 'hover'
+
+        if element.is_action:
+            state = 'action'
+
+    if type(element) is textInput.Input:
+        state = element.state
+
+    return state
+
+
+def get_menu_params(menu: Container) -> tuple[any, any]:
+    frame_params = {
+        'pos': menu.pos,
+        'size': menu.size,
     }
 
-    return params['frame'], params['elements']
+    elements_params = {}
+    for element in menu.elements:
+        state = get_element_state_for_draw(element)
+
+        elements_params[element.text] = {
+            'position': element.pos,
+            'state': state
+        }
+
+    return frame_params, elements_params
 
 
 def is_clickable(element: any) -> bool:
     return hasattr(element, 'is_hover')
 
 
-def get_clickable_elements(elements: dict[str, Action | str]) -> filter:
-    filtered_iter = filter(is_clickable, elements.values())
+def get_clickable_elements(elements: tuple[app_element]) -> filter:
+    filtered_iter = filter(is_clickable, elements)
     return filtered_iter
 
 

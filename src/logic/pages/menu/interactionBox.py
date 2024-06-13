@@ -3,7 +3,7 @@ from abc import abstractmethod
 from src.logic.app_elements.elements.base.lock import Lock
 from src.logic.app_elements.elements.base.element import Element
 
-from src.logic.app_elements.elements.container import Container
+from src.logic.app_elements.elements.base.container import Container
 
 
 class InteractionContainer(Container, Lock):

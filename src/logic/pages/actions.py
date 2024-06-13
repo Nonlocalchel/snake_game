@@ -10,19 +10,3 @@ class Action(Enum):
     INPUT = 'input'
     QUIT = 'quit'
 
-    @classmethod
-    def menu_actions(cls):
-        menu_actions = {
-            'Играть': cls.SHOW_CONF,
-            'Настройки': cls.GO_TO_RESULT,
-            'Выйти': cls.QUIT
-        }
-        return menu_actions
-
-    @classmethod
-    def conf_actions(cls):
-        conf_actions = {
-            'Введите имя': cls.INPUT,
-            'Старт': cls.GO_TO_PLAY
-        }
-        return conf_actions

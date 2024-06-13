@@ -1,6 +1,6 @@
 from src.logic.app_elements.elements.base.element import Element
 
-from src.logic.app_elements.elements import button, input
+from src.logic.app_elements.elements import button, textInput
 
 from .interactionBox import InteractionContainer
 
@@ -12,14 +12,22 @@ class ConfigurationBox(InteractionContainer):
         elements = self.create_elements()
         super().__init__(elements, position, (0.5, 0.4))
 
+    @property
+    def selected_input(self):
+        return self.elements[0]
+
     def handle_input(self, key):
-        pass
+        name_input = self.selected_input
+        if key != 'escape':
+            name_input.change(key)
+        else:
+            name_input.clear()
 
     @staticmethod
     def create_elements() -> tuple[Element, ...]:
         elements = ()
 
-        elements += (input.Input('Введите имя'),)
+        elements += (textInput.Input('Введите имя'),)
         elements += (button.Button('Старт', Action.GO_TO_PLAY),)
 
         return elements

@@ -1,11 +1,11 @@
 from src.logic.pages.display import Display
 
+from src.interface.infrastructure import Infrastructure
+
 from .utils import get_clickable_elements, get_menu_params, menu_actions, conf_actions
 from src.logic.elements_handlers.mouseHandle import MouseHandle
 from src.logic.pages.actionHandle import ActionHandle
 from ..actions import Action
-
-from src.interface.infrastructure import Infrastructure
 
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
@@ -20,8 +20,8 @@ class Menu(Display):
         self.infrastructure = infrastructure
         self.action_handler = ActionHandle(infrastructure)
         self.mouse_handler = MouseHandle(infrastructure)
-        self.menu = MenuBox()
         self.start_config = ConfigurationBox()
+        self.menu = MenuBox()
         self.player = PlayerHandle()
         self.is_running = True
         self.action = None
@@ -36,14 +36,15 @@ class Menu(Display):
         mouse_handler = self.mouse_handler
 
         key = self.infrastructure.get_pressed_key()
+        container = self.menu
+
         if self.action is None:
             action_handler.action = menu_actions.get(key, action_handler.action)
 
-        container = self.menu
         if container.get_lock:
             container = self.start_config
             action_handler.action = conf_actions.get(key, action_handler.action)
-            container.elements['Введите имя'].change(key) if key != 'escape' else container.elements['Введите имя'].clear()
+            container.handle_input(key)
 
         clickable_elements = get_clickable_elements(container.elements)
         for element in clickable_elements:
@@ -88,7 +89,7 @@ class Menu(Display):
             self.start_config.unlock()
 
         if self.action == Action.GO_TO_PLAY:
-            name_input = self.start_config.elements['input']
+            name_input = self.start_config.selected_input
             if not name_input.is_empty:
                 self.player.name = name_input.text
 
