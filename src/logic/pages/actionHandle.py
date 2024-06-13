@@ -1,6 +1,6 @@
 from src.interface.infrastructure import Infrastructure
 
-from ..actions import Action
+from src.logic.pages.actions import Action
 
 
 class ActionHandle:
@@ -29,25 +29,3 @@ class ActionHandle:
         if action == Action.QUIT:
             self.infrastructure.play_popup_bubble_sound()
 
-    def set_menu_action(self, key: str) -> None:
-        action = None
-        if key == 'return':
-            action = Action.SHOW_CONF
-
-        if key == 'escape':
-            action = Action.QUIT
-
-        self.action = action
-
-    def set_conf_action(self, key: str) -> None:
-        action = None
-        if key == 'escape':
-            action = Action.SHOW_MENU
-
-        if key == 'return':
-            action = Action.GO_TO_PLAY
-
-        if action is None:
-            return
-
-        self.action = action

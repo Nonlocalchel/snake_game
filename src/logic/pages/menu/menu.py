@@ -1,12 +1,12 @@
 from src.logic.pages.display import Display
 
-from .utils import get_clickable_elements, get_menu_params
+from .utils import get_clickable_elements, get_menu_params, menu_action, conf_action
 from ..actions import Action
 
 from src.interface.infrastructure import Infrastructure
 
 from src.logic.elements_handlers.mouseHandle import MouseHandle
-from .actionHandle import ActionHandle
+from src.logic.pages.actionHandle import ActionHandle
 
 from src.logic.app_elements.elements.container import Container
 from src.logic.playerHandle import PlayerHandle
@@ -36,13 +36,13 @@ class Menu(Display):
 
         key = self.infrastructure.get_pressed_key()
         if self.action is None:
-            action_handler.set_menu_action(key)
+            action_handler.action = menu_action.get(key, action_handler.action)
 
         container = self.menu
         if container.get_lock:
             container = self.start_config
-            action_handler.set_conf_action(key)
-            container.elements['input'].change(key)
+            action_handler.action = conf_action.get(key, action_handler.action)
+            container.elements['input'].change(key) if key != 'escape' else container.elements['input'].clear()
 
         clickable_elements = get_clickable_elements(container.elements)
         for element in clickable_elements:
@@ -76,7 +76,6 @@ class Menu(Display):
         self.start_config.lock()
 
         if self.action is None:
-            self.start_config.elements['input'].clear()
             return
 
         action_value = self.action.value

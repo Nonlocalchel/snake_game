@@ -5,6 +5,7 @@ from .elements.containerView import ContainerView
 from .elements.textView import TextView
 
 from src.logic.pages.game.directions import Direction
+
 from ..services.pathFinder import concatenation_path
 from ..services.dumpLoader.jsonMaster import JsonMaster
 

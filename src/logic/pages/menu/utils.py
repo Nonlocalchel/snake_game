@@ -30,3 +30,15 @@ def is_clickable(element: any) -> bool:
 def get_clickable_elements(elements: dict[str, Action | str]) -> filter:
     filtered_iter = filter(is_clickable, elements.values())
     return filtered_iter
+
+
+menu_action = {
+    'return': Action.SHOW_CONF,
+    'escape': Action.QUIT
+}
+
+conf_action = {
+    'escape': Action.SHOW_MENU,
+    'return': Action.GO_TO_PLAY
+}
+
