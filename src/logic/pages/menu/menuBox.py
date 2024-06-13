@@ -2,7 +2,7 @@ from src.logic.app_elements.elements.base.element import Element
 
 from src.logic.app_elements.elements import button
 
-from .interactionBox import InteractionContainer
+from src.logic.app_elements.elements.interactionBox import InteractionContainer
 
 from ..actions import Action
 
@@ -12,7 +12,7 @@ class MenuBox(InteractionContainer):
         elements = self.create_elements()
         super().__init__(elements, position, offset=(0.02, 0))
 
-    def handle_input(self, key):
+    def handle_input(self, key) -> None:
         pass
 
     @staticmethod

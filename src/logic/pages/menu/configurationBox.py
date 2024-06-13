@@ -2,7 +2,7 @@ from src.logic.app_elements.elements.base.element import Element
 
 from src.logic.app_elements.elements import button, textInput
 
-from .interactionBox import InteractionContainer
+from src.logic.app_elements.elements.interactionBox import InteractionContainer
 
 from ..actions import Action
 
@@ -13,10 +13,10 @@ class ConfigurationBox(InteractionContainer):
         super().__init__(elements, position, (0.5, 0.4))
 
     @property
-    def selected_input(self):
+    def selected_input(self) -> textInput.Input:
         return self.elements[0]
 
-    def handle_input(self, key):
+    def handle_input(self, key: str) -> None:
         name_input = self.selected_input
         if key != 'escape':
             name_input.change(key)

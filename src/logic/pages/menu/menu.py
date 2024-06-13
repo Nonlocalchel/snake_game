@@ -1,16 +1,18 @@
 from src.logic.pages.display import Display
 
-from src.interface.infrastructure import Infrastructure
-
-from .utils import get_clickable_elements, get_menu_params, menu_actions, conf_actions
+from .utils import get_clickable_elements, get_box_params
 from src.logic.elements_handlers.mouseHandle import MouseHandle
+
 from src.logic.pages.actionHandle import ActionHandle
 from ..actions import Action
 
+from src.logic.playerHandle import PlayerHandle
+
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
+from .action_config import menu_actions, conf_actions
 
-from src.logic.playerHandle import PlayerHandle
+from src.interface.infrastructure import Infrastructure
 
 
 class Menu(Display):
@@ -61,13 +63,13 @@ class Menu(Display):
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
         self.infrastructure.draw_container(
-            *get_menu_params(self.menu)
+            *get_box_params(self.menu)
         )
 
         if self.menu.get_lock:
             self.infrastructure.draw_shadow()
             self.infrastructure.draw_container(
-                *get_menu_params(self.start_config)
+                *get_box_params(self.start_config)
             )
 
         self.infrastructure.update_and_tick()

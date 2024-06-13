@@ -7,12 +7,12 @@ from src.logic.app_elements.elements.base.container import Container
 
 
 class InteractionContainer(Container, Lock):
-    def __init__(self, *args, access=True, **kwargs):
+    def __init__(self, *args, access=True, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         Lock.__init__(self, access=access)
 
     @abstractmethod
-    def handle_input(self, key):
+    def handle_input(self, key) -> None:
         pass
 
     @staticmethod

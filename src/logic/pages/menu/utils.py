@@ -2,8 +2,6 @@ from src.logic.app_elements.elements.base.container import Container
 
 from src.logic.app_elements.elements import textInput, button
 
-from src.logic.pages.actions import Action
-
 app_element = textInput.Input | button.Button
 
 
@@ -22,7 +20,7 @@ def get_element_state_for_draw(element: app_element) -> str:
     return state
 
 
-def get_menu_params(menu: Container) -> tuple[any, any]:
+def get_box_params(menu: Container) -> tuple[any, any]:
     frame_params = {
         'pos': menu.pos,
         'size': menu.size,
@@ -47,14 +45,3 @@ def is_clickable(element: any) -> bool:
 def get_clickable_elements(elements: tuple[app_element]) -> filter:
     filtered_iter = filter(is_clickable, elements)
     return filtered_iter
-
-
-menu_actions = {
-    'return': Action.SHOW_CONF,
-    'escape': Action.QUIT
-}
-
-conf_actions = {
-    'return': Action.GO_TO_PLAY,
-    'escape': Action.SHOW_MENU
-}
