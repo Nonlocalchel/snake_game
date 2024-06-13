@@ -1,7 +1,7 @@
 class Lock:
-    def __init__(self):
+    def __init__(self, access=True) -> None:
         super().__init__()
-        self._access = True
+        self._access = access
 
     @property
     def get_lock(self) -> bool:

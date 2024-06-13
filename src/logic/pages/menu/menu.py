@@ -1,6 +1,6 @@
 from src.logic.pages.display import Display
 
-from .utils import get_clickable_elements, get_menu_params, menu_action, conf_action
+from .utils import get_clickable_elements, get_menu_params, menu_actions, conf_actions
 from ..actions import Action
 
 from src.interface.infrastructure import Infrastructure
@@ -36,12 +36,12 @@ class Menu(Display):
 
         key = self.infrastructure.get_pressed_key()
         if self.action is None:
-            action_handler.action = menu_action.get(key, action_handler.action)
+            action_handler.action = menu_actions.get(key, action_handler.action)
 
         container = self.menu
         if container.get_lock:
             container = self.start_config
-            action_handler.action = conf_action.get(key, action_handler.action)
+            action_handler.action = conf_actions.get(key, action_handler.action)
             container.elements['input'].change(key) if key != 'escape' else container.elements['input'].clear()
 
         clickable_elements = get_clickable_elements(container.elements)

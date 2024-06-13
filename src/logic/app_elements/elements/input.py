@@ -2,7 +2,7 @@ from src.logic.app_elements.elements.base.element import Element
 
 
 class Input(Element):
-    def __init__(self, text: str, position: tuple) -> None:
+    def __init__(self, text: str, position: tuple = (0, 0)) -> None:
         super().__init__(position)
         self._text = ''
         self.__default_text = text

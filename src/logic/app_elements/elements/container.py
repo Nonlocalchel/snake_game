@@ -7,7 +7,6 @@ from .button import Button
 from .input import Input
 from src.logic.pages.actions import Action
 
-
 action_item = Button | Input
 
 
@@ -17,21 +16,32 @@ class Container(Element, Lock):
 
         super().__init__(position)
         self.size = size or figure_size(elem_params)
-        self.elements = self.create_elements(elem_params, offset)
+        self.elements = self.set_elements_pos_old(elem_params, offset)
         self.pos = position
 
     def get_real_element_pos(self, element: any) -> tuple[float, float]:
         return figure_real_pos(self.pos, element.pos)
 
-    def create_elements(self, elem_params: dict[str, Action | str], offset: tuple) -> dict[str, action_item]:
+    def set_elements_pos_old(self, elem_params: dict[str, Action | str], offset: tuple) -> dict[str, action_item]:
         elements = {}
         positions = figure_positions(self.size, elem_params, offset)
 
         for name, position in zip(elem_params, positions):
             if elem_params[name] == Action.INPUT:
-                elements['input'] = Input(name, position)
+                elements['input'] = Input(name)
+                elements['input'].pos = position
                 continue
 
-            elements[name] = Button(name, elem_params[name], position)
+            elements[name] = Button(name, elem_params[name])
+            elements[name].pos = position
 
         return elements
+
+    def set_elements_pos(self, elements, offset):
+        elements_dict = {}
+        positions = figure_positions(self.size, elements, offset)
+
+        for name, position in zip(elements_dict, positions):
+            elements_dict[name].pos = position
+
+        return elements_dict

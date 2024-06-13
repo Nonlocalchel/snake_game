@@ -32,13 +32,12 @@ def get_clickable_elements(elements: dict[str, Action | str]) -> filter:
     return filtered_iter
 
 
-menu_action = {
+menu_actions = {
     'return': Action.SHOW_CONF,
     'escape': Action.QUIT
 }
 
-conf_action = {
-    'escape': Action.SHOW_MENU,
-    'return': Action.GO_TO_PLAY
+conf_actions = {
+    'return': Action.GO_TO_PLAY,
+    'escape': Action.SHOW_MENU
 }
-

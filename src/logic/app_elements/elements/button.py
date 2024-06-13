@@ -1,8 +1,10 @@
 from src.logic.app_elements.elements.base.element import Element
 
+from src.logic.pages.actions import Action
+
 
 class Button(Element):
-    def __init__(self, name: str, action: str, position: tuple) -> None:
+    def __init__(self, name: str, action: Action, position: tuple = (0, 0)) -> None:
         super().__init__(position)
         self._text = name
         self.__action = action

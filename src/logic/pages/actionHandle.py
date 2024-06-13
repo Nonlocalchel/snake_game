@@ -14,6 +14,9 @@ class ActionHandle:
 
     @action.setter
     def action(self, new_action: Action | None) -> None:
+        if new_action == self.__action:
+            return
+
         self.__action = new_action
 
         if new_action:
