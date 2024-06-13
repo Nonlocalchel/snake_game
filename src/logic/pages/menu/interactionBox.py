@@ -8,7 +8,7 @@ from src.logic.app_elements.elements.container import Container
 
 class InteractionContainer(Container, Lock):
     def __init__(self, *args, access=True, **kwargs):
-        super().__init__(*args, *kwargs)
+        super().__init__(*args, **kwargs)
         Lock.__init__(self, access=access)
 
     @abstractmethod

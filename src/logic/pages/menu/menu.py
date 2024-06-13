@@ -1,14 +1,15 @@
 from src.logic.pages.display import Display
 
 from .utils import get_clickable_elements, get_menu_params, menu_actions, conf_actions
+from src.logic.elements_handlers.mouseHandle import MouseHandle
+from src.logic.pages.actionHandle import ActionHandle
 from ..actions import Action
 
 from src.interface.infrastructure import Infrastructure
 
-from src.logic.elements_handlers.mouseHandle import MouseHandle
-from src.logic.pages.actionHandle import ActionHandle
+from .menuBox import MenuBox
+from .configurationBox import ConfigurationBox
 
-from src.logic.app_elements.elements.container import Container
 from src.logic.playerHandle import PlayerHandle
 
 
@@ -19,8 +20,8 @@ class Menu(Display):
         self.infrastructure = infrastructure
         self.action_handler = ActionHandle(infrastructure)
         self.mouse_handler = MouseHandle(infrastructure)
-        self.menu = Container(Action.menu_actions(), (-0.05, 0.2), offset=(0.02, 0))
-        self.start_config = Container(Action.conf_actions(), (0.25, 0.25), (0.5, 0.4))
+        self.menu = MenuBox()
+        self.start_config = ConfigurationBox()
         self.player = PlayerHandle()
         self.is_running = True
         self.action = None
@@ -42,7 +43,7 @@ class Menu(Display):
         if container.get_lock:
             container = self.start_config
             action_handler.action = conf_actions.get(key, action_handler.action)
-            container.elements['input'].change(key) if key != 'escape' else container.elements['input'].clear()
+            container.elements['Введите имя'].change(key) if key != 'escape' else container.elements['Введите имя'].clear()
 
         clickable_elements = get_clickable_elements(container.elements)
         for element in clickable_elements:
