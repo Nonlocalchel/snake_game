@@ -1,9 +1,16 @@
-class Button:
+from src.logic.app_elements.elements.base.element import Element
+
+
+class Button(Element):
     def __init__(self, name: str, action: str, position: tuple) -> None:
-        self.text = name
+        super().__init__(position)
+        self._text = name
         self.__action = action
         self.state = None
-        self.pos = position
+
+    @property
+    def text(self):
+        return self._text
 
     @property
     def is_hover(self) -> bool:

@@ -42,13 +42,12 @@ class Menu(Display):
         if container.get_lock:
             container = self.start_config
             action_handler.set_conf_action(key)
-            name_input = container.elements['input']
-            name_input.change(key)
+            container.elements['input'].change(key)
 
-        for element in get_clickable_elements(container.elements):
-            mouse_handler.handle_pos(element, container)
-            if element.is_hover:
-                mouse_handler.handle_click(element)
+        clickable_elements = get_clickable_elements(container.elements)
+        for element in clickable_elements:
+            position = container.get_real_element_pos(element)
+            mouse_handler.handle(element, position)
 
             if element.state == 'click':
                 action_handler.action = element.action

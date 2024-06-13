@@ -3,7 +3,7 @@ import pygame
 from .baseView import BaseView
 
 from src.settings import *
-from src.interface.utils import figure_font, increase_size, figure_inner_pos, get_scale_radius
+from src.interface.utils import figure_font, increase_size, figure_inner_pos, get_scale_radius, digit
 
 
 class TextView(BaseView):
@@ -23,7 +23,7 @@ class TextView(BaseView):
         text_surf = font.render(self._text, 1, self.color)
         return text_surf
 
-    def set_colored_and_scaled_view(self, color=SIMPLE_TEXT_COLOR, scale=None):
+    def set_colored_and_scaled_view(self, color: str = SIMPLE_TEXT_COLOR, scale: None | tuple[digit, digit] = None):
         self.color = color
 
         self.__view = self.get_text_surf()
@@ -31,7 +31,7 @@ class TextView(BaseView):
         self.scale_view(scale)
 
     @property
-    def view(self):
+    def view(self) -> pygame.Surface:
         return self.__view
 
     @view.setter
@@ -63,11 +63,11 @@ class TextView(BaseView):
             pos
         )
 
-    def set_unfocused_view(self):
+    def set_unfocused_view(self) -> None:
         self.color = UNFOCUSED_TEXT_COLOR
         self.__view = self.get_text_surf()
 
-    def scale_view(self, scale=None):
+    def scale_view(self, scale: None | tuple[digit, digit] = None) -> None:
         size = self.size
         width_cof, height_cof = scale or self.scale
         new_size = increase_size(size, width_cof=width_cof, height_cof=height_cof)

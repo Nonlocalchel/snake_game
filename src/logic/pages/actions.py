@@ -22,7 +22,7 @@ class Action(Enum):
     @classmethod
     def conf_actions(cls):
         conf_actions = {
-            'Введите имя': cls.INPUT.value,
+            'Введите имя': cls.INPUT,
             'Старт': cls.GO_TO_PLAY
         }
         return conf_actions

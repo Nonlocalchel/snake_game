@@ -1,5 +1,6 @@
 from src.logic.app_elements.elements.container import Container, Button, Input
-from ..actions import Action
+
+from src.logic.pages.actions import Action
 
 app_element = Input | Button
 

@@ -6,7 +6,6 @@ from ..actions import Action
 class ActionHandle:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
-        self.tracker = None
         self.__action = None
 
     @property
@@ -41,14 +40,14 @@ class ActionHandle:
         self.action = action
 
     def set_conf_action(self, key: str) -> None:
-        action = Action.SHOW_CONF
+        action = None
         if key == 'escape':
             action = Action.SHOW_MENU
 
         if key == 'return':
             action = Action.GO_TO_PLAY
 
-        if action == Action.SHOW_CONF:
+        if action is None:
             return
 
         self.action = action

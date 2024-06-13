@@ -1,7 +1,10 @@
-class Input:
+from src.logic.app_elements.elements.base.element import Element
+
+
+class Input(Element):
     def __init__(self, text: str, position: tuple) -> None:
+        super().__init__(position)
         self._text = ''
-        self.pos = position
         self.__default_text = text
         self.state = 'unfocus'
 
@@ -11,7 +14,7 @@ class Input:
 
     @property
     def is_valid_length(self) -> bool:
-        return len(self._text) < 5
+        return len(self._text) < 10
 
     @staticmethod
     def is_symbol(char: str) -> bool:
