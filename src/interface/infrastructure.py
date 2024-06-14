@@ -41,12 +41,15 @@ class Infrastructure:
         )
 
     # for menu
-    def draw_container(self, menu_params: dict[str, dict], elem_params: dict[str, dict]) -> None:
+    def draw_box(self, params: dict[str, dict]) -> None:
+        box_params = params['box_params']
+        elem_params = params['elements_params']
+
         cont_view = ContainerView(
-            figure_abs_params(*menu_params['size'])
+            figure_abs_params(*box_params['size'])
         )
 
-        cont_view._coord = figure_abs_params(*menu_params['pos'])
+        cont_view._coord = figure_abs_params(*box_params['pos'])
 
         cont_surf = cont_view.view
         for elem_name, elem_data in elem_params.items():

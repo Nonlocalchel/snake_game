@@ -59,15 +59,11 @@ class Menu(Page):
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
-        self.infrastructure.draw_container(
-            *self.menu.params
-        )
+        self.infrastructure.draw_box(self.menu.params)
 
         if self.menu.get_lock:
             self.infrastructure.draw_shadow()
-            self.infrastructure.draw_container(
-                *self.start_config.params
-            )
+            self.infrastructure.draw_box(self.start_config.params)
 
         self.infrastructure.update_and_tick()
 

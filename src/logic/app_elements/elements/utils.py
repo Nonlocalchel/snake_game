@@ -19,14 +19,18 @@ def get_element_state_for_draw(element: app_element) -> str:
     return state
 
 
-def get_box_params(menu: Container, elements: tuple[app_element, ...]) -> tuple[any, any]:
-    frame_params = {
-        'pos': menu.pos,
-        'size': menu.size,
+def get_box_params(box: Container) -> dict[str, dict]:
+    box_params = {
+        'pos': box.pos,
+        'size': box.size,
     }
 
     elements_params = {}
-    for element in elements:
+    for element in box.elements:
+        if type(element) is Container:
+            box = element
+            get_box_params(box)
+
         state = get_element_state_for_draw(element)
 
         elements_params[element.text] = {
@@ -34,7 +38,7 @@ def get_box_params(menu: Container, elements: tuple[app_element, ...]) -> tuple[
             'state': state
         }
 
-    return frame_params, elements_params
+    return {'box_params': box_params, 'elements_params': elements_params}
 
 
 def is_clickable(element: any) -> bool:
