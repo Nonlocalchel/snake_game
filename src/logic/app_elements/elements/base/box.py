@@ -6,7 +6,7 @@ from src.logic.app_elements.elements.base.utils import figure_size, figure_posit
 from src.logic.pages.actions import Action
 
 
-class Container(Element, Lock):
+class Box(Element, Lock):
     def __init__(self, elements: dict[Element:Action | str], position: tuple[float, float],
                  size: tuple[float, float] = None, offset: tuple[float, float] = (0, 0)) -> None:
 
