@@ -24,7 +24,7 @@ class InteractionBox(Container, Lock):
 
     @property
     def params(self):
-        return get_box_params(self, self.elements)
+        return get_box_params(self)
 
     @property
     def clickable_elements(self):
