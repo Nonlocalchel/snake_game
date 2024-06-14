@@ -17,18 +17,24 @@ class ActionHandle:
         if new_action == self.__action:
             return
 
-        self.__action = new_action
-
         if new_action:
             self.handle_action(new_action)
 
+        if new_action != Action.INPUT:
+            self.__action = new_action
+
+        if new_action == Action.SHOW_MENU:
+            self.__action = None
+
     def handle_action(self, action: Action | None) -> None:
-        if action in [Action.SHOW_CONF, Action.SHOW_MENU]:
+        if action == Action.SHOW_CONF:
             self.infrastructure.play_popup_bubble_sound()
 
         if action == Action.SHOW_MENU:
-            self.action = None
+            self.handle_action(Action.SHOW_CONF)
+
+        if action == Action.INPUT:
+            print(1)
 
         if action == Action.QUIT:
             self.infrastructure.play_popup_bubble_sound()
-

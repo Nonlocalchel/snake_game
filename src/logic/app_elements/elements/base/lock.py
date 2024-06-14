@@ -4,7 +4,7 @@ class Lock:
         self._access = access
 
     @property
-    def get_lock(self) -> bool:
+    def is_lock(self) -> bool:
         return not self._access
 
     def lock(self) -> None:
