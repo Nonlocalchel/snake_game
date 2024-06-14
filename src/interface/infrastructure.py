@@ -45,11 +45,8 @@ class Infrastructure:
         box_params = params['box_params']
         elem_params = params['elements_params']
 
-        cont_view = ContainerView(
-            figure_abs_params(*box_params['size'])
-        )
-
-        cont_view._coord = figure_abs_params(*box_params['pos'])
+        cont_view = ContainerView(figure_abs_params(*box_params['size']))
+        cont_view.coord = figure_abs_params(*box_params['pos'])
 
         cont_surf = cont_view.view
         for elem_name, elem_data in elem_params.items():
@@ -164,7 +161,7 @@ class Infrastructure:
             pressed_cash.clear()
 
         pressed_keys = []
-
+        
         keys_constant = JsonMaster.read_file('../src/interface/keys_constant')
         for key in keys_constant.values():
             selected_key = pygame.key.name(key)

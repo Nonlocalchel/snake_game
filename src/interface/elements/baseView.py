@@ -19,6 +19,10 @@ class BaseView:
     def coord(self) -> tuple[int, int]:
         return self._coord
 
+    @coord.setter
+    def coord(self, value) -> None:
+        self._coord = value
+
     @property
     def geom(self) -> pygame.Rect:
         x, y = self.coord
