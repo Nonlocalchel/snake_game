@@ -31,7 +31,7 @@ class ActionHandle:
             self.handle_action(Action.SHOW_CONF)
 
         if action == Action.INPUT:
-            print(1)
+            pass
 
         if action == Action.QUIT:
             self.infrastructure.play_popup_bubble_sound()

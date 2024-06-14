@@ -25,6 +25,7 @@ class Infrastructure:
             bg_pic = self.load_image(image)
             bg_pic = self.fix_image_size(bg_pic)
             self.screen.blit(bg_pic, (-43, 0))
+            self.screen.set_alpha(255)
         else:
             self.screen.fill(SCREEN_COLOR)
 
@@ -33,8 +34,8 @@ class Infrastructure:
             scale(WIDTH, 1),
             scale(HEIGHT, 1)
         )
-        shadow = pygame.Surface(size, pygame.SRCALPHA)
-        shadow.fill((0, 0, 0, 150))
+        shadow = pygame.Surface(size)
+        shadow.set_alpha(150)
         self.screen.blit(
             shadow,
             (0, 0)
