@@ -14,16 +14,14 @@ class ActionHandle:
 
     @action.setter
     def action(self, new_action: Action | None) -> None:
-        if new_action == self.__action:
+        if new_action in [self.__action, None]:
             return
 
-        if new_action:
-            self.handle_action(new_action)
-
+        self.handle_action(new_action)
         if new_action != Action.INPUT:
             self.__action = new_action
 
-    def handle_action(self, action: Action | None) -> None:
+    def handle_action(self, action: Action) -> None:
         if action == Action.SHOW_CONF:
             self.infrastructure.play_popup_bubble_sound()
 

@@ -9,7 +9,7 @@ from src.logic.playerHandle import PlayerHandle
 
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
-from .utils import choose_conf_action, choose_menu_action
+from .utils import choose_conf_action, choose_menu_action, choose_action
 
 from src.interface.infrastructure import Infrastructure
 
@@ -39,11 +39,11 @@ class Menu(Page):
         key = self.infrastructure.get_pressed_key()
 
         box = self.menu
-        action_handler.action = choose_menu_action(key, action_handler.action)
+        action_handler.action = choose_action(key, box)
 
         if box.is_lock:
             box = self.start_config
-            action_handler.action = choose_conf_action(key, action_handler.action)
+            action_handler.action = choose_action(key, box)
             box.handle_input(key)
 
         for element in box.clickable_elements:
@@ -69,27 +69,27 @@ class Menu(Page):
 
     def update_state(self) -> None:
         """Вычисление следующего состояния всех объектов на экране"""
+        self.start_config.unlock()
         self.menu.unlock()
-        self.start_config.lock()
 
-        if self.action is None:
-            return
+        match self.action:
+            case Action.SHOW_CONF:
+                self.menu.lock()
+
+            case Action.GO_TO_PLAY:
+                name_input = self.start_config.selected_input
+                if not name_input.is_empty:
+                    self.player.name = name_input.text
+
+            case Action.QUIT:
+                self.is_running = False
+
+            case _:
+                self.start_config.lock()
 
         action_value = self.action.value
         if action_value.startswith('go-to'):
             self.name = action_value.split('_')[1]
-
-        if self.action == Action.SHOW_CONF:
-            self.menu.lock()
-            self.start_config.unlock()
-
-        if self.action == Action.GO_TO_PLAY:
-            name_input = self.start_config.selected_input
-            if not name_input.is_empty:
-                self.player.name = name_input.text
-
-        if self.action == Action.QUIT:
-            self.is_running = False
 
     def loop(self):
         """Цикл меню"""
