@@ -9,7 +9,7 @@ from src.logic.playerHandle import PlayerHandle
 
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
-from .utils import choose_conf_action, choose_menu_action, choose_action
+from .utils import choose_action, get_available_box
 
 from src.interface.infrastructure import Infrastructure
 
@@ -36,13 +36,10 @@ class Menu(Page):
         action_handler = self.action_handler
         mouse_handler = self.mouse_handler
 
+        box = get_available_box(self.menu, self.start_config)
+
         key = self.infrastructure.get_pressed_key()
-
-        box = self.menu
-        action_handler.action = choose_action(key, box)
-
-        if box.is_lock:
-            box = self.start_config
+        if key:
             action_handler.action = choose_action(key, box)
             box.handle_input(key)
 
