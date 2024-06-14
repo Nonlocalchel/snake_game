@@ -42,7 +42,7 @@ class Infrastructure:
 
     # for menu
     def draw_box(self, params: dict[str, dict]) -> None:
-        box_params = params['box_params'] #s
+        box_params = params['box_params']
         elem_params = params['elements_params']
 
         cont_view = ContainerView(
