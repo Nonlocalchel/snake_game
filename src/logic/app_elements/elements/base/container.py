@@ -1,0 +1,27 @@
+from src.logic.app_elements.elements.base.element import Element
+from src.logic.app_elements.elements.base.lock import Lock
+
+from src.logic.app_elements.elements.base.utils import figure_size, figure_positions, figure_real_pos
+
+from src.logic.pages.actions import Action
+
+
+class Container(Element, Lock):
+    def __init__(self, elements: dict[Element:Action | str], position: tuple[float, float],
+                 size: tuple[float, float] = None, offset: tuple[float, float] = (0, 0)) -> None:
+
+        super().__init__(position)
+        self.size = size or figure_size(elements)
+        self.elements = elements
+        self.pos = position
+        self.set_elements_pos(offset)
+
+    def get_real_element_pos(self, element: any) -> tuple[float, float]:
+        return figure_real_pos(self.pos, element.pos)
+
+    def set_elements_pos(self, offset: tuple[float, float]) -> None:
+        elements = self.elements
+        positions = figure_positions(self.size, elements, offset)
+
+        for element, position in zip(elements, positions):
+            element.pos = position

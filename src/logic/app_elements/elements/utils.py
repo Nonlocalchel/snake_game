@@ -1,0 +1,46 @@
+from . import textInput, button
+from .base.container import Container
+
+app_element = textInput.Input | button.Button
+
+
+def get_element_state_for_draw(element: app_element) -> str:
+    state = None
+    if type(element) is button.Button:
+        if element.is_hover:
+            state = 'hover'
+
+        if element.is_action:
+            state = 'action'
+
+    if type(element) is textInput.Input:
+        state = element.state
+
+    return state
+
+
+def get_box_params(menu: Container, elements: tuple[app_element, ...]) -> tuple[any, any]:
+    frame_params = {
+        'pos': menu.pos,
+        'size': menu.size,
+    }
+
+    elements_params = {}
+    for element in elements:
+        state = get_element_state_for_draw(element)
+
+        elements_params[element.text] = {
+            'position': element.pos,
+            'state': state
+        }
+
+    return frame_params, elements_params
+
+
+def is_clickable(element: any) -> bool:
+    return hasattr(element, 'is_hover')
+
+
+def get_clickable_elements(elements: tuple[app_element]) -> filter:
+    filtered_iter = filter(is_clickable, elements)
+    return filtered_iter

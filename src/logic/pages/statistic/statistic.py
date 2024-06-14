@@ -1,0 +1,25 @@
+from src.interface.infrastructure import Infrastructure
+from src.logic.pages.page import Page
+
+
+class Statistic(Page):
+    """Контролирует главный цикл игры"""
+
+    def __init__(self, infrastracture: Infrastructure) -> None:
+        pass
+
+    def process_events(self) -> None:
+        """Обработка ввода от пользователя"""
+        pass
+
+    def render(self) -> None:
+        """Обновление экрана: перерисовка """
+        pass
+
+    def update_state(self) -> None:
+        """Вычисление следующего состояния всех объектов на экране"""
+        pass
+
+    def loop(self):
+        """Главный цикл игры"""
+        pass

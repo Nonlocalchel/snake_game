@@ -1,6 +1,6 @@
-from src.pages.game.game import Game
-from src.pages.game.infrastructure_game import InfrastructureGame
+from src.logic.pages.game.game import Game
+from src.interface.infrastructure import Infrastructure
 
 if __name__ == "__main__":
-    game = Game(InfrastructureGame())
+    game = Game(Infrastructure())
     game.loop()
