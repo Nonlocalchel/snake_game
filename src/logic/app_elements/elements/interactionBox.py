@@ -3,12 +3,12 @@ from abc import abstractmethod
 from src.logic.app_elements.elements.base.lock import Lock
 from src.logic.app_elements.elements.base.element import Element
 
-from src.logic.app_elements.elements.base.container import Container
+from src.logic.app_elements.elements.base.box import Box
 
 from .utils import get_box_params, get_clickable_elements
 
 
-class InteractionBox(Container, Lock):
+class InteractionBox(Box, Lock):
     def __init__(self, *args, access=True, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         Lock.__init__(self, access=access)

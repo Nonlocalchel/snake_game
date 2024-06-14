@@ -41,7 +41,7 @@ class Infrastructure:
         )
 
     # for menu
-    def draw_box(self, params: dict[str, dict]) -> None:
+    def draw_box(self, params: dict[str, dict], surf_to_draw: pygame.Surface | None = None) -> None:
         box_params = params['box_params']
         elem_params = params['elements_params']
 
@@ -53,6 +53,9 @@ class Infrastructure:
 
         cont_surf = cont_view.view
         for elem_name, elem_data in elem_params.items():
+            if elem_name == 'box':
+                self.draw_box(elem_params, cont_surf)
+
             elem_coord = figure_abs_params(
                 *elem_data['position']
             )
@@ -65,7 +68,8 @@ class Infrastructure:
                 text_view.geom
             )
 
-        self.screen.blit(
+        surf_to_draw = surf_to_draw or self.screen
+        surf_to_draw.blit(
             cont_surf,
             cont_view.coord
         )

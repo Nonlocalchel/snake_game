@@ -1,5 +1,5 @@
 from . import textInput, button
-from .base.container import Container
+from .base.box import Box
 
 app_element = textInput.Input | button.Button
 
@@ -19,7 +19,7 @@ def get_element_state_for_draw(element: app_element) -> str:
     return state
 
 
-def get_box_params(box: Container) -> dict[str, dict]:
+def get_box_params(box: Box) -> dict[str, dict]:
     box_params = {
         'pos': box.pos,
         'size': box.size,
@@ -27,9 +27,9 @@ def get_box_params(box: Container) -> dict[str, dict]:
 
     elements_params = {}
     for element in box.elements:
-        if type(element) is Container:
+        if type(element) is Box:
             box = element
-            get_box_params(box)
+            elements_params['box'] = get_box_params(box)
 
         state = get_element_state_for_draw(element)
 
