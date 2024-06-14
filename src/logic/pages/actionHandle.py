@@ -4,9 +4,9 @@ from src.logic.pages.actions import Action
 
 
 class ActionHandle:
-    def __init__(self, infrastructure: Infrastructure) -> None:
+    def __init__(self, infrastructure: Infrastructure, start_action: Action) -> None:
         self.infrastructure = infrastructure
-        self.__action = None
+        self.__action = start_action
 
     @property
     def action(self) -> Action | None:
@@ -22,9 +22,6 @@ class ActionHandle:
 
         if new_action != Action.INPUT:
             self.__action = new_action
-
-        if new_action == Action.SHOW_MENU:
-            self.__action = None
 
     def handle_action(self, action: Action | None) -> None:
         if action == Action.SHOW_CONF:

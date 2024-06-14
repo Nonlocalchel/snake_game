@@ -19,13 +19,13 @@ class Menu(Page):
 
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
-        self.action_handler = ActionHandle(infrastructure)
+        self.action = Action.SHOW_MENU
+        self.action_handler = ActionHandle(infrastructure, self.action)
         self.mouse_handler = MouseHandle(infrastructure)
         self.start_config = ConfigurationBox()
         self.menu = MenuBox()
         self.player = PlayerHandle()
         self.is_running = True
-        self.action = None
         self.name = 'menu'
 
     def process_events(self) -> None:
