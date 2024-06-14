@@ -19,13 +19,13 @@ class Menu(Page):
 
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
-        self.action_handler = ActionHandle(infrastructure)
+        self.action = Action.SHOW_MENU
+        self.action_handler = ActionHandle(infrastructure, self.action)
         self.mouse_handler = MouseHandle(infrastructure)
         self.start_config = ConfigurationBox()
         self.menu = MenuBox()
         self.player = PlayerHandle()
         self.is_running = True
-        self.action = None
         self.name = 'menu'
 
     def process_events(self) -> None:
@@ -37,11 +37,11 @@ class Menu(Page):
         mouse_handler = self.mouse_handler
 
         key = self.infrastructure.get_pressed_key()
-        box = self.menu
 
+        box = self.menu
         action_handler.action = choose_menu_action(key, action_handler.action)
 
-        if box.get_lock:
+        if box.is_lock:
             box = self.start_config
             action_handler.action = choose_conf_action(key, action_handler.action)
             box.handle_input(key)
@@ -61,7 +61,7 @@ class Menu(Page):
 
         self.infrastructure.draw_box(self.menu.params)
 
-        if self.menu.get_lock:
+        if self.menu.is_lock:
             self.infrastructure.draw_shadow()
             self.infrastructure.draw_box(self.start_config.params)
 

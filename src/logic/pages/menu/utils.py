@@ -20,4 +20,7 @@ def choose_conf_action(key, default):
     if key == 'escape':
         action = Action.SHOW_MENU
 
+    if key and len(key) == 1:
+        action = Action.INPUT
+
     return action
