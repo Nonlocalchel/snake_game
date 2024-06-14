@@ -2,12 +2,14 @@ from abc import ABC, abstractmethod
 from src.interface.infrastructure import Infrastructure
 
 
-class Display(ABC):
+class Page(ABC):
     """Контролирует главный цикл игры"""
 
     @abstractmethod
     def __init__(self, infrastracture: Infrastructure) -> None:
-        pass
+        self.infrastructure = infrastracture
+        self.player = None
+        self.name = None
 
     @abstractmethod
     def process_events(self) -> None:

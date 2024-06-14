@@ -1,47 +1,23 @@
-from src.logic.app_elements.elements.base.container import Container
-
-from src.logic.app_elements.elements import textInput, button
-
-app_element = textInput.Input | button.Button
+from src.logic.pages.actions import Action
 
 
-def get_element_state_for_draw(element: app_element) -> str:
-    state = None
-    if type(element) is button.Button:
-        if element.is_hover:
-            state = 'hover'
+def choose_menu_action(key, default):
+    action = default
+    if key == 'return':
+        action = Action.SHOW_CONF
 
-        if element.is_action:
-            state = 'action'
+    if key == 'escape':
+        action = Action.QUIT
 
-    if type(element) is textInput.Input:
-        state = element.state
-
-    return state
+    return action
 
 
-def get_box_params(menu: Container) -> tuple[any, any]:
-    frame_params = {
-        'pos': menu.pos,
-        'size': menu.size,
-    }
+def choose_conf_action(key, default):
+    action = default
+    if key == 'return':
+        action = Action.GO_TO_PLAY
 
-    elements_params = {}
-    for element in menu.elements:
-        state = get_element_state_for_draw(element)
+    if key == 'escape':
+        action = Action.SHOW_MENU
 
-        elements_params[element.text] = {
-            'position': element.pos,
-            'state': state
-        }
-
-    return frame_params, elements_params
-
-
-def is_clickable(element: any) -> bool:
-    return hasattr(element, 'is_hover')
-
-
-def get_clickable_elements(elements: tuple[app_element]) -> filter:
-    filtered_iter = filter(is_clickable, elements)
-    return filtered_iter
+    return action

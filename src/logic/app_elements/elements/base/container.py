@@ -1,7 +1,7 @@
 from src.logic.app_elements.elements.base.element import Element
 from src.logic.app_elements.elements.base.lock import Lock
 
-from src.logic.app_elements.utils import figure_size, figure_positions, figure_real_pos
+from src.logic.app_elements.elements.base.utils import figure_size, figure_positions, figure_real_pos
 
 from src.logic.pages.actions import Action
 

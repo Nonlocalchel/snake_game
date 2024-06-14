@@ -1,9 +1,9 @@
-from src.logic.pages.display import Display
+from src.logic.pages.page import Page
 from src.interface.infrastructure import Infrastructure
 from .utils import *
 
 
-class Game(Display):
+class Game(Page):
     """Контролирует главный цикл игры"""
 
     def __init__(self, infrastracture: Infrastructure) -> None:

@@ -1,6 +1,8 @@
 from .logic.page import pages
 from .logic.playerHandle import PlayerHandle
 
+from .logic.pages.page import Page
+
 from .interface.infrastructure import Infrastructure
 
 
@@ -10,7 +12,7 @@ class SnakeApplication:
         self.page_name = start_page
         self.player = player
 
-    def launch(self):
+    def launch(self) -> None:
         while True:
             page_class = pages[self.page_name]
             page = page_class(self.infrastructure)
@@ -19,7 +21,7 @@ class SnakeApplication:
             if not page.is_running:
                 quit()
 
-    def launch_page(self, page):
+    def launch_page(self, page: Page) -> None:
         self.set_page_player(page)
 
         page.loop()
@@ -27,12 +29,12 @@ class SnakeApplication:
         self.player = self.get_page_player(page)
         self.page_name = page.name
 
-    def get_page_player(self, page):
+    def get_page_player(self, page: Page) -> PlayerHandle | None:
         if self.page_name == 'menu':
             return page.player
         else:
             return
 
-    def set_page_player(self, page):
+    def set_page_player(self, page: Page) -> None:
         if hasattr(page, 'player') and self.player:
             page.player = self.player

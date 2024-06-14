@@ -1,6 +1,5 @@
-from src.logic.pages.display import Display
+from src.logic.pages.page import Page
 
-from .utils import get_clickable_elements, get_box_params
 from src.logic.elements_handlers.mouseHandle import MouseHandle
 
 from src.logic.pages.actionHandle import ActionHandle
@@ -10,12 +9,12 @@ from src.logic.playerHandle import PlayerHandle
 
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
-from .action_config import menu_actions, conf_actions
+from .utils import choose_conf_action, choose_menu_action
 
 from src.interface.infrastructure import Infrastructure
 
 
-class Menu(Display):
+class Menu(Page):
     """Контролирует цикл меню"""
 
     def __init__(self, infrastructure: Infrastructure) -> None:
@@ -38,19 +37,17 @@ class Menu(Display):
         mouse_handler = self.mouse_handler
 
         key = self.infrastructure.get_pressed_key()
-        container = self.menu
+        box = self.menu
 
-        if self.action is None:
-            action_handler.action = menu_actions.get(key, action_handler.action)
+        action_handler.action = choose_menu_action(key, action_handler.action)
 
-        if container.get_lock:
-            container = self.start_config
-            action_handler.action = conf_actions.get(key, action_handler.action)
-            container.handle_input(key)
+        if box.get_lock:
+            box = self.start_config
+            action_handler.action = choose_conf_action(key, action_handler.action)
+            box.handle_input(key)
 
-        clickable_elements = get_clickable_elements(container.elements)
-        for element in clickable_elements:
-            position = container.get_real_element_pos(element)
+        for element in box.clickable_elements:
+            position = box.get_real_element_pos(element)
             mouse_handler.handle(element, position)
 
             if element.state == 'click':
@@ -63,13 +60,13 @@ class Menu(Display):
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
         self.infrastructure.draw_container(
-            *get_box_params(self.menu)
+            *self.menu.params
         )
 
         if self.menu.get_lock:
             self.infrastructure.draw_shadow()
             self.infrastructure.draw_container(
-                *get_box_params(self.start_config)
+                *self.start_config.params
             )
 
         self.infrastructure.update_and_tick()

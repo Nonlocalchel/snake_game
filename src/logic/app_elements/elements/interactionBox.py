@@ -5,8 +5,10 @@ from src.logic.app_elements.elements.base.element import Element
 
 from src.logic.app_elements.elements.base.container import Container
 
+from .utils import get_box_params, get_clickable_elements
 
-class InteractionContainer(Container, Lock):
+
+class InteractionBox(Container, Lock):
     def __init__(self, *args, access=True, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         Lock.__init__(self, access=access)
@@ -19,3 +21,11 @@ class InteractionContainer(Container, Lock):
     @abstractmethod
     def create_elements() -> tuple[Element, ...]:
         pass
+
+    @property
+    def params(self):
+        return get_box_params(self, self.elements)
+
+    @property
+    def clickable_elements(self):
+        return get_clickable_elements(self.elements)

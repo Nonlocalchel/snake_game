@@ -1,8 +1,8 @@
 from src.interface.infrastructure import Infrastructure
-from src.logic.pages.display import Display
+from src.logic.pages.page import Page
 
 
-class Statistic(Display):
+class Statistic(Page):
     """Контролирует главный цикл игры"""
 
     def __init__(self, infrastracture: Infrastructure) -> None:

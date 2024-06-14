@@ -2,12 +2,12 @@ from src.logic.app_elements.elements.base.element import Element
 
 from src.logic.app_elements.elements import button, textInput
 
-from src.logic.app_elements.elements.interactionBox import InteractionContainer
+from src.logic.app_elements.elements.interactionBox import InteractionBox
 
 from src.logic.pages.actions import Action
 
 
-class ConfigurationBox(InteractionContainer):
+class ConfigurationBox(InteractionBox):
     def __init__(self, position: tuple[float, float] = (0.25, 0.25)) -> None:
         elements = self.create_elements()
         super().__init__(elements, position, (0.5, 0.4))
