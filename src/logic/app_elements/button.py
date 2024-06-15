@@ -1,4 +1,4 @@
-from src.logic.app_elements.base import Element
+from .base.element import Element
 
 from src.logic.pages.actions import Action
 
