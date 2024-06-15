@@ -1,4 +1,4 @@
-from src.logic.app_elements.elements.base.element import Element
+from src.logic.app_elements.base import Element
 
 
 class Input(Element):

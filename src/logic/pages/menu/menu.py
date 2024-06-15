@@ -8,7 +8,7 @@ from src.logic.playerHandle import PlayerHandle
 from src.logic.elements_handlers.mouseHandle import MouseHandle
 from src.logic.pages.actionHandle import ActionHandle
 from .action_config import choose_alt_action, choose_box_action
-from .utils import get_available_box
+from .utils import get_available_box, get_box_params
 
 from src.interface.infrastructure import Infrastructure
 
@@ -55,11 +55,13 @@ class Menu(Page):
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
-        self.infrastructure.draw_box(self.menu.params)
+        self.infrastructure.draw_box(get_box_params(self.menu))
 
         if self.menu.is_lock:
             self.infrastructure.draw_shadow()
-            self.infrastructure.draw_box(self.start_config.params)
+            self.infrastructure.draw_box(
+                get_box_params(self.start_config)
+            )
 
         self.infrastructure.update_and_tick()
 

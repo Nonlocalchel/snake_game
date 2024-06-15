@@ -34,10 +34,9 @@ def figure_real_pos(outer_pos: tuple[digit, digit], inner_pos: tuple[digit, digi
 
 def figure_positions(size: tuple[digit, digit], elem_params: tuple[any],
                      offset: tuple) -> tuple[digit, digit]:
+
     elem_count = len(elem_params)
-
     padding = figure_padding(size, elem_count)
-
     for counter in range(1, elem_count + 1):
         position = figure_pos(size, counter * padding, offset)
         yield position
