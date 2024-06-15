@@ -48,7 +48,6 @@ class Infrastructure:
 
         cont_view = ContainerView(figure_abs_params(*box_params['size']))
         cont_view.coord = figure_abs_params(*box_params['pos'])
-
         cont_surf = cont_view.view
         for elem_name, elem_data in elem_params.items():
             if elem_name == 'box':

@@ -9,7 +9,9 @@ from src.logic.playerHandle import PlayerHandle
 
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
-from .utils import choose_action, get_available_box
+
+from .action_config import choose_alt_action, choose_box_action
+from .utils import get_available_box
 
 from src.interface.infrastructure import Infrastructure
 
@@ -40,7 +42,7 @@ class Menu(Page):
 
         key = self.infrastructure.get_pressed_key()
         if key:
-            action_handler.action = choose_action(key, box)
+            action_handler.action = choose_box_action(key, box) or choose_alt_action(key)
             box.handle_input(key)
 
         for element in box.clickable_elements:

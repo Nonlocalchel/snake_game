@@ -9,7 +9,7 @@ from src.logic.pages.actions import Action
 
 class ConfigurationBox(InteractionBox):
     def __init__(self, position: tuple[float, float] = (0.25, 0.25)) -> None:
-        elements = self.create_elements()
+        elements = self.add_elements()
         super().__init__(elements, position, (0.5, 0.4))
 
     @property
@@ -24,7 +24,7 @@ class ConfigurationBox(InteractionBox):
             name_input.clear()
 
     @staticmethod
-    def create_elements() -> tuple[Element, ...]:
+    def add_elements() -> tuple[Element, ...]:
         elements = ()
 
         elements += (textInput.Input('Введите имя'),)

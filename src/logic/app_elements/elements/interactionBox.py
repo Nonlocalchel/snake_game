@@ -19,7 +19,7 @@ class InteractionBox(Box, Lock):
 
     @staticmethod
     @abstractmethod
-    def create_elements() -> tuple[Element, ...]:
+    def add_elements() -> tuple[Element, ...]:
         pass
 
     @property
