@@ -1,9 +1,7 @@
 from abc import abstractmethod
 
-from src.logic.app_elements.elements.base.lock import Lock
-from src.logic.app_elements.elements.base.box import Box
-
-from .utils import get_box_params, get_clickable_elements
+from src.logic.app_elements.base import Lock
+from src.logic.app_elements.base import Box
 
 
 class InteractionBox(Box, Lock):
@@ -12,12 +10,9 @@ class InteractionBox(Box, Lock):
         Lock.__init__(self, access=access)
 
     @property
-    def params(self):
-        return get_box_params(self)
-
-    @property
     def clickable_elements(self):
-        return get_clickable_elements(self.elements)
+        filtered_iter = filter(self.is_clickable, self.elements)
+        return list(filtered_iter)
 
     @abstractmethod
     def handle_input(self, key) -> None:
@@ -26,3 +21,7 @@ class InteractionBox(Box, Lock):
     @abstractmethod
     def put_elements(self) -> None:
         pass
+
+    @staticmethod
+    def is_clickable(element: any) -> bool:
+        return hasattr(element, 'is_hover')
