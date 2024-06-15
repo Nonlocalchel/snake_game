@@ -104,12 +104,10 @@ class Infrastructure:
             )
 
     def play_popup_bubble_sound(self) -> None:
-        path = concatenation_path(SOUND_PATH, 'pop_up_notification.mp3')
-        self.play_sound(path)
+        self.play_sound('pop_up_notification.mp3')
 
     def play_hover_sound(self) -> None:
-        path = concatenation_path(SOUND_PATH, 'button_state/hover.mp3')
-        self.play_sound(path)
+        self.play_sound('button_state/hover.mp3')
 
     # help methods
     @staticmethod
@@ -125,6 +123,7 @@ class Infrastructure:
 
     @staticmethod
     def play_sound(path: str) -> None:
+        path = concatenation_path(SOUND_PATH, path)
         pygame.mixer.music.load(path)
         pygame.mixer.music.play(0)
 
