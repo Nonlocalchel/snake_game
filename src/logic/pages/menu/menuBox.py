@@ -1,26 +1,22 @@
-from src.logic.app_elements.elements.base.element import Element
-
-from src.logic.app_elements.elements import button
-
 from src.logic.app_elements.elements.interactionBox import InteractionBox
+from src.logic.app_elements.elements import button
 
 from src.logic.pages.actions import Action
 
 
 class MenuBox(InteractionBox):
     def __init__(self, position: tuple[float, float] = (-0.05, 0.2)) -> None:
-        elements = self.add_elements()
-        super().__init__(elements, position, offset=(0.02, 0))
+        super().__init__(position, offset=(0.02, 0))
+        self.put_elements()
 
     def handle_input(self, key) -> None:
         pass
 
-    @staticmethod
-    def add_elements() -> tuple[Element, ...]:
+    def put_elements(self) -> None:
         elements = ()
 
         elements += (button.Button('Играть', Action.SHOW_CONF),)
         elements += (button.Button('Настройки', Action.GO_TO_RESULT),)
         elements += (button.Button('Выйти', Action.QUIT),)
 
-        return elements
+        self.add_elements(*elements)

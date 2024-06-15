@@ -5,8 +5,11 @@ def round_to_two(number: float) -> float:
     return round(number, 2)
 
 
-def figure_size(elem: dict[str, any]) -> tuple[float, float]:
+def figure_size(elem: tuple[any]) -> tuple[float, float] | None:
     el_count = len(elem)
+    if el_count == 0:
+        return
+
     height = el_count * 0.2
     width = (el_count * 0.2) - 0.1
     return round_to_two(width), round_to_two(height)
@@ -29,7 +32,7 @@ def figure_real_pos(outer_pos: tuple[digit, digit], inner_pos: tuple[digit, digi
     return round_to_two(outer_x + inner_x), round_to_two(outer_y + inner_y)
 
 
-def figure_positions(size: tuple[digit, digit], elem_params: dict[str, any],
+def figure_positions(size: tuple[digit, digit], elem_params: tuple[any],
                      offset: tuple) -> tuple[digit, digit]:
     elem_count = len(elem_params)
 

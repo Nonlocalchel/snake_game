@@ -45,6 +45,8 @@ class Infrastructure:
     def draw_box(self, params: dict[str, dict], surf_to_draw: pygame.Surface | None = None) -> None:
         box_params = params['box_params']
         elem_params = params['elements_params']
+        if not len(elem_params):
+            return
 
         cont_view = ContainerView(figure_abs_params(*box_params['size']))
         cont_view.coord = figure_abs_params(*box_params['pos'])

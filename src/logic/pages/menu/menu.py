@@ -1,15 +1,12 @@
 from src.logic.pages.page import Page
 
-from src.logic.elements_handlers.mouseHandle import MouseHandle
-
-from src.logic.pages.actionHandle import ActionHandle
-from src.logic.pages.actions import Action
-
-from src.logic.playerHandle import PlayerHandle
-
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
+from src.logic.pages.actions import Action
+from src.logic.playerHandle import PlayerHandle
 
+from src.logic.elements_handlers.mouseHandle import MouseHandle
+from src.logic.pages.actionHandle import ActionHandle
 from .action_config import choose_alt_action, choose_box_action
 from .utils import get_available_box
 
