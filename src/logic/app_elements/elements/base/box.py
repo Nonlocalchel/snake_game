@@ -7,21 +7,30 @@ from src.logic.pages.actions import Action
 
 
 class Box(Element, Lock):
-    def __init__(self, elements: dict[Element:Action | str], position: tuple[float, float],
+    def __init__(self, position: tuple[float, float], elements: tuple = (),
                  size: tuple[float, float] = None, offset: tuple[float, float] = (0, 0)) -> None:
-
         super().__init__(position)
         self.size = size or figure_size(elements)
         self.elements = elements
-        self.pos = position
-        self.set_elements_pos(offset)
+        self.offset = offset
+        self.set_elements_pos()
 
-    def get_real_element_pos(self, element: any) -> tuple[float, float]:
-        return figure_real_pos(self.pos, element.pos)
+    def add_elements(self, *new_elements: Element) -> None:
+        self.elements += tuple(new_elements)
 
-    def set_elements_pos(self, offset: tuple[float, float]) -> None:
+        if not self.size:
+            self.size = figure_size(self.elements)
+
+        self.set_elements_pos()
+
+    def set_elements_pos(self) -> None:
+        offset = self.offset
         elements = self.elements
-        positions = figure_positions(self.size, elements, offset)
+        size = self.size
+        positions = figure_positions(size, elements, offset)
 
         for element, position in zip(elements, positions):
             element.pos = position
+
+    def get_real_element_pos(self, element: any) -> tuple[float, float]:
+        return figure_real_pos(self.pos, element.pos)
