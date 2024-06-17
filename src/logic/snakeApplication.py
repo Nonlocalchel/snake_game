@@ -1,5 +1,5 @@
 from .pages_collector import all_pages
-from .playerHandle import PlayerHandle
+from src.logic.app_elements.playerHandle import PlayerHandle
 
 from src.logic.pages.page import Page
 

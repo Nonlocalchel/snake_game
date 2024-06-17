@@ -1,7 +1,7 @@
 import time
 from dataclasses import astuple
 
-from .player import Player
+from src.logic.app_elements.player import Player
 
 
 class PlayerHandle:
