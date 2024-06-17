@@ -22,14 +22,18 @@ class ActionHandle:
             self.__action = new_action
 
     def handle_action(self, action: Action) -> None:
-        if action == Action.SHOW_CONF:
-            self.infrastructure.play_popup_bubble_sound()
+        match action:
+            case Action.SHOW_CONF:
+                self.infrastructure.play_popup_bubble_sound()
 
-        if action == Action.SHOW_MENU:
-            self.handle_action(Action.SHOW_CONF)
+            case Action.SHOW_MENU:
+                self.handle_action(Action.SHOW_CONF)
 
-        if action == Action.INPUT:
-            pass
+            case Action.INPUT:
+                pass
 
-        if action == Action.QUIT:
-            self.infrastructure.play_popup_bubble_sound()
+            case Action.GO_TO_PLAY:
+                self.infrastructure.play_sound('snake_2.mp3')
+
+            case Action.QUIT:
+                self.infrastructure.play_popup_bubble_sound()
