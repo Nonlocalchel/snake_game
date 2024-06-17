@@ -6,11 +6,14 @@ from src.logic.app_elements.button import Button
 class MouseHandle:
     def __init__(self, infrastructure: Infrastructure) -> None:
         self.infrastructure = infrastructure
+        self.handle_element = None
 
     def handle(self, element: Button, elem_position: tuple[float, float]) -> None:
         self.handle_pos(element, elem_position)
         if element.is_hover:
             self.handle_click(element)
+
+        self.handle_state(element.state)
 
     def handle_pos(self, element: Button, position: tuple[float, float]) -> None:
         hover = self.infrastructure.check_mouse(element.text, position)
@@ -49,4 +52,7 @@ class MouseHandle:
             return
 
         element.state = 'mouse_up'
+
+    def handle_state(self, state):
+        pass
 
