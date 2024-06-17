@@ -3,7 +3,7 @@ from src.logic.pages.page import Page
 from .menuBox import MenuBox
 from .configurationBox import ConfigurationBox
 from src.logic.pages.actions import Action
-from src.logic.playerHandle import PlayerHandle
+from src.logic.app_elements.playerHandle import PlayerHandle
 
 from src.logic.elements_handlers.mouseHandle import MouseHandle
 from src.logic.pages.actionHandle import ActionHandle

@@ -1,6 +1,6 @@
 from src.interface.infrastructure import Infrastructure
 
-from src.logic.app_elements.button import Button
+from src.logic.app_elements.interface_elements.button import Button
 
 
 class MouseHandle:

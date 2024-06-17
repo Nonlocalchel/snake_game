@@ -1,7 +1,7 @@
-from src.logic.app_elements.base.element import Element
-from src.logic.app_elements.base.lock import Lock
+from src.logic.app_elements.interface_elements.base.element import Element
+from src.logic.app_elements.interface_elements.base.lock import Lock
 
-from src.logic.app_elements.base.box_calc import figure_size, figure_positions, figure_real_pos
+from src.logic.app_elements.interface_elements.base.box_calc import figure_size, figure_positions, figure_real_pos
 
 
 class Box(Element, Lock):

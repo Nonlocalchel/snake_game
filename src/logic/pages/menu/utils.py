@@ -1,5 +1,5 @@
-from src.logic.app_elements.interactionBox import InteractionBox
-from src.logic.app_elements import button, textInput
+from src.logic.app_elements.interface_elements.interactionBox import InteractionBox
+from src.logic.app_elements.interface_elements import button, textInput
 
 app_element = textInput.Input | button.Button
 

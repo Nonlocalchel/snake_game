@@ -1,5 +1,5 @@
-from src.logic.app_elements.interactionBox import InteractionBox
-from src.logic.app_elements import button
+from src.logic.app_elements.interface_elements.interactionBox import InteractionBox
+from src.logic.app_elements.interface_elements import button
 
 from src.logic.pages.actions import Action
 
