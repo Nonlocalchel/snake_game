@@ -32,11 +32,11 @@ class MouseHandle:
             self.handle_mouse_out()
             self.state = None
 
-        if element.is_hover:
+        if element.state:
             self.handle_click()
 
     def handle_mouse_over(self) -> None:
-        if self.handle_element.is_hover:
+        if self.handle_element.state:
             return
 
         self.state = 'mouse_over'

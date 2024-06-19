@@ -11,7 +11,7 @@ class Button(Element):
         self.state = None
 
     @property
-    def text(self):
+    def text(self) -> str:
         return self._text
 
     @property
@@ -23,5 +23,5 @@ class Button(Element):
         return self.state in ['click', 'mouse_down']
 
     @property
-    def action(self) -> str:
+    def action(self) -> Action:
         return self.__action
