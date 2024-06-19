@@ -42,4 +42,4 @@ class InteractionBox(Box, Lock):
 
     @staticmethod
     def is_clickable(element: any) -> bool:
-        return hasattr(element, 'is_hover')
+        return hasattr(element, 'is_mouse_on')

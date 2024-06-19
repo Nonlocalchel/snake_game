@@ -7,7 +7,7 @@ app_element = textInput.Input | button.Button
 def get_element_state_for_draw(element: app_element) -> str:
     state = None
     if type(element) is button.Button:
-        if element.is_hover:
+        if element.is_mouse_on:
             state = 'hover'
 
         if element.is_action:

@@ -34,6 +34,16 @@ def figure_image_size(image_h: int, image_w: int) -> tuple[digit, digit]:
         return scale(WIDTH, cof), scale(HEIGHT)
 
 
+def transfer_state(state):
+    if state in ['mouse_over', 'mouse_up', 'click']:
+        state = 'hover'
+
+    if state in ['mouse_down']:
+        state = 'active'
+
+    return state
+
+
 def increase_size(size: tuple[int, int], width_cof: float, height_cof: float) -> tuple[digit, digit]:
     width, height = size
     return width * width_cof, height * height_cof
@@ -49,29 +59,27 @@ def figure_inner_pos(inner_size: tuple[int, int], outer_size: tuple[int, int]) -
     return (new_width - width) // 2, (new_height - height) // 2
 
 
-def filter_key(const_dict: dict) -> dict:
-    filter_storage = filter(lambda x: x[0].startswith('K_'), const_dict.items())
-    return dict(filter_storage)
-
-
 pressed_cash = []
 
 
-def is_tab_number(key: str) -> bool:
-    return key.startswith('[') and key.endswith(']')
+def valid_shift(func):
+    def wrapper(place, *args, **kwargs):
+        if 'left shift' in place:
+            return
+
+        return func(place, *args, **kwargs)
+
+    return wrapper
 
 
-def shift_in(place):
-    return 'left shift' in place
-
-
-def correct_input(pressed_keys: list[str], to_up=False) -> str:
+@valid_shift
+def correct_input(pressed_keys: list[str], to_up=False) -> str | None:
     symbol = pressed_keys[0]
 
     if to_up and len(symbol) == 1:
         symbol = pressed_keys[-1].upper()
 
-    if symbol and is_tab_number(symbol):
+    if symbol.startswith('[') and symbol.endswith(']'):
         symbol = symbol[1]
 
     return symbol

@@ -173,12 +173,8 @@ class Infrastructure:
             if selected_key in pressed_cash:
                 pressed_cash.remove(selected_key)
 
-        pressed_cash.extend(pressed_keys)
-
-        if not pressed_keys:
-            return
-
-        if not shift_in(pressed_keys):
+        if pressed_keys:
+            pressed_cash.extend(pressed_keys)
             return correct_input(pressed_keys, to_up=to_up)
 
     # game

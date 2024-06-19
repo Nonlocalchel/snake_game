@@ -15,7 +15,7 @@ class Button(Element):
         return self._text
 
     @property
-    def is_hover(self) -> bool:
+    def is_mouse_on(self) -> bool:
         return self.state is not None
 
     @property
