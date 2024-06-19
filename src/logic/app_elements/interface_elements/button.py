@@ -15,12 +15,12 @@ class Button(Element):
         return self._text
 
     @property
-    def is_hover(self) -> bool:
+    def is_mouse_on(self) -> bool:
         return self.state is not None
 
     @property
     def is_action(self) -> bool:
-        return self.state in ['click', 'mouse_down']
+        return self.state == 'mouse_down'
 
     @property
     def action(self) -> Action:

@@ -32,17 +32,17 @@ class MouseHandle:
             self.handle_mouse_out()
             self.state = None
 
-        if element.state:
+        if element.is_mouse_on:
             self.handle_click()
 
     def handle_mouse_over(self) -> None:
-        if self.handle_element.state:
+        if self.state:
             return
 
         self.state = 'mouse_over'
 
     def handle_mouse_out(self) -> None:
-        if self.state in ['mouse_up', 'mouse_over']:
+        if self.handle_element.is_mouse_on:
             self.state = 'mouse_out'
 
     def handle_click(self) -> None:
@@ -53,7 +53,7 @@ class MouseHandle:
         if is_click:
             self.handle_mouse_down()
 
-        mouse_up = self.state == 'mouse_down' and not is_click
+        mouse_up = self.handle_element.is_action and not is_click
         if mouse_up:
             self.handle_mouse_up()
 
@@ -61,7 +61,7 @@ class MouseHandle:
         self.state = 'mouse_down'
 
     def handle_mouse_up(self) -> None:
-        if self.state == 'mouse_down':
+        if self.handle_element.is_action:
             self.state = 'click'
             return
 

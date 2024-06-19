@@ -42,7 +42,7 @@ class TextView(BaseView):
         if state == 'hover':
             self.set_hover_view()
 
-        if state == 'action':
+        if state == 'active':
             self.set_active_view()
 
         if state == 'unfocus':
