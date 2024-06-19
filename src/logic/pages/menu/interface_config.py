@@ -22,11 +22,8 @@ def choose_box_action(key: str, state: page_boxs) -> Action | None:
         case MenuBox():
             box_key = 'menu'
 
-        case ConfigurationBox():
+        case ConfigurationBox() | _:
             box_key = 'game_conf'
-
-        case _:
-            box_key = None
 
     if box_key:
         return action_config[box_key].get(key)
