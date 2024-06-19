@@ -6,9 +6,10 @@ from src.logic.pages.actions import Action
 from src.logic.app_elements.playerHandle import PlayerHandle
 
 from src.logic.elements_handlers.mouseHandle import MouseHandle
+from src.logic.elements_handlers.inputHandle import InputHandle
 from src.logic.pages.actionHandle import ActionHandle
-from .action_config import choose_alt_action, choose_box_action
-from .utils import get_available_box, get_box_params
+from .action_config import choose_box_action
+from .utils import get_available_box, get_box_params, get_selected_input
 
 from src.interface.infrastructure import Infrastructure
 
@@ -21,7 +22,8 @@ class Menu(Page):
         self.action = Action.SHOW_MENU
         self.action_handler = ActionHandle(infrastructure, self.action)
         self.mouse_handler = MouseHandle(infrastructure)
-        self.start_config = ConfigurationBox()
+        self.input_handler = InputHandle(infrastructure)
+        self.start_config = ConfigurationBox() #словарь интерфейс
         self.menu = MenuBox()
         self.player = PlayerHandle()
         self.is_running = True
@@ -34,12 +36,14 @@ class Menu(Page):
 
         action_handler = self.action_handler
         mouse_handler = self.mouse_handler
+        input_handler = self.input_handler
 
         box = get_available_box(self.menu, self.start_config)
 
         key = self.infrastructure.get_pressed_key()
         if key:
-            action_handler.action = choose_box_action(key, box) or choose_alt_action(key)
+            action_handler.action = choose_box_action(key, box)
+            input_handler.handle(get_selected_input(self.menu, self.start_config), key)
             box.handle_input(key)
 
         for element in box.clickable_elements:

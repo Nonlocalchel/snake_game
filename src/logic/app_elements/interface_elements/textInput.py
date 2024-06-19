@@ -53,7 +53,7 @@ class Input(Element):
             return
 
         if remove:
-            self.__remove_char()
+            self.remove_char()
             return
 
         if char == 'delete':
@@ -69,5 +69,5 @@ class Input(Element):
 
         self.text = ''
 
-    def __remove_char(self) -> None:
+    def remove_char(self) -> None:
         self.text = self.text[:-1]

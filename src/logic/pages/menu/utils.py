@@ -47,3 +47,13 @@ def get_available_box(*boxs) -> InteractionBox:
             continue
 
         return box
+
+
+def get_selected_input(*boxs) -> textInput:
+    for box in boxs:
+        if box.is_lock:
+            continue
+
+        for element in box.elements:
+            if type(element) is textInput:
+                return element

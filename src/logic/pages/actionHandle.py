@@ -18,8 +18,8 @@ class ActionHandle:
             return
 
         self.handle_action(new_action)
-        if new_action != Action.INPUT:
-            self.__action = new_action
+
+        self.__action = new_action
 
     def handle_action(self, action: Action) -> None:
         match action:
@@ -28,9 +28,6 @@ class ActionHandle:
 
             case Action.SHOW_MENU:
                 self.handle_action(Action.SHOW_CONF)
-
-            case Action.INPUT:
-                pass
 
             case Action.GO_TO_PLAY:
                 self.infrastructure.play_sound('snake_2.mp3')

@@ -30,9 +30,3 @@ def choose_box_action(key: str, state: page_boxs) -> Action | None:
 
     if box_key:
         return action_config[box_key].get(key)
-
-
-def choose_alt_action(key: str) -> Action | None:
-    match key:
-        case key if key and len(key) == 1:
-            return Action.INPUT

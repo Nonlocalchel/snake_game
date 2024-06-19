@@ -7,6 +7,5 @@ class Action(Enum):
     GO_TO_PLAY = 'go-to_game'
     GO_TO_RESULT = 'go-to_result'
     GO_TO_MENU = 'go-to_menu'
-    INPUT = 'input'
     QUIT = 'quit'
 
