@@ -41,7 +41,7 @@ def get_box_params(box: InteractionBox) -> dict[str, dict]:
     return {'box_params': box_params, 'elements_params': elements_params}
 
 
-def get_available_box(boxs) -> InteractionBox:
+def get_available_box(boxs: any) -> InteractionBox:
     for box in boxs:
         if box.is_lock:
             continue
@@ -49,16 +49,12 @@ def get_available_box(boxs) -> InteractionBox:
         return box
 
 
-def get_selected_input(boxs) -> textInput.Input:
-    for box in boxs:
-        if box.is_lock:
-            continue
-
-        for element in box.elements:
-            if type(element) is textInput.Input:
-                return element
+def get_input(box: InteractionBox) -> textInput.Input:
+    for element in box.elements:
+        if type(element) is textInput.Input:
+            return element
 
 
-def set_default_lock(boxs) -> None:
+def set_default_lock(boxs: any) -> None:
     for box in boxs:
         box.unlock()

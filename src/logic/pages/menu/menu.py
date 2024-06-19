@@ -10,7 +10,7 @@ from src.logic.handles.elements_handles.inputHandle import InputHandle
 
 from src.logic.handles.actionHandle import ActionHandle
 from .interface_config import choose_box_action
-from .utils import get_available_box, get_box_params, get_selected_input, set_default_lock
+from .utils import get_available_box, get_box_params, get_input, set_default_lock
 
 from src.interface.infrastructure import Infrastructure
 
@@ -41,7 +41,9 @@ class Menu(Page):
         key = self.infrastructure.get_pressed_key()
         if key:
             action_handler.action = choose_box_action(key, box)
-            self.input_handler.handle(get_selected_input(self.interface.values()), key)
+            box_input = get_input(box)
+            if box_input:
+                self.input_handler.handle(box_input, key)
 
         for element in box.clickable_elements:
             position = box.get_real_element_pos(element)
@@ -70,7 +72,8 @@ class Menu(Page):
 
     def update_state(self) -> None:
         """Вычисление следующего состояния всех объектов на экране"""
-        set_default_lock(self.interface.values())
+        boxs = self.interface.values()
+        set_default_lock(boxs)
 
         match self.action:
             case Action.SHOW_CONF:
@@ -78,7 +81,7 @@ class Menu(Page):
                 menu.lock()
 
             case Action.GO_TO_PLAY:
-                name_input = get_selected_input(self.interface.values())
+                name_input = get_input(self.interface['start_conf'])
                 if not name_input.is_empty:
                     self.player.name = name_input.text
 
@@ -86,8 +89,8 @@ class Menu(Page):
                 self.is_running = False
 
             case _:
-                self.input_handler.handle(get_selected_input(self.interface.values()), 'delete')
                 start_conf = self.interface['start_conf']
+                self.input_handler.handle(get_input(start_conf), 'delete')
                 start_conf.lock()
 
         action_value = self.action.value
