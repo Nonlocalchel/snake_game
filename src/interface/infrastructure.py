@@ -60,7 +60,7 @@ class Infrastructure:
             )
 
             text_view = TextView(elem_name, elem_coord)
-            text_view.view = elem_data['state']
+            text_view.view = transfer_state(elem_data['state'])
             text_view.scale_view()
             cont_surf.blit(
                 text_view.view,

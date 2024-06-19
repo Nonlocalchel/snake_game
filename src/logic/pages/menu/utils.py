@@ -31,11 +31,11 @@ def get_box_params(box: InteractionBox) -> dict[str, dict]:
             box = element
             elements_params['box'] = get_box_params(box)
 
-        state = get_element_state_for_draw(element)
+        # state = get_element_state_for_draw(element)
 
         elements_params[element.text] = {
             'position': element.pos,
-            'state': state
+            'state': element.state
         }
 
     return {'box_params': box_params, 'elements_params': elements_params}
