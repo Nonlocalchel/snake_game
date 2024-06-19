@@ -9,17 +9,6 @@ class ConfigurationBox(InteractionBox):
         super().__init__(position, size=(0.5, 0.4))
         self.put_elements()
 
-    @property
-    def selected_input(self) -> textInput.Input:
-        return self.elements[0]
-
-    def handle_input(self, key: str) -> None:
-        name_input = self.selected_input
-        if key != 'escape':
-            name_input.change(key)
-        else:
-            name_input.clear()
-
     def put_elements(self) -> None:
         elements = ()
 

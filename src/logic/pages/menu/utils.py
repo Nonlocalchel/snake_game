@@ -49,11 +49,11 @@ def get_available_box(*boxs) -> InteractionBox:
         return box
 
 
-def get_selected_input(*boxs) -> textInput:
+def get_selected_input(*boxs) -> textInput.Input:
     for box in boxs:
         if box.is_lock:
             continue
 
         for element in box.elements:
-            if type(element) is textInput:
+            if type(element) is textInput.Input:
                 return element

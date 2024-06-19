@@ -16,10 +16,6 @@ class Input(Element):
     def is_valid_length(self) -> bool:
         return len(self._text) < 10
 
-    @staticmethod
-    def is_symbol(char: str) -> bool:
-        return type(char) is str and len(char) == 1
-
     @property
     def text(self) -> str:
         return self._text or self.__default_text
@@ -32,36 +28,11 @@ class Input(Element):
         if self.is_valid_length or len(self._text) > len(value):
             self._text = value
 
-        self.switch_focus()
-
-    def switch_focus(self):
-        self.focus()
-
-        if self.is_empty:
-            self.unfocus()
-
     def focus(self):
         self.state = 'focus'
 
     def unfocus(self):
         self.state = 'unfocus'
-
-    def change(self, char: str) -> None:
-        remove = char == 'backspace'
-
-        if self.is_empty and remove:
-            return
-
-        if remove:
-            self.remove_char()
-            return
-
-        if char == 'delete':
-            self.clear()
-            return
-
-        if self.is_symbol(char):
-            self.text += char
 
     def clear(self) -> None:
         if self.is_empty:

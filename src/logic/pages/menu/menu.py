@@ -44,7 +44,6 @@ class Menu(Page):
         if key:
             action_handler.action = choose_box_action(key, box)
             input_handler.handle(get_selected_input(self.menu, self.start_config), key)
-            box.handle_input(key)
 
         for element in box.clickable_elements:
             position = box.get_real_element_pos(element)
@@ -78,8 +77,12 @@ class Menu(Page):
             case Action.SHOW_CONF:
                 self.menu.lock()
 
+            case Action.SHOW_MENU:
+                name_input = get_selected_input(self.menu, self.start_config)
+                name_input.clear()
+
             case Action.GO_TO_PLAY:
-                name_input = self.start_config.selected_input
+                name_input = get_selected_input(self.menu, self.start_config)
                 if not name_input.is_empty:
                     self.player.name = name_input.text
 
