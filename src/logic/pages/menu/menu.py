@@ -5,12 +5,12 @@ from .configurationBox import ConfigurationBox
 from src.logic.pages.actions import Action
 from src.logic.app_elements.playerHandle import PlayerHandle
 
-from src.logic.elements_handlers.mouseHandle import MouseHandle
-from src.logic.elements_handlers.inputHandle import InputHandle
+from src.logic.handles.elements_handles.mouseHandle import MouseHandle
+from src.logic.handles.elements_handles.inputHandle import InputHandle
 
-from src.logic.pages.actionHandle import ActionHandle
+from src.logic.handles.actionHandle import ActionHandle
 from .interface_config import choose_box_action
-from .utils import get_available_box, get_box_params, get_selected_input
+from .utils import get_available_box, get_box_params, get_selected_input, set_default_lock
 
 from src.interface.infrastructure import Infrastructure
 
@@ -24,8 +24,7 @@ class Menu(Page):
         self.action_handler = ActionHandle(infrastructure, self.action)
         self.mouse_handler = MouseHandle(infrastructure)
         self.input_handler = InputHandle(infrastructure)
-        self.start_config = ConfigurationBox() #словарь интерфейс
-        self.menu = MenuBox()
+        self.interface = {'menu': MenuBox(), 'start_conf': ConfigurationBox()}
         self.player = PlayerHandle()
         self.is_running = True
         self.name = 'menu'
@@ -36,19 +35,17 @@ class Menu(Page):
             self.is_running = False
 
         action_handler = self.action_handler
-        mouse_handler = self.mouse_handler
-        input_handler = self.input_handler
 
-        box = get_available_box(self.menu, self.start_config)
+        box = get_available_box(self.interface.values())
 
         key = self.infrastructure.get_pressed_key()
         if key:
             action_handler.action = choose_box_action(key, box)
-            input_handler.handle(get_selected_input(self.menu, self.start_config), key)
+            self.input_handler.handle(get_selected_input(self.interface.values()), key)
 
         for element in box.clickable_elements:
             position = box.get_real_element_pos(element)
-            mouse_handler.handle(element, position)
+            self.mouse_handler.handle(element, position)
 
             if element.state == 'click':
                 action_handler.action = element.action
@@ -59,27 +56,29 @@ class Menu(Page):
         """Обновление экрана: перерисовка меню"""
         self.infrastructure.fill_bg(image='gold_snake.jpg')
 
-        self.infrastructure.draw_box(get_box_params(self.menu))
+        menu = self.interface['menu']
+        self.infrastructure.draw_box(get_box_params(menu))
 
-        if self.menu.is_lock:
+        available_box = get_available_box(self.interface.values())
+        if available_box != menu:
             self.infrastructure.draw_shadow()
             self.infrastructure.draw_box(
-                get_box_params(self.start_config)
+                get_box_params(available_box)
             )
 
         self.infrastructure.update_and_tick()
 
     def update_state(self) -> None:
         """Вычисление следующего состояния всех объектов на экране"""
-        self.start_config.unlock()
-        self.menu.unlock()
+        set_default_lock(self.interface.values())
 
         match self.action:
             case Action.SHOW_CONF:
-                self.menu.lock()
+                menu = self.interface['menu']
+                menu.lock()
 
             case Action.GO_TO_PLAY:
-                name_input = get_selected_input(self.menu, self.start_config)
+                name_input = get_selected_input(self.interface.values())
                 if not name_input.is_empty:
                     self.player.name = name_input.text
 
@@ -87,8 +86,9 @@ class Menu(Page):
                 self.is_running = False
 
             case _:
-                self.input_handler.handle(get_selected_input(self.menu, self.start_config), 'delete')
-                self.start_config.lock()
+                self.input_handler.handle(get_selected_input(self.interface.values()), 'delete')
+                start_conf = self.interface['start_conf']
+                start_conf.lock()
 
         action_value = self.action.value
         if action_value.startswith('go-to'):

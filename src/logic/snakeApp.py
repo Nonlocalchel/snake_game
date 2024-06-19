@@ -6,7 +6,7 @@ from src.logic.pages.page import Page
 from ..interface.infrastructure import Infrastructure
 
 
-class SnakeApplication:
+class SnakeApp:
     def __init__(self, infrastructure: Infrastructure, start_page: str = 'menu') -> None:
         self.page_name = start_page
         self.player = PlayerHandle()
