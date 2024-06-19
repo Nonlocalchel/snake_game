@@ -20,7 +20,7 @@ class Button(Element):
 
     @property
     def is_action(self) -> bool:
-        return self.state in ['click', 'mouse_down']
+        return self.state == 'mouse_down'
 
     @property
     def action(self) -> Action:
