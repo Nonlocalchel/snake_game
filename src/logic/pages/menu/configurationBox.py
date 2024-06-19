@@ -9,6 +9,9 @@ class ConfigurationBox(InteractionBox):
         super().__init__(position, size=(0.5, 0.4))
         self.put_elements()
 
+    def handle_input(self, key) -> None:
+        pass
+
     def put_elements(self) -> None:
         elements = ()
 
